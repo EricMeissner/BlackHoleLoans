@@ -20,6 +20,7 @@ namespace BlackHoleLoans
     SpriteBatch spriteBatch;
 
     MainMenu mainMenu;
+    Overworld overworld;
     int currentMenuScreen;
 
     public Game1()
@@ -33,8 +34,10 @@ namespace BlackHoleLoans
 
       mainMenu = new MainMenu(Content, graphics.PreferredBackBufferWidth ,
         graphics.PreferredBackBufferHeight);
+      overworld = new Overworld(Content, graphics.PreferredBackBufferHeight,
+        graphics.PreferredBackBufferWidth);
 
-      currentMenuScreen = 0;
+      currentMenuScreen = 2;//change back to 0
     }
     /// <summary>
     /// Allows the game to perform any initialization it needs to before starting to run.
@@ -59,7 +62,10 @@ namespace BlackHoleLoans
       spriteBatch = new SpriteBatch(GraphicsDevice);
       // TODO: use this.Content to load your game content here
       mainMenu.setSpriteBatch(spriteBatch);
+      overworld.setSpriteBatch(spriteBatch);
+
       mainMenu.LoadContent();
+      overworld.LoadContent();
 
     }
 
@@ -91,6 +97,8 @@ namespace BlackHoleLoans
           this.Exit();
       }
 
+      if (currentMenuScreen == 2)
+        overworld.Update();
 
       base.Update(gameTime);
     }
@@ -108,6 +116,9 @@ namespace BlackHoleLoans
 
       if(currentMenuScreen==0)  
         mainMenu.Draw();
+
+      if (currentMenuScreen == 2)
+        overworld.Draw();
 
       spriteBatch.End();
 
