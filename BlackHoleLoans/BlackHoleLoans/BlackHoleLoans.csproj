@@ -110,9 +110,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimatedMovement.cs" />
+    <Compile Include="PlayerRelated\AnimatedMovement.cs" />
+    <Compile Include="PlayerRelated\CharacterCreation.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Overworld.cs" />
+    <Compile Include="PlayerRelated\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />

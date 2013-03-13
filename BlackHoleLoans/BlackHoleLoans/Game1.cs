@@ -20,8 +20,9 @@ namespace BlackHoleLoans
     SpriteBatch spriteBatch;
 
     MainMenu mainMenu;
+    CharacterCreation characterCreation;
     Overworld overworld;
-    int currentMenuScreen;
+    int currentGameState;
 
     public Game1()
     {
@@ -37,7 +38,8 @@ namespace BlackHoleLoans
       overworld = new Overworld(Content, graphics.PreferredBackBufferHeight,
         graphics.PreferredBackBufferWidth);
 
-      currentMenuScreen = 2;//change back to 0
+      currentGameState = 1;//change back to 0
+      characterCreation = new CharacterCreation();
     }
     /// <summary>
     /// Allows the game to perform any initialization it needs to before starting to run.
@@ -63,9 +65,12 @@ namespace BlackHoleLoans
       // TODO: use this.Content to load your game content here
       mainMenu.setSpriteBatch(spriteBatch);
       overworld.setSpriteBatch(spriteBatch);
+      characterCreation.setSpriteBatch(spriteBatch);
 
       mainMenu.LoadContent();
       overworld.LoadContent();
+      characterCreation.LoadContent(Content);
+
 
     }
 
@@ -90,15 +95,15 @@ namespace BlackHoleLoans
         this.Exit();
       // TODO: Add your update logic here
 
-      if (currentMenuScreen == 0)
+      if (currentGameState == 0)
       {
-        currentMenuScreen = mainMenu.Update();
-        if (currentMenuScreen == -1)
+        currentGameState = mainMenu.Update();
+        if (currentGameState == -1)
           this.Exit();
       }
 
-      if (currentMenuScreen == 2)
-        overworld.Update();
+      if (currentGameState == 1)
+        characterCreation.Update();
 
       base.Update(gameTime);
     }
@@ -114,11 +119,14 @@ namespace BlackHoleLoans
       // TODO: Add your drawing code here
       spriteBatch.Begin();
 
-      if(currentMenuScreen==0)  
+      if(currentGameState==0)  
         mainMenu.Draw();
 
-      if (currentMenuScreen == 2)
+      if (currentGameState == 2)
         overworld.Draw();
+
+      if(currentGameState==1)
+        characterCreation.Draw();
 
       spriteBatch.End();
 

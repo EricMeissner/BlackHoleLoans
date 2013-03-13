@@ -46,7 +46,7 @@ namespace BlackHoleLoans
     {
       spaceship = _content.Load<Texture2D>("MainMenu/spaceship");
       stars = _content.Load<Texture2D>("MainMenu/stars");
-      BHLlogo = _content.Load<Texture2D>("MainMenu/BHL");
+      BHLlogo = _content.Load<Texture2D>("MainMenu/BHL4");
       smallFont = _content.Load<SpriteFont>("Fonts/MenuOptions");
       bigFont = _content.Load<SpriteFont>("Fonts/MenuTitles");
     }
@@ -74,11 +74,14 @@ namespace BlackHoleLoans
     public void Draw()
     {
       spriteBatch.Draw(stars, new Rectangle(0, 0,_width ,_height), Color.White);
-      spriteBatch.Draw(BHLlogo, new Vector2(175, 50), Color.White);
+
+      spriteBatch.Draw(BHLlogo, new Vector2(200,20), null,
+                    Color.White, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
+
       if (menuScreen == 1)
         drawMainMenu();
       else if (menuScreen == 2)
-        drawOptions();
+        drawCredits();
     }
 
 
@@ -149,9 +152,9 @@ namespace BlackHoleLoans
     protected void drawMainMenu()
     {
       spriteBatch.DrawString(bigFont, "Main Menu", new Vector2(200, 150), Color.White);
-      spriteBatch.DrawString(smallFont, "New Game", new Vector2(350, 220), Color.White);
-      spriteBatch.DrawString(smallFont, "Load Game", new Vector2(350, 295), Color.White);
-      spriteBatch.DrawString(smallFont, "Options", new Vector2(350, 370), Color.White);
+      spriteBatch.DrawString(smallFont, "Start Game", new Vector2(350, 220), Color.White);
+      spriteBatch.DrawString(smallFont, "Controls", new Vector2(350, 295), Color.White);
+      spriteBatch.DrawString(smallFont, "Credits", new Vector2(350, 370), Color.White);
       spriteBatch.DrawString(smallFont, "Exit", new Vector2(350, 445), Color.White);
 
       spriteBatch.Draw(spaceship, new Vector2(cursorX, cursorY), null,
@@ -159,15 +162,17 @@ namespace BlackHoleLoans
 
     }
 
-    protected void drawOptions()
+    protected void drawControls()
     {
-      spriteBatch.DrawString(bigFont, "Options", new Vector2(200, 150), Color.White);
-      spriteBatch.DrawString(smallFont, "Volume: " + volume, new Vector2(350, 220), Color.White);
-      spriteBatch.DrawString(smallFont, "Back", new Vector2(350, 295), Color.White);
+      spriteBatch.DrawString(bigFont, "Draw Controls or an image", new Vector2(200, 150), Color.White);
+      spriteBatch.DrawString(bigFont, "Also a back button", new Vector2(200, 250), Color.White);
 
-      spriteBatch.Draw(spaceship, new Vector2(cursorX, cursorY), null,
-              Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+    }
 
+    protected void drawCredits()
+    {
+      spriteBatch.DrawString(bigFont, "SHOW CREDITS", new Vector2(200, 150), Color.White);
+      spriteBatch.DrawString(bigFont, "Also a back button", new Vector2(200, 250), Color.White);
     }
 
     protected void changeVolume()
