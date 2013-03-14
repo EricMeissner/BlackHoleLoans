@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace BlackHoleLoans
+namespace BlackHoleLoans.PlayerRelated
 {
   public class AnimatedMovement
   {

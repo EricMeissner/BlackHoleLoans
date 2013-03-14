@@ -17,12 +17,15 @@ namespace BlackHoleLoans
     private Texture2D spaceship, stars, BHLlogo;
 
     KeyboardState prevKeyboardState, currentKeyboardState;
-    SpriteFont smallFont, bigFont;
+    SpriteFont smallFont, bigFont;//Fonts used to display text on the screen
 
-    private int _height, _width, numOptions, lowestPossibleY;
+    private int _height, _width; //Screen resolution
+    private int numOptions, lowestPossibleY;//Number of menu options and the lowest Y value to draw the cursor
     private int cursorX, cursorY;
     int volume, menuCursorLocation;
-    int menuScreen;
+    int menuScreen;//Used to determine which menu screen the user is currently on
+
+    const int MAINMENU=1, CONTROLS=2, CREDITS=3;
 
     public MainMenu(ContentManager content, int width, int height)
     {
@@ -44,6 +47,7 @@ namespace BlackHoleLoans
 
     public void LoadContent()
     {
+      //Loads all the images needed for the main menu
       spaceship = _content.Load<Texture2D>("MainMenu/spaceship");
       stars = _content.Load<Texture2D>("MainMenu/stars");
       BHLlogo = _content.Load<Texture2D>("MainMenu/BHL4");
@@ -56,67 +60,58 @@ namespace BlackHoleLoans
       prevKeyboardState = currentKeyboardState;
       currentKeyboardState = Keyboard.GetState();
 
-      if (menuScreen == 1)
+      /*
+       *These two conditionals change the number of options depending on which
+       *screen the user is on. The first screen (main menu) has fewer options than
+       *then options screen
+       */
+      if (menuScreen == MAINMENU)
       {
         numOptions = 4;
         lowestPossibleY = 425;
-      }
-      else
-      {
-        numOptions = 2;
-        lowestPossibleY = 275;
-        changeVolume();
       }
 
       return interactWithMainMenu();
     }
 
-    public void Draw()
-    {
-      spriteBatch.Draw(stars, new Rectangle(0, 0,_width ,_height), Color.White);
-
-      spriteBatch.Draw(BHLlogo, new Vector2(200,20), null,
-                    Color.White, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
-
-      if (menuScreen == 1)
-        drawMainMenu();
-      else if (menuScreen == 2)
-        drawCredits();
-    }
-
-
-
     protected int interactWithMainMenu()
     {
+      //Console.WriteLine(menuCursorLocation + " " + menuScreen);
+
       #region Entering a menu options
 
-      if (prevKeyboardState.IsKeyUp(Keys.Enter) && currentKeyboardState.IsKeyDown(Keys.Enter))
+      //If enter was pressed..
+      if (prevKeyboardState.IsKeyDown(Keys.Enter) && currentKeyboardState.IsKeyUp(Keys.Enter))
       {
-        if ((menuCursorLocation == 1 || menuCursorLocation == 2) && menuScreen == 1)
-          return menuCursorLocation;
+        if ((menuCursorLocation == 1 && menuScreen == MAINMENU))
+          return 1;
 
-        if (menuCursorLocation == 3)
+        if (menuScreen == CONTROLS || menuScreen == CREDITS)
+          menuScreen = MAINMENU;
+
+        else if (menuCursorLocation == 2)
         {
           menuCursorLocation = 1;
-          menuScreen = 2;
+          menuScreen = CONTROLS;
           cursorY = 200;
         }
 
-        if (menuScreen == 2 && menuCursorLocation == 2)
+        else if (menuCursorLocation == 3)
         {
           menuCursorLocation = 1;
-          menuScreen = 1;
+          menuScreen = CREDITS;
           cursorY = 200;
         }
 
-        if (menuCursorLocation == 4)
+        else if (menuCursorLocation == 4)
           return -1;
       }
 
       #endregion
 
       #region Move cursor in the menus
-      else if (prevKeyboardState.IsKeyUp(Keys.Down) && currentKeyboardState.IsKeyDown(Keys.Down))
+
+      else if (menuScreen==MAINMENU && prevKeyboardState.IsKeyUp(Keys.Down) && currentKeyboardState.IsKeyDown(Keys.Down))
       {
         if (menuCursorLocation != numOptions)
         {
@@ -130,7 +125,7 @@ namespace BlackHoleLoans
         }
 
       }
-      else if (prevKeyboardState.IsKeyUp(Keys.Up) && currentKeyboardState.IsKeyDown(Keys.Up))
+      else if (menuScreen == MAINMENU && prevKeyboardState.IsKeyUp(Keys.Up) && currentKeyboardState.IsKeyDown(Keys.Up))
       {
         if (menuCursorLocation != 1)
         {
@@ -149,6 +144,27 @@ namespace BlackHoleLoans
 
     }
 
+    public void Draw()
+    {
+      //Console.WriteLine(menuScreen);
+
+      //Draws the background
+      spriteBatch.Draw(stars, new Rectangle(0, 0, _width, _height), Color.White);
+      //Draws the BHL logo
+      spriteBatch.Draw(BHLlogo, new Vector2(200, 20), null,
+                    Color.White, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
+      //Calls the Draw methods depending on the chosen option
+      if (menuScreen == MAINMENU)
+        drawMainMenu();
+      else if (menuScreen == CONTROLS)
+        drawControls();
+      else if (menuScreen == CREDITS)
+        drawCredits();
+
+
+    }
+
+
     protected void drawMainMenu()
     {
       spriteBatch.DrawString(bigFont, "Main Menu", new Vector2(200, 150), Color.White);
@@ -164,35 +180,22 @@ namespace BlackHoleLoans
 
     protected void drawControls()
     {
-      spriteBatch.DrawString(bigFont, "Draw Controls or an image", new Vector2(200, 150), Color.White);
-      spriteBatch.DrawString(bigFont, "Also a back button", new Vector2(200, 250), Color.White);
+      spriteBatch.DrawString(bigFont, "Controls", new Vector2(200, 150), Color.White);
 
+      //Add in all the keys we'll be using in the game
     }
 
     protected void drawCredits()
     {
-      spriteBatch.DrawString(bigFont, "SHOW CREDITS", new Vector2(200, 150), Color.White);
-      spriteBatch.DrawString(bigFont, "Also a back button", new Vector2(200, 250), Color.White);
-    }
+      spriteBatch.DrawString(bigFont, "Credits!", new Vector2(200, 150), Color.White);
+      spriteBatch.DrawString(smallFont, "Created By:", new Vector2(200, 200), Color.White);
 
-    protected void changeVolume()
-    {
-      if (menuCursorLocation == 1)
-      {
+      spriteBatch.DrawString(smallFont, "Andy Tonoyan   Tyler Hall", new Vector2(250, 250), Color.White);
+      spriteBatch.DrawString(smallFont, "Charles Baker    Eric Meisner", new Vector2(250, 300), Color.White);
+      spriteBatch.DrawString(smallFont, "Michael Briseno", new Vector2(250, 350), Color.White);
 
-        if(prevKeyboardState.IsKeyUp(Keys.Left) && currentKeyboardState.IsKeyDown(Keys.Left))
-        {
-          if(volume > 0)
-            volume -= 5;
-        }
-
-        if(prevKeyboardState.IsKeyUp(Keys.Right) && currentKeyboardState.IsKeyDown(Keys.Right))
-        {
-          if(volume <100)
-            volume += 5;
-        }
-
-      }
+      spriteBatch.DrawString(smallFont, "Thanks you to:", new Vector2(200, 400), Color.White);
+      //Enter people to thank..
     }
 
     public void setSpriteBatch(SpriteBatch sB)

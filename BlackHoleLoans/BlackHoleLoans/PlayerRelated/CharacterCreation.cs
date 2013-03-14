@@ -8,20 +8,21 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace BlackHoleLoans
+namespace BlackHoleLoans.PlayerRelated
 {
   class CharacterCreation
   {
     SpriteBatch spriteBatch;
     ContentManager _content;
     Texture2D[] classes, races;
+    Texture2D[] partyClasses, partyRaces;
     SpriteFont bigFont, className, classDescription;
     Texture2D stars, spaceship;
     Texture2D chosenClass, chosenRace;
     int cursorX, cursorY;
     int cursorLocation;
     int currentScreen;
-    int whichClass;
+    int whichClass, whichRace;
     int remainingStatPoints;
     KeyboardState prevKeyboardState, currentKeyboardState;
 
@@ -36,7 +37,6 @@ namespace BlackHoleLoans
       whichClass = 0;//Currently no race has ben chosen
       remainingStatPoints = 10;
       prevKeyboardState = Keyboard.GetState();
-      currentKeyboardState = prevKeyboardState;
       
     }
 
@@ -83,7 +83,8 @@ namespace BlackHoleLoans
 
     public void Update() 
     {
-      Console.WriteLine(cursorLocation);
+      //Console.WriteLine(cursorLocation +" currentScreen = " + currentScreen);
+      
       if (currentScreen == 1 || currentScreen == 2)
         UpdateClassesOrRaces();
       else
@@ -92,16 +93,20 @@ namespace BlackHoleLoans
     }
 
 
-    private void UpdateClassesOrRaces() 
+    private void UpdateClassesOrRaces()
     {
+      
       currentKeyboardState = Keyboard.GetState();
 
       if (prevKeyboardState.IsKeyUp(Keys.Enter) && currentKeyboardState.IsKeyDown(Keys.Enter))
       {
         if (currentScreen == 1)
+        {
           SelectClass();
+
+        }
         else
-          ;//Select Race
+          SelectRace();//Select Race
 
       }
       else if (prevKeyboardState.IsKeyUp(Keys.Down) && currentKeyboardState.IsKeyDown(Keys.Down))
@@ -142,13 +147,16 @@ namespace BlackHoleLoans
     {
       chosenRace = races[cursorLocation - 1];
       currentScreen = 3;
+      whichRace = cursorLocation;
       cursorLocation = 1;
       cursorX = 20;
       cursorY = 188;
     }
 
     private void UpdateStats()
-    { }
+    {
+    
+    }
 
 
     public void Draw()
@@ -157,13 +165,19 @@ namespace BlackHoleLoans
       spriteBatch.Draw(spaceship, new Vector2(cursorX, cursorY), null,
           Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
 
-      spriteBatch.DrawString(bigFont, "Character Creation Step: "+currentScreen, new Vector2(0, 0), Color.White);
+      spriteBatch.DrawString(bigFont, "Character Creation Step: "+currentScreen, Vector2.Zero, Color.White);
       if (currentScreen == 1)
         DrawClasses();
 
       else if (currentScreen == 2)
         DrawRaces();
 
+      else if (currentScreen == 3)
+      {
+        spriteBatch.DrawString(bigFont, "Add stat stuff here...", new Vector2(0, 100), Color.White);
+        DrawCenterSprite(chosenRace, 100, 100);//Prints correct image
+
+      }
     }
 
 
@@ -196,18 +210,18 @@ namespace BlackHoleLoans
 
     }
 
-    private void DrawCenterSprite(Texture2D theClass, int x, int y)
+    private void DrawCenterSprite(Texture2D charImage, int x, int y)
     {
-      int width = theClass.Width / 3;
-      int height = theClass.Height;
+      int width = charImage.Width / 3;
+      int height = charImage.Height;
       int row = (int)((float)1 / (float)3);
       int column = 1 % 3;
 
       Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
       Rectangle destinationRectangle = new Rectangle((int)x, (int)y, width, height);
 
-      spriteBatch.Draw(theClass, new Vector2(x,y), sourceRectangle,
-            Color.White, 0f, new Vector2(0,0), 2f, SpriteEffects.None, 0f);
+      spriteBatch.Draw(charImage, new Vector2(x,y), sourceRectangle,
+            Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
 
     }
 

@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace BlackHoleLoans
+namespace BlackHoleLoans.PlayerRelated
 {
   /// <summary>
   /// This is the main type for your game
@@ -38,7 +38,7 @@ namespace BlackHoleLoans
       overworld = new Overworld(Content, graphics.PreferredBackBufferHeight,
         graphics.PreferredBackBufferWidth);
 
-      currentGameState = 1;//change back to 0
+      currentGameState = 0;//change back to 0
       characterCreation = new CharacterCreation();
     }
     /// <summary>
@@ -102,7 +102,7 @@ namespace BlackHoleLoans
           this.Exit();
       }
 
-      if (currentGameState == 1)
+      else if (currentGameState == 1)
         characterCreation.Update();
 
       base.Update(gameTime);
@@ -122,10 +122,9 @@ namespace BlackHoleLoans
       if(currentGameState==0)  
         mainMenu.Draw();
 
-      if (currentGameState == 2)
-        overworld.Draw();
+     
 
-      if(currentGameState==1)
+      else if(currentGameState==1)
         characterCreation.Draw();
 
       spriteBatch.End();

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace BlackHoleLoans
+namespace BlackHoleLoans.PlayerRelated
 {
   class Overworld
   {
