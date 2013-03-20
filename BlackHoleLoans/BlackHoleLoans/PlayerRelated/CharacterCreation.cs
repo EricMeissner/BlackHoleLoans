@@ -24,6 +24,7 @@ namespace BlackHoleLoans.PlayerRelated
     int currentScreen;
     int whichClass, whichRace;
     int remainingStatPoints;
+    int[] chosenStats;
     KeyboardState prevKeyboardState, currentKeyboardState;
 
     public CharacterCreation() {
@@ -36,7 +37,10 @@ namespace BlackHoleLoans.PlayerRelated
       currentScreen = 1;
       whichClass = 0;//Currently no race has ben chosen
       remainingStatPoints = 10;
+      chosenStats = new int[3];
       prevKeyboardState = Keyboard.GetState();
+
+      chosenStats[0] = chosenStats[1] = chosenStats[2] = 5;
       
     }
 
@@ -76,28 +80,24 @@ namespace BlackHoleLoans.PlayerRelated
       }
     }
 
-    public Player createPlayer() 
-    {
-      return null;
-    }
+
 
     public void Update() 
     {
       //Console.WriteLine(cursorLocation +" currentScreen = " + currentScreen);
-      
+      currentKeyboardState = Keyboard.GetState();
+
       if (currentScreen == 1 || currentScreen == 2)
         UpdateClassesOrRaces();
       else
         UpdateStats();
 
+      prevKeyboardState = currentKeyboardState;
     }
 
 
     private void UpdateClassesOrRaces()
     {
-      
-      currentKeyboardState = Keyboard.GetState();
-
       if (prevKeyboardState.IsKeyUp(Keys.Enter) && currentKeyboardState.IsKeyDown(Keys.Enter))
       {
         if (currentScreen == 1)
@@ -126,9 +126,53 @@ namespace BlackHoleLoans.PlayerRelated
           cursorLocation--;
         }
       }
-      prevKeyboardState = currentKeyboardState;
-    
     }
+
+    private void UpdateStats()
+    {
+      if (prevKeyboardState.IsKeyDown(Keys.Enter) && currentKeyboardState.IsKeyUp(Keys.Enter))
+        ;
+
+      else if (prevKeyboardState.IsKeyUp(Keys.Down) && currentKeyboardState.IsKeyDown(Keys.Down))
+      {
+        if (cursorLocation != 3)
+        {
+          cursorY += 150;
+          cursorLocation++;
+        }
+      }
+
+      else if (prevKeyboardState.IsKeyUp(Keys.Up) && currentKeyboardState.IsKeyDown(Keys.Up))
+      {
+        if (cursorLocation != 1)
+        {
+          cursorY -= 150;
+          cursorLocation--;
+        }
+      }
+
+      else if (prevKeyboardState.IsKeyUp(Keys.Right) && currentKeyboardState.IsKeyDown(Keys.Right))
+      {
+        if (remainingStatPoints != 0)
+        {
+          chosenStats[cursorLocation - 1]++;
+          remainingStatPoints--;
+        }
+      }
+
+      else if (prevKeyboardState.IsKeyUp(Keys.Left) && currentKeyboardState.IsKeyDown(Keys.Left))
+      {
+        if (chosenStats[cursorLocation - 1] != 5)
+        {
+          chosenStats[cursorLocation - 1]--;
+          remainingStatPoints++;
+        }
+      }
+
+
+
+    }
+
 
     private void SelectClass()
     {
@@ -149,21 +193,20 @@ namespace BlackHoleLoans.PlayerRelated
       currentScreen = 3;
       whichRace = cursorLocation;
       cursorLocation = 1;
-      cursorX = 20;
+      cursorX = 20;//might not need cX and xY for Stats method
       cursorY = 188;
     }
 
-    private void UpdateStats()
-    {
-    
-    }
-
+    private void SelectStats()
+    { }
 
     public void Draw()
     {
       spriteBatch.Draw(stars, new Rectangle(0, 0, 800, 600), Color.White);
-      spriteBatch.Draw(spaceship, new Vector2(cursorX, cursorY), null,
-          Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+
+      if(currentScreen!=3)
+        spriteBatch.Draw(spaceship, new Vector2(cursorX, cursorY), null,
+           Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
 
       spriteBatch.DrawString(bigFont, "Character Creation Step: "+currentScreen, Vector2.Zero, Color.White);
       if (currentScreen == 1)
@@ -173,11 +216,7 @@ namespace BlackHoleLoans.PlayerRelated
         DrawRaces();
 
       else if (currentScreen == 3)
-      {
-        spriteBatch.DrawString(bigFont, "Add stat stuff here...", new Vector2(0, 100), Color.White);
-        DrawCenterSprite(chosenRace, 100, 100);//Prints correct image
-
-      }
+        DrawCurrentStats();
     }
 
 
@@ -210,6 +249,32 @@ namespace BlackHoleLoans.PlayerRelated
 
     }
 
+    private void DrawCurrentStats()
+    {
+      Color[] statColors = {Color.White, Color.White, Color.White};
+      statColors[cursorLocation - 1] = Color.Red;
+
+      spriteBatch.DrawString(bigFont, "Player Statistics (Press Enter to Continue)", new Vector2(0, 50), Color.White);
+      spriteBatch.DrawString(bigFont, "Your Character -> ", new Vector2(50, 100), Color.White);
+      DrawCenterSprite(chosenRace, 350, 90);//Prints correct image
+
+      spriteBatch.DrawString(bigFont, "Remaining Stat Points: " + remainingStatPoints,
+        new Vector2(50,200), Color.White);
+
+      spriteBatch.DrawString(bigFont, "Attack:", new Vector2(50, 300), Color.White);
+      spriteBatch.DrawString(bigFont, "Defense:", new Vector2(50, 400), Color.White);
+      spriteBatch.DrawString(bigFont, "Concentration:", new Vector2(50, 500), Color.White);
+
+      spriteBatch.DrawString(bigFont, ""+chosenStats[0], new Vector2(350, 300), statColors[0]);
+
+      spriteBatch.DrawString(bigFont, "" + chosenStats[1], new Vector2(350, 400), statColors[1]);
+
+      spriteBatch.DrawString(bigFont, "" + chosenStats[2], new Vector2(350, 500), statColors[2]);
+
+      
+
+    }
+
     private void DrawCenterSprite(Texture2D charImage, int x, int y)
     {
       int width = charImage.Width / 3;
@@ -225,13 +290,19 @@ namespace BlackHoleLoans.PlayerRelated
 
     }
 
-
-
     public void setSpriteBatch(SpriteBatch sB)
     {
       spriteBatch=sB;
     }
 
-
+    public Player createPlayer() 
+    {
+      /*
+       * 
+       * 
+       * 
+       */
+      return null;
+    }
   }
 }

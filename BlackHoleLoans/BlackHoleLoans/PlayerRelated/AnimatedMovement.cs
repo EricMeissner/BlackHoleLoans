@@ -11,7 +11,7 @@ namespace BlackHoleLoans.PlayerRelated
   {
     public Texture2D Texture { get; set; }
     public int Rows { get; set; }
-          public int Columns { get; set; }
+    public int Columns { get; set; }
     private int currentFrame;
     private int totalFrames;
     private int every;

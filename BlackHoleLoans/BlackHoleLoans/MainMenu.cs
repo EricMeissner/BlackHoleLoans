@@ -194,7 +194,7 @@ namespace BlackHoleLoans
       spriteBatch.DrawString(smallFont, "Charles Baker    Eric Meisner", new Vector2(250, 300), Color.White);
       spriteBatch.DrawString(smallFont, "Michael Briseno", new Vector2(250, 350), Color.White);
 
-      spriteBatch.DrawString(smallFont, "Thanks you to:", new Vector2(200, 400), Color.White);
+      spriteBatch.DrawString(smallFont, "Thanks to:", new Vector2(200, 400), Color.White);
       //Enter people to thank..
     }
 
