@@ -22,6 +22,7 @@ namespace BlackHoleLoans.PlayerRelated
     MainMenu mainMenu;
     CharacterCreation characterCreation;
     Overworld overworld;
+    Player player;
     int currentGameState;
 
     public Game1()
@@ -103,8 +104,15 @@ namespace BlackHoleLoans.PlayerRelated
       }
 
       else if (currentGameState == 1)
+      {
         characterCreation.Update();
-
+        currentGameState = characterCreation.BackToMM();
+        if(characterCreation.StartOverworld())
+        {
+          player = characterCreation.CreatePlayer();
+          currentGameState = 2;
+        }
+      }
       base.Update(gameTime);
     }
 
@@ -119,13 +127,16 @@ namespace BlackHoleLoans.PlayerRelated
       // TODO: Add your drawing code here
       spriteBatch.Begin();
 
-      if(currentGameState==0)  
+      if (currentGameState == 0)
         mainMenu.Draw();
 
-     
 
-      else if(currentGameState==1)
+
+      else if (currentGameState == 1)
         characterCreation.Draw();
+
+      else if (currentGameState == 2)
+        Console.WriteLine("Overworld!");
 
       spriteBatch.End();
 

@@ -81,13 +81,16 @@ namespace BlackHoleLoans
       #region Entering a menu options
 
       //If enter was pressed..
+      if (prevKeyboardState.IsKeyDown(Keys.B) && currentKeyboardState.IsKeyUp(Keys.B))
+      {
+        if (menuScreen == CONTROLS || menuScreen == CREDITS)
+          menuScreen = MAINMENU;
+      }
+
       if (prevKeyboardState.IsKeyDown(Keys.Enter) && currentKeyboardState.IsKeyUp(Keys.Enter))
       {
         if ((menuCursorLocation == 1 && menuScreen == MAINMENU))
           return 1;
-
-        if (menuScreen == CONTROLS || menuScreen == CREDITS)
-          menuScreen = MAINMENU;
 
         else if (menuCursorLocation == 2)
         {

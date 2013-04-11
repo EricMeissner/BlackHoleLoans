@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BlackHoleLoans.PlayerRelated;
 
-namespace BlackHoleLoans.PlayerRelated
+namespace BlackHoleLoans
 {
   class PlayerStatistics
   {

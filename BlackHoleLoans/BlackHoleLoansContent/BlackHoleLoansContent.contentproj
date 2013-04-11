@@ -70,32 +70,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlayerSprites\mFighterLeft.png">
-      <Name>mFighterLeft</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="PlayerSprites\mFighterRight.png">
-      <Name>mFighterRight</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="PlayerSprites\mFighterDown.png">
-      <Name>mFighterDown</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="PlayerSprites\mFighterUp.png">
-      <Name>mFighterUp</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="MainMenu\BHL4.png">
       <Name>BHL4</Name>
       <Importer>TextureImporter</Importer>
@@ -103,6 +77,40 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arrows\theArrow.png">
+      <Name>theArrow</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Arrows\theFlippedArrow.png">
+      <Name>theFlippedArrow</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Arrows\theRightArrow.png">
+      <Name>theRightArrow</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Arrows\theLeftArrow.png">
+      <Name>theLeftArrow</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="PlayerSprites\mFighterDown.png">
+      <Name>mFighterDown</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="PlayerSprites\mFighterDownBlue.png">
       <Name>mFighterDownBlue</Name>
       <Importer>TextureImporter</Importer>
@@ -113,20 +121,46 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="PlayerSprites\mFighterLeft.png">
+      <Name>mFighterLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mFighterLeftBlue.png">
+      <Name>mFighterLeftBlue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mFighterLeftGreen.png">
+      <Name>mFighterLeftGreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mFighterRight.png">
+      <Name>mFighterRight</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mFighterRightBlue.png">
+      <Name>mFighterRightBlue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mFighterRightGreen.png">
+      <Name>mFighterRightGreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mFighterUp.png">
+      <Name>mFighterUp</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="PlayerSprites\mShooterDown.png">
       <Name>mShooterDown</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="PlayerSprites\mWizardDown.png">
-      <Name>mWizardDown</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="PlayerSprites\mShooterDownBlue.png">
       <Name>mShooterDownBlue</Name>
       <Importer>TextureImporter</Importer>
@@ -137,6 +171,46 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="PlayerSprites\mShooterLeft.png">
+      <Name>mShooterLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mShooterLeftBlue.png">
+      <Name>mShooterLeftBlue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mShooterLeftGreen.png">
+      <Name>mShooterLeftGreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mShooterRight.png">
+      <Name>mShooterRight</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mShooterRightBlue.png">
+      <Name>mShooterRightBlue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mShooterRightGreen.png">
+      <Name>mShooterRightGreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mShooterUp.png">
+      <Name>mShooterUp</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mWizardDown.png">
+      <Name>mWizardDown</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="PlayerSprites\mWizardDownBlue.png">
       <Name>mWizardDownBlue</Name>
       <Importer>TextureImporter</Importer>
@@ -144,6 +218,41 @@
     </Compile>
     <Compile Include="PlayerSprites\mWizardDownGreen.png">
       <Name>mWizardDownGreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mWizardLeft.png">
+      <Name>mWizardLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mWizardLeftBlue.png">
+      <Name>mWizardLeftBlue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mWizardLeftGreen.png">
+      <Name>mWizardLeftGreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mWizardRight.png">
+      <Name>mWizardRight</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mWizardRightBlue.png">
+      <Name>mWizardRightBlue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mWizardRightGreen.png">
+      <Name>mWizardRightGreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mWizardUp.png">
+      <Name>mWizardUp</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
