@@ -109,24 +109,24 @@ namespace BlackHoleLoans
         classIdentifier[2] = 3;
         if (whichRace == 1)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mFighterDown");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mFighterUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mFighterRight");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mFighterUp");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mFighterDown");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mFighterLeft");
         }
         else if (whichRace == 2)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mFighterDownGreen");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mFighterUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mFighterRightGreen");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mFighterUp");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mFighterDownGreen");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mFighterLeftGreen");
         }
 
         else if (whichRace == 3)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mFighterDownBlue");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mFighterUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mFighterRightBlue");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mFighterUp");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mFighterDownBlue");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mFighterLeftBlue");
         }
       }
@@ -136,26 +136,26 @@ namespace BlackHoleLoans
         classIdentifier[2] = 3;
         if (whichRace == 1)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mWizardDown");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mWizardUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mWizardRight");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mWizardUp");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mWizardDown");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mWizardLeft");
         }
 
         else if (whichRace == 2)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mWizardDownGreen");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mWizardUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mWizardRightGreen");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mWizardUp");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mWizardDownGreen");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mWizardLeftGreen");
 
         }
 
         else if (whichRace == 3)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mWizardDownBlue");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mWizardUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mWizardRightBlue");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mWizardUp");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mWizardDownBlue");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mWizardLeftBlue");
         }
 
@@ -167,26 +167,26 @@ namespace BlackHoleLoans
         classIdentifier[2] = 2;
         if (whichRace == 1)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterDown");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mShooterRight");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterUp");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterDown");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mShooterLeft");
         }
 
         else if (whichRace == 2)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterDownGreen");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterDownUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mShooterRightGreen");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterUp");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterDown");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mShooterLeftGreen");
 
         }
 
         else if (whichRace == 3)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterDownBlue");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterUpBlue");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mShooterRightBlue");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterUp");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterDown");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mShooterLeftBlue");
         }
 
@@ -540,7 +540,7 @@ namespace BlackHoleLoans
 
       spriteBatch.DrawString(bigFont, "Player Statistics (Press Enter to Continue)", new Vector2(0, 50), Color.White);
       spriteBatch.DrawString(bigFont, "Your Character -> ", new Vector2(50, 100), Color.White);
-      DrawCenterSprite(playerSprites[0], 350, 90);//Prints correct image
+      DrawCenterSprite(playerSprites[2], 350, 90);//Prints correct image
 
       spriteBatch.DrawString(bigFont, "Your Name: " + playerName, new Vector2(50, 150), Color.White);
 

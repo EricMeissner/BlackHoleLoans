@@ -35,6 +35,10 @@ namespace BlackHoleLoans
       playerStats = new PlayerStatistics(stats[0], stats[1], stats[2]);
     }
 
+    public Texture2D[] GetPlayerSprites()
+    {
+      return playerSprites;
+    }
 
   }
 }

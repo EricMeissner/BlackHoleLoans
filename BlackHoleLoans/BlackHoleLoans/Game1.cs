@@ -100,11 +100,15 @@ namespace BlackHoleLoans
 
       mainMenu.LoadContent();
       characterCreation.LoadContent(Content);
+    }
+
+    protected void LoadOverWorldContent()
+    {
 
       //Eric's code start
       OW.LoadTileTextures(Content, "Textures/grass", "Textures/dirt", "Textures/ground",
             "Textures/mud", "Textures/road", "Textures/bricks");
-      OW.LoadAvatar(Content, "Avatar/mFighterUp", "Avatar/mFighterRight", "Avatar/mFighterDown", "Avatar/mFighterLeft");
+      OW.LoadAvatar(Content, player.GetPlayerSprites());
 
       foreach (TileMap map in OW.mapList)
       {
@@ -154,6 +158,7 @@ namespace BlackHoleLoans
         {
           player = characterCreation.CreatePlayer();
           currentGameState = 2;
+          LoadOverWorldContent();
         }
       }
 

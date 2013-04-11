@@ -110,14 +110,11 @@ namespace BlackHoleLoans
 
 
     }
-    public void LoadAvatar(ContentManager content, params string[] fileNames)
+    public void LoadAvatar(ContentManager content, Texture2D[] playerSprites)
     {
-      Texture2D text;
-
-      foreach (string fileName in fileNames)
+      foreach (Texture2D pSprite in playerSprites)
       {
-        text = content.Load<Texture2D>(fileName);
-        avatar.Add(text);
+        avatar.Add(pSprite);
       }
     }
     public void Draw(SpriteBatch spriteBatch, GraphicsDeviceManager graphics)
