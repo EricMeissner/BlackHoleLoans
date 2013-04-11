@@ -542,6 +542,8 @@ namespace BlackHoleLoans
       spriteBatch.DrawString(bigFont, "Your Character -> ", new Vector2(50, 100), Color.White);
       DrawCenterSprite(playerSprites[0], 350, 90);//Prints correct image
 
+      spriteBatch.DrawString(bigFont, "Your Name: " + playerName, new Vector2(50, 150), Color.White);
+
       spriteBatch.DrawString(bigFont, "Remaining Stat Points (Must use ALL!): " + remainingStatPoints,
         new Vector2(50,200), Color.White);
 
@@ -560,13 +562,6 @@ namespace BlackHoleLoans
         Color.White);
 
       spriteBatch.DrawString(bigFont, "" + chosenStats[2], new Vector2(350, 500), statColors[2]);
-
-      for(int i=0; i<4; i++)
-        spriteBatch.Draw(playerSprites[i], new Vector2(i*100,0), Color.White);
-
-      spriteBatch.Draw(partyMember1, new Vector2(0, 200), Color.White);
-      spriteBatch.Draw(partyMember2, new Vector2(0, 400), Color.White);
-
     }
 
     private void DrawCenterSprite(Texture2D charImage, int x, int y)

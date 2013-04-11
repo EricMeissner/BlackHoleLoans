@@ -8,8 +8,9 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using BlackHoleLoans.PlayerRelated;
 
-namespace BlackHoleLoans.PlayerRelated
+namespace BlackHoleLoans
 {
   /// <summary>
   /// This is the main type for your game
@@ -21,7 +22,7 @@ namespace BlackHoleLoans.PlayerRelated
 
     MainMenu mainMenu;
     CharacterCreation characterCreation;
-    Overworld overworld;
+    //Overworld overworld;
     Player player;
     int currentGameState;
 
@@ -36,8 +37,7 @@ namespace BlackHoleLoans.PlayerRelated
 
       mainMenu = new MainMenu(Content, graphics.PreferredBackBufferWidth ,
         graphics.PreferredBackBufferHeight);
-      overworld = new Overworld(Content, graphics.PreferredBackBufferHeight,
-        graphics.PreferredBackBufferWidth);
+
 
       currentGameState = 0;//change back to 0
       characterCreation = new CharacterCreation();
@@ -65,11 +65,9 @@ namespace BlackHoleLoans.PlayerRelated
       spriteBatch = new SpriteBatch(GraphicsDevice);
       // TODO: use this.Content to load your game content here
       mainMenu.setSpriteBatch(spriteBatch);
-      overworld.setSpriteBatch(spriteBatch);
       characterCreation.setSpriteBatch(spriteBatch);
 
       mainMenu.LoadContent();
-      overworld.LoadContent();
       characterCreation.LoadContent(Content);
 
 
