@@ -22,9 +22,15 @@ namespace BlackHoleLoans
 
     MainMenu mainMenu;
     CharacterCreation characterCreation;
-    //Overworld overworld;
+    OverWorld OW;
     Player player;
     int currentGameState;
+
+    //Eric's code start
+    int OWcontrolspeed = 4;
+    int OWentityspeed = 2;
+    int action_timer = 0;
+    //End
 
     public Game1()
     {
@@ -35,12 +41,37 @@ namespace BlackHoleLoans
       graphics.PreferredBackBufferHeight = 600;
       IsMouseVisible = true;
 
-      mainMenu = new MainMenu(Content, graphics.PreferredBackBufferWidth ,
+      mainMenu = new MainMenu(Content, graphics.PreferredBackBufferWidth,
         graphics.PreferredBackBufferHeight);
-
 
       currentGameState = 0;//change back to 0
       characterCreation = new CharacterCreation();
+
+      //Eric's code start
+
+      OW = ContentRepository.getMap(4, this);
+      //OWlist = new List<OverWorld>();
+      //OWlist.Add(OW);
+      graphics.PreferredBackBufferWidth = 800;
+      graphics.PreferredBackBufferHeight = 600;
+      //currentLevel = 0;
+      //printOnlyOnce = 0;
+      TileMap tempTileMap = ContentRepository.getMap(3);
+      OW.mapList.Add(tempTileMap);
+      Entity temp = new Enemy(OW, OW.OWmap.getTile(5, 5), 0, new int[] { 0, 1, 2, 3 });
+      temp.setAvatarFileString("EntityAvatar/RedTest/RedArrowUp", "EntityAvatar/RedTest/RedArrowRight",
+          "EntityAvatar/RedTest/RedArrowDown", "EntityAvatar/RedTest/RedArrowLeft");
+      OW.EntityList.Add(temp);
+      temp = new Door(OW, OW.OWmap.getTile(1, 0), 1, tempTileMap, null);
+      temp.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      Door tempSister = new Door(OW, tempTileMap.getTile(2, 7), 3, OW.OWmap, (Door)temp);
+      tempSister.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      ((Door)temp).sister = tempSister;
+      OW.EntityList.Add(temp);
+      tempTileMap.EntityList.Add(tempSister);
+      //end
     }
     /// <summary>
     /// Allows the game to perform any initialization it needs to before starting to run.
@@ -70,6 +101,19 @@ namespace BlackHoleLoans
       mainMenu.LoadContent();
       characterCreation.LoadContent(Content);
 
+      //Eric's code start
+      OW.LoadTileTextures(Content, "Textures/grass", "Textures/dirt", "Textures/ground",
+            "Textures/mud", "Textures/road", "Textures/bricks");
+      OW.LoadAvatar(Content, "Avatar/mFighterUp", "Avatar/mFighterRight", "Avatar/mFighterDown", "Avatar/mFighterLeft");
+
+      foreach (TileMap map in OW.mapList)
+      {
+        foreach (Entity current in map.EntityList)
+        {
+          current.LoadEntityAvatar(Content);
+        }
+      }
+      //end
 
     }
 
@@ -93,6 +137,7 @@ namespace BlackHoleLoans
       if (Keyboard.GetState().IsKeyDown(Keys.Escape))
         this.Exit();
       // TODO: Add your update logic here
+      KeyboardState keyState = Keyboard.GetState();
 
       if (currentGameState == 0)
       {
@@ -105,12 +150,72 @@ namespace BlackHoleLoans
       {
         characterCreation.Update();
         currentGameState = characterCreation.BackToMM();
-        if(characterCreation.StartOverworld())
+        if (characterCreation.StartOverworld())
         {
           player = characterCreation.CreatePlayer();
           currentGameState = 2;
         }
       }
+
+      else if (currentGameState == 2)//Overworld
+      {
+        //Eric's code start
+        if (action_timer % (60 / OWcontrolspeed) == 0)
+        {
+          if (keyState.IsKeyDown(Keys.Up))
+          {
+            this.OW.playerStep(0);
+          }
+          if (keyState.IsKeyDown(Keys.Right))
+          {
+            this.OW.playerStep(1);
+          }
+          if (keyState.IsKeyDown(Keys.Down))
+          {
+            this.OW.playerStep(2);
+          }
+          if (keyState.IsKeyDown(Keys.Left))
+          {
+            this.OW.playerStep(3);
+          }
+          if (keyState.IsKeyDown(Keys.Z))
+          {
+            this.OW.playerInteract();
+          }
+          //end
+        }
+        if (action_timer % (60 / OWentityspeed) == 0)
+        {
+          foreach (Entity current in OW.EntityList)
+          {
+            current.OnUpdate();
+          }
+        }
+        OW.Draw(spriteBatch, graphics);
+      }
+
+      else if (currentGameState == 3)//Combat
+      {
+
+      }
+
+      else if (currentGameState == 4)//In-game menu
+      {
+
+      }
+
+      //Eric's Code start
+      else
+      {
+        Console.WriteLine("Error, Unknown gamestate reached: gamestate = " + currentGameState);
+        this.Exit();
+      }
+      action_timer++;
+      if (action_timer >= 60)
+      {
+        action_timer = 0;
+      }
+      //End
       base.Update(gameTime);
     }
 
@@ -126,17 +231,23 @@ namespace BlackHoleLoans
       spriteBatch.Begin();
 
       if (currentGameState == 0)
+      {
         mainMenu.Draw();
-
-
-
+      }
       else if (currentGameState == 1)
+      {
         characterCreation.Draw();
-
+      }
       else if (currentGameState == 2)
-        Console.WriteLine("Overworld!");
+      {
+        spriteBatch.End();
+        OW.Draw(spriteBatch, graphics);
 
-      spriteBatch.End();
+      }
+
+
+      if (currentGameState != 2)
+        spriteBatch.End();
 
       base.Draw(gameTime);
     }

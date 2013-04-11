@@ -3,163 +3,258 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using BlackHoleLoans.PlayerRelated;
 
-namespace BlackHoleLoans.PlayerRelated
+namespace BlackHoleLoans
 {
-  class Overworld
+  public class OverWorld
   {
-    int characterX, characterY;
-    KeyboardState prevKeyboardState, currentKeyboardState;
-    private ContentManager _content;
-    Texture2D playerDown, playerUp, playerLeft, playerRight;
-    AnimatedMovement down, up, left, right;
-    SpriteBatch spriteBatch;
-    bool isMoving = false;
-    int direction;
-    int screenHeight, screenWidth;
-
-    public Overworld(ContentManager content, int sHeight, int sWidth) 
+    public List<Entity> EntityList
     {
-      characterX = 100;
-      characterY = 100;
-      prevKeyboardState = Keyboard.GetState();
-      currentKeyboardState = prevKeyboardState;
-      _content = content;
-      screenHeight = sHeight;
-      screenWidth = sWidth;
-      direction = 0;
-      /*
-       *0=down
-       *1=right
-       *2=up
-       *3=left
-       */
+      get
+      {
+        return OWmap.EntityList;
+      }
+      set
+      {
+        OWmap.EntityList = value;
+      }
+    }
+    private List<Texture2D> tileTextures = new List<Texture2D>();
+    private List<Texture2D> avatar = new List<Texture2D>();
+    public TileMap OWmap // map information.
+    {
+      get;
+      set;
+    }
+    public List<TileMap> mapList;
+    public int Xpos // x position of player
+    {
+      get;
+      set;
     }
 
-    public void LoadContent()
+    public int Ypos // y position of player
     {
-      playerDown = _content.Load<Texture2D>("PlayerSprites/mFighterDown");
-      playerUp = _content.Load<Texture2D>("PlayerSprites/mFighterUp");
-      playerLeft = _content.Load<Texture2D>("PlayerSprites/mFighterLeft");
-      playerRight = _content.Load<Texture2D>("PlayerSprites/mFighterRight");
-
-      down = new AnimatedMovement(playerDown, 1, 3);
-      up = new AnimatedMovement(playerUp, 1, 3);
-      left = new AnimatedMovement(playerLeft, 1, 3);
-      right = new AnimatedMovement(playerRight, 1, 3);
+      get;
+      set;
     }
 
-    public void Update()
+    private int facing;
+    public int Facing // 0 = up, 1 = right, 2 = down, 3 = left
     {
+      get
+      {
+        return facing;
+      }
+      set
+      {
+        facing = (value % 4);
+      }
+    }
+    public Game1 Game_Ref
+    {
+      get;
+      set;
+    }
 
-      characterMovement();
+    public OverWorld(TileMap owm, int x, int y, Game1 g)
+    {
+      OWmap = owm;
+      Xpos = x;
+      Ypos = y;
+      Facing = 0;
+      EntityList = new List<Entity>();
+      Game_Ref = g;
+      mapList = new List<TileMap>();
+      mapList.Add(OWmap);
+    }
+
+    public OverWorld(int[,] existingMap, bool[,] existingCollisionMap, int x, int y, Game1 g)
+    {
+      OWmap = new TileMap(existingMap, existingCollisionMap);
+      Xpos = x;
+      Ypos = y;
+      Facing = 0;
+      EntityList = new List<Entity>();
+      Game_Ref = g;
+      mapList = new List<TileMap>();
+      mapList.Add(OWmap);
+    }
+    public OverWorld(int[,] existingMap, int[,] existingCollisionMap, int x, int y, Game1 g)
+    {
+      OWmap = new TileMap(existingMap, existingCollisionMap);
+      Xpos = x;
+      Ypos = y;
+      Facing = 0;
+      EntityList = new List<Entity>();
+      Game_Ref = g;
+      mapList = new List<TileMap>();
+      mapList.Add(OWmap);
+    }
+    public void LoadTileTextures(ContentManager content, params string[] fileNames)
+    {
+      Texture2D tileTexture;
+
+      foreach (string fileName in fileNames)
+      {
+        tileTexture = content.Load<Texture2D>(fileName);
+        tileTextures.Add(tileTexture);
+      }
 
 
     }
-
-    private void characterMovement()
+    public void LoadAvatar(ContentManager content, params string[] fileNames)
     {
-      currentKeyboardState = Keyboard.GetState();
-      isMoving = true;
+      Texture2D text;
 
-      if (currentKeyboardState.IsKeyDown(Keys.Down))
+      foreach (string fileName in fileNames)
       {
-        down.Update();
-        direction = 0;
-        if (characterY + (2 * playerDown.Height) <= screenHeight - 2)
-          characterY += 2;
-        else
-          isMoving = false;
+        text = content.Load<Texture2D>(fileName);
+        avatar.Add(text);
+      }
+    }
+    public void Draw(SpriteBatch spriteBatch, GraphicsDeviceManager graphics)
+    {
+      spriteBatch.Begin();
 
-      }
-      else if (currentKeyboardState.IsKeyDown(Keys.Right))
+      for (int x = 0; x < OWmap.Map.GetLength(0); x++)
       {
-        right.Update();
-        direction = 1;
-        if (characterX + 2*(playerDown.Width/3) <= screenWidth-2)
-          characterX+=2;
-        else
-          isMoving = false;
+
+        for (int y = 0; y < OWmap.Map.GetLength(1); y++)
+        {
+          int index = OWmap.Map[x, y].Texture;
+
+          Texture2D texture = tileTextures[index];
+
+          spriteBatch.Draw(texture, new Rectangle(y * graphics.PreferredBackBufferWidth / OWmap.Map.GetLength(1),
+                                    x * graphics.PreferredBackBufferHeight / OWmap.Map.GetLength(0),
+                                    graphics.PreferredBackBufferWidth / OWmap.Map.GetLength(1),
+                                    graphics.PreferredBackBufferHeight / OWmap.Map.GetLength(0)),
+                                    Color.White);
+        }
+        spriteBatch.Draw(avatar[Facing], new Rectangle(Ypos * graphics.PreferredBackBufferWidth / OWmap.Map.GetLength(1),
+                                      Xpos * graphics.PreferredBackBufferHeight / OWmap.Map.GetLength(0),
+                                      graphics.PreferredBackBufferWidth / OWmap.Map.GetLength(1),
+                                      graphics.PreferredBackBufferHeight / OWmap.Map.GetLength(0)),
+                                      Color.White);
+        foreach (Entity e in EntityList)
+        {
+          spriteBatch.Draw(e.EntityAvatar[e.Facing], new Rectangle(e.tile.getY() * graphics.PreferredBackBufferWidth / OWmap.Map.GetLength(1),
+                                    e.tile.getX() * graphics.PreferredBackBufferHeight / OWmap.Map.GetLength(0),
+                                    graphics.PreferredBackBufferWidth / OWmap.Map.GetLength(1),
+                                    graphics.PreferredBackBufferHeight / OWmap.Map.GetLength(0)),
+                                    Color.White);
+        }
       }
-      else if (currentKeyboardState.IsKeyDown(Keys.Up))
+
+      spriteBatch.End();
+    }
+    public Tile getCurrent()
+    {
+      return OWmap.getTile(Xpos, Ypos);
+    }
+    public Tile getAdjacent(int direction)
+    {
+      int dir = direction % 4;
+      if (dir == 0 && (Xpos - 1 >= 0))
+        return OWmap.getTile(Xpos - 1, Ypos);
+      else if (dir == 1 && (Ypos + 1 < OWmap.Map.GetLength(1)))
+        return OWmap.getTile(Xpos, Ypos + 1);
+      else if (dir == 2 && (Xpos + 1 < OWmap.Map.GetLength(0)))
+        return OWmap.getTile(Xpos + 1, Ypos);
+      else if (dir == 3 && (Ypos - 1 >= 0))
+        return OWmap.getTile(Xpos, Ypos - 1);
+      else
       {
-        up.Update();
-        direction = 2;
-        if (characterY >= 2)
-          characterY -= 2;
-        else
-          isMoving = false;
+        return null;
       }
-      else if (currentKeyboardState.IsKeyDown(Keys.Left))
+    }
+    public Tile getAdjacent(Tile t, int direction)
+    {
+      int x = t.getX();
+      int y = t.getY();
+      int dir = direction % 4;
+      if (dir == 0 && (x - 1 >= 0))
+        return OWmap.getTile(x - 1, y);
+      else if (dir == 1 && (y + 1 < OWmap.Map.GetLength(1)))
+        return OWmap.getTile(x, y + 1);
+      else if (dir == 2 && (x + 1 < OWmap.Map.GetLength(0)))
+        return OWmap.getTile(x + 1, y);
+      else if (dir == 3 && (y - 1 >= 0))
+        return OWmap.getTile(x, y - 1);
+      else
       {
-        left.Update();
-        direction = 3;
-        if(characterX>=2)
-          characterX-=2;
-        else
-          isMoving = false;
+        return null;
+      }
+    }
+    public Tile getForward()
+    {
+      return getAdjacent(Facing);
+    }
+    public bool playerStep() //defaults to current direction
+    {
+      Tile forward = getForward();
+      if (forward == null || forward.Impassable)
+        return false;
+      else if (forward.entity != null)
+      {
+        forward.entity.OnCollision();
+        return false;
       }
       else
-        isMoving = false;
-
-      prevKeyboardState = currentKeyboardState;//Might not need this
-    
+      {
+        if (Facing == 0)
+          Xpos--;
+        else if (Facing == 1)
+          Ypos++;
+        else if (Facing == 2)
+          Xpos++;
+        else if (Facing == 3)
+          Ypos--;
+        else
+          return false;
+        return true;
+      }
     }
-
-    public void Draw()
+    public bool playerStep(int direction)
     {
-
-      drawCharacterMovement();
-    
+      int dir = direction % 4;
+      if (dir != Facing)
+      {
+        Facing = dir;
+        return true;
+      }
+      else
+        return playerStep();
     }
 
-    
-
-    private void drawCharacterMovement()
+    public bool playerInteract()
     {
-
-      if (direction == 0)
+      Tile forwardTile = getForward();//added this
+      if (forwardTile == null)//added a check when trying to access tile out of bounds
       {
-        if (isMoving)
-          down.Draw(spriteBatch, new Vector2(characterX, characterY));
-        else
-          down.DrawStill(spriteBatch, new Vector2(characterX, characterY));
+        Console.WriteLine("Tried to access tile out of bounds");//added this
+        return false;
       }
 
-      if (direction == 1)
+      Entity target = forwardTile.entity;
+      if (target == null)
       {
-        if(isMoving)
-          right.Draw(spriteBatch, new Vector2(characterX, characterY));
-        else
-          right.DrawStill(spriteBatch, new Vector2(characterX, characterY));
+        Console.WriteLine("Player attempted to interact with entity in tile without an entity.");
+        return false;
       }
-      if (direction == 2)
+      else
       {
-        if (isMoving)
-          up.Draw(spriteBatch, new Vector2(characterX, characterY));
-        else
-          up.DrawStill(spriteBatch, new Vector2(characterX, characterY));
-      }
-      if (direction == 3)
-      {
-        if (isMoving)
-          left.Draw(spriteBatch, new Vector2(characterX, characterY));
-        else
-          left.DrawStill(spriteBatch, new Vector2(characterX, characterY));
+        target.OnInteract();
+        return true;
       }
     }
-
-
-    public void setSpriteBatch(SpriteBatch sB)
-    {
-      spriteBatch = sB;
-    }
-
-
-
   }
 }
