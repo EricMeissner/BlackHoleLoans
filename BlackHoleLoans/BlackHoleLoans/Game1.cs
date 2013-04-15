@@ -23,7 +23,7 @@ namespace BlackHoleLoans
     MainMenu mainMenu;
     CharacterCreation characterCreation;
     OverWorld OW;
-    Player player;
+    Player []party;
     int currentGameState;
 
     //Eric's code start
@@ -74,7 +74,7 @@ namespace BlackHoleLoans
       tempTileMap.EntityList.Add(tempSister);
       //end
 
-      //map2
+      //map2 crashes when going back through the door
       TileMap tempTileMap2 = ContentRepository.getMap(5);
       OW.mapList.Add(tempTileMap2);
       
@@ -82,7 +82,7 @@ namespace BlackHoleLoans
       temp2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
      "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
       
-      Door tempSister2 = new Door(OW, tempTileMap2.getTile(10, 0), 1, OW.OWmap, (Door)temp2);
+      Door tempSister2 = new Door(OW, tempTileMap2.getTile(10, 0), 1, tempTileMap, (Door)temp2);
       tempSister2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
           "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
       ((Door)temp2).sister = tempSister2;
@@ -141,7 +141,7 @@ namespace BlackHoleLoans
       //Eric's code start
       OW.LoadTileTextures(Content, "Textures/grass", "Textures/dirt", "Textures/ground",
             "Textures/mud", "Textures/road", "Textures/bricks");
-      OW.LoadAvatar(Content, player.GetPlayerSprites());
+      OW.LoadAvatar(Content, (party[0].GetPlayerSprites()));
 
       foreach (TileMap map in OW.mapList)
       {
@@ -189,7 +189,7 @@ namespace BlackHoleLoans
         currentGameState = characterCreation.BackToMM();
         if (characterCreation.StartOverworld())
         {
-          player = characterCreation.CreatePlayer();
+          party = characterCreation.CreatePlayer();
           currentGameState = 2;
           LoadOverWorldContent();
         }
@@ -198,6 +198,7 @@ namespace BlackHoleLoans
       else if (currentGameState == 2)//Overworld
       {
         //Eric's code start
+        //Console.WriteLine("Player x position"+OW.Xpos+" Player y position"+OW.Ypos);
         if (action_timer % (60 / OWcontrolspeed) == 0)
         {
           if (keyState.IsKeyDown(Keys.Up))

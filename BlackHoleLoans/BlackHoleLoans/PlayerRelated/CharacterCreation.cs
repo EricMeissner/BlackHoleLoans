@@ -589,12 +589,21 @@ namespace BlackHoleLoans
       spriteBatch=sB;
     }
 
-    public Player CreatePlayer() 
+    public Player[] CreatePlayer() 
     {
-      Player thePlayer =
-        new Player(chosenStats, playerSprites, partyMember1, partyMember2, classIdentifier, playerName);
+      int []partyMemStats=chosenStats;
+      partyMemStats[0]-=2;
+      partyMemStats[1]-=2;
+      partyMemStats[2]-=2;
+      Texture2D[] pMember1=new Texture2D[4]{partyMember1,partyMember1,partyMember1,partyMember1};
+      Texture2D[] pMember2=new Texture2D[4]{partyMember2,partyMember2,partyMember2,partyMember2};
 
-      return thePlayer;
+      Player[] thePlayerList =new Player[3]{
+        new Player(chosenStats, playerSprites, classIdentifier[0], playerName),
+        new Player(partyMemStats, pMember1, classIdentifier[1]),
+        new Player(partyMemStats, pMember2, classIdentifier[2])
+      };
+      return thePlayerList;
     }
 
     private void RequestBackToMM()
