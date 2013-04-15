@@ -177,16 +177,16 @@ namespace BlackHoleLoans
         {
           playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterDownUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mShooterRightGreen");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterDown");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterDownGreen");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mShooterLeftGreen");
 
         }
 
         else if (whichRace == 3)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterUpBlue");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mShooterRightBlue");
-          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterDown");
+          playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterDownBlue");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mShooterLeftBlue");
         }
 
@@ -266,6 +266,10 @@ namespace BlackHoleLoans
     {
       backToMM = false;
       currentKeyboardState = Keyboard.GetState();
+
+      if (currentKeyboardState.IsKeyDown(Keys.D))
+        DefaultCharacter();
+
       if (currentScreen == SELECT_NAME)
         UpdatePlayerName();//call select name screen
 
@@ -501,6 +505,7 @@ namespace BlackHoleLoans
       spriteBatch.Draw(arrow, new Vector2((210+cursorLocation*30)-arrow.Width, 170-arrow.Height), Color.White);
       spriteBatch.Draw(flippedArrow, new Vector2((210+cursorLocation*30)-arrow.Width, 250-arrow.Height), Color.White);
 
+      spriteBatch.DrawString(bigFont, "Press D for default character!", new Vector2(0, 300), Color.White);
     }
 
     private void DrawClasses()
@@ -610,5 +615,15 @@ namespace BlackHoleLoans
       return startOverworld;
     }
 
+    private void DefaultCharacter()
+    {
+      RequestBackToMM();
+      startOverworld = true;
+      SelectPlayerName();
+      SelectClass();
+      SelectRace();
+      SavePartyMembers();
+
+    }
   }
 }

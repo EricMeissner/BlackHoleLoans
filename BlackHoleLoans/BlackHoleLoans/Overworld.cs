@@ -69,7 +69,7 @@ namespace BlackHoleLoans
       OWmap = owm;
       Xpos = x;
       Ypos = y;
-      Facing = 0;
+      Facing = 2;
       EntityList = new List<Entity>();
       Game_Ref = g;
       mapList = new List<TileMap>();
@@ -81,7 +81,7 @@ namespace BlackHoleLoans
       OWmap = new TileMap(existingMap, existingCollisionMap);
       Xpos = x;
       Ypos = y;
-      Facing = 0;
+      Facing = 2;
       EntityList = new List<Entity>();
       Game_Ref = g;
       mapList = new List<TileMap>();
@@ -92,7 +92,7 @@ namespace BlackHoleLoans
       OWmap = new TileMap(existingMap, existingCollisionMap);
       Xpos = x;
       Ypos = y;
-      Facing = 0;
+      Facing = 2;
       EntityList = new List<Entity>();
       Game_Ref = g;
       mapList = new List<TileMap>();

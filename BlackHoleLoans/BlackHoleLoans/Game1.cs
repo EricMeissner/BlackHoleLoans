@@ -49,29 +49,62 @@ namespace BlackHoleLoans
 
       //Eric's code start
 
-      OW = ContentRepository.getMap(4, this);
+      OW = ContentRepository.getMap(3, this);
       //OWlist = new List<OverWorld>();
       //OWlist.Add(OW);
       graphics.PreferredBackBufferWidth = 800;
       graphics.PreferredBackBufferHeight = 600;
-      //currentLevel = 0;
-      //printOnlyOnce = 0;
-      TileMap tempTileMap = ContentRepository.getMap(3);
+
+      TileMap tempTileMap = ContentRepository.getMap(4);
       OW.mapList.Add(tempTileMap);
+      
       Entity temp = new Enemy(OW, OW.OWmap.getTile(5, 5), 0, new int[] { 0, 1, 2, 3 });
       temp.setAvatarFileString("EntityAvatar/RedTest/RedArrowUp", "EntityAvatar/RedTest/RedArrowRight",
           "EntityAvatar/RedTest/RedArrowDown", "EntityAvatar/RedTest/RedArrowLeft");
-      OW.EntityList.Add(temp);
-      temp = new Door(OW, OW.OWmap.getTile(1, 0), 1, tempTileMap, null);
+      tempTileMap.EntityList.Add(temp);
+      
+      temp = new Door(OW, OW.OWmap.getTile(2, 7), 3, tempTileMap, null);
       temp.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
           "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
-      Door tempSister = new Door(OW, tempTileMap.getTile(2, 7), 3, OW.OWmap, (Door)temp);
+      Door tempSister = new Door(OW, tempTileMap.getTile(1, 0), 1, OW.OWmap, (Door)temp);
       tempSister.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
           "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
       ((Door)temp).sister = tempSister;
       OW.EntityList.Add(temp);
       tempTileMap.EntityList.Add(tempSister);
       //end
+
+      //map2
+      TileMap tempTileMap2 = ContentRepository.getMap(5);
+      OW.mapList.Add(tempTileMap2);
+      
+      Entity temp2 = new Door(OW, tempTileMap.getTile(10, 15), 3, tempTileMap2, null);//10 15
+      temp2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+     "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      
+      Door tempSister2 = new Door(OW, tempTileMap2.getTile(10, 0), 1, OW.OWmap, (Door)temp2);
+      tempSister2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      ((Door)temp2).sister = tempSister2;
+      tempTileMap.EntityList.Add(temp2);
+      tempTileMap2.EntityList.Add(tempSister2);
+
+      /*
+      //Map 3 - Change names..lol
+      TileMap tempTileMap2 = ContentRepository.getMap(5);
+      OW.mapList.Add(tempTileMap2);
+
+      Entity temp2 = new Door(OW, tempTileMap.getTile(10, 15), 3, tempTileMap2, null);//10 15
+      temp2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+     "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+
+      Door tempSister2 = new Door(OW, tempTileMap2.getTile(10, 0), 1, OW.OWmap, (Door)temp2);
+      tempSister2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      ((Door)temp2).sister = tempSister2;
+      tempTileMap.EntityList.Add(temp2);
+      tempTileMap2.EntityList.Add(tempSister2);
+      */
     }
     /// <summary>
     /// Allows the game to perform any initialization it needs to before starting to run.

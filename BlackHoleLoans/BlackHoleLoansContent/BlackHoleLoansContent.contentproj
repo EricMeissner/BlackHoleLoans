@@ -162,21 +162,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="PlayerSprites\mFighterLeft.png">
-      <Name>mFighterLeft</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="PlayerSprites\mFighterLeftBlue.png">
-      <Name>mFighterLeftBlue</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="PlayerSprites\mFighterLeftGreen.png">
-      <Name>mFighterLeftGreen</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="PlayerSprites\mFighterRight.png">
       <Name>mFighterRight</Name>
       <Importer>TextureImporter</Importer>
@@ -375,6 +360,23 @@
     </Compile>
     <Compile Include="Textures\wood_axis.jpg">
       <Name>wood_axis</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PlayerSprites\mFighterLeft.png">
+      <Name>mFighterLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mFighterLeftBlue.png">
+      <Name>mFighterLeftBlue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayerSprites\mFighterLeftGreen.png">
+      <Name>mFighterLeftGreen</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
