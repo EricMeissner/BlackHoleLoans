@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BlackHoleLoans.PlayerRelated;
 
 namespace BlackHoleLoans
 {
-  class Enemy : Entity
+  public class Enemy : Entity
   {
     protected int[] path // The Enemy will move in the directions indicated by the ints in order and loop back.
     {                    // Closed loops are suggested, but the program does not enforce this!
@@ -14,6 +15,16 @@ namespace BlackHoleLoans
     }
 
     protected int path_index = 0;
+
+    public string Name { get; set; }
+    EnemyStatistics enemyStats;
+    public bool isDead { get; set; }
+    public int whichAi { get; set; }
+    public Skill skillA { get; set; }
+    public Skill skillB { get; set; }
+    Random random;
+    public int lastEnemyHealth { get; set; }
+    bool startCombat = false;
 
     public Enemy(OverWorld ow, Tile t, int[] newpath)
       : base(ow, t)
@@ -29,6 +40,42 @@ namespace BlackHoleLoans
       path = newpath;
     }
 
+
+
+    //chad
+
+   public Enemy(int att, int def, int con, int health, string n)
+    {
+      enemyStats = new EnemyStatistics(att, def, con, health);
+      Name = n;
+      whichAi = 1;
+      isDead = false;
+    }
+    //creates an enemy with 1 skill
+    public Enemy(int att, int def, int con, int health, string n, Skill a)
+    {
+      enemyStats = new EnemyStatistics(att, def, con, health);
+      Name = n;
+      skillA = a;
+      random = new Random();
+      whichAi = 2;
+      isDead = false;
+    }
+    //creates an enemy with 2 skills
+    public Enemy(int att, int def, int con, int health, string n, Skill a, Skill b)
+    {
+      enemyStats = new EnemyStatistics(att, def, con, health);
+      Name = n;
+      skillA = a;
+      skillB = b;
+      random = new Random();
+      whichAi = 3;
+      isDead = false;
+    }
+
+    //end chad
+
+
     public override void OnCollision()
     {
       //run combat encounter
@@ -39,6 +86,7 @@ namespace BlackHoleLoans
     {
       //run combat encounter
       Console.Write("Entered combat with entity by interaction!\n");
+      //
     }
 
     public override void OnUpdate()
@@ -52,6 +100,97 @@ namespace BlackHoleLoans
         }
       }
     }
+    public override bool IsEnemy()
+    {
+      return true;
+    }
 
+    //chad
+
+    public EnemyStatistics GetEnemyStats()
+    {
+      return enemyStats;
+    }
+
+    public void ExecuteAI1(Player p)
+    {
+      int damage = enemyStats.Attack - p.GetPlayerStats().Defence;
+      if (damage <= 0)
+      {
+        damage = 1;
+      }
+      p.GetPlayerStats().SubtractHealth(damage);
+    }
+
+    public Skill ExecuteAI2(Player p, Enemy e)
+    {
+      int randomNumber = random.Next(1, 100);
+      Skill chosenSkill;
+      if (randomNumber > 50)
+      {
+        chosenSkill = null;
+        int damage = enemyStats.Attack - p.GetPlayerStats().Defence;
+        if (damage < 0)
+        {
+          damage = 1;
+        }
+        p.GetPlayerStats().SubtractHealth(damage);
+      }
+      else
+      {
+        chosenSkill = skillA;
+        if (skillA.isDamage)
+        {
+          int damage = (int)(enemyStats.Concentration * skillA.skillRatio) - p.GetPlayerStats().Defence;
+          if (damage <= 0)
+          {
+            damage = 1;
+          }
+          p.GetPlayerStats().SubtractHealth(damage);
+        }
+        else if (skillA.isHealing)
+        {
+          int health = (int)(enemyStats.Concentration * skillA.skillRatio);
+          e.GetEnemyStats().addHealth(health);
+        }
+      }
+      return chosenSkill;
+    }
+
+    public Skill ExecuteAI3(Player p, Enemy e)
+    {
+      Skill chosenSkill;
+      int randomNumber = random.Next(1, 100);
+
+      if (randomNumber > 50)
+      {
+        chosenSkill = skillA;
+      }
+      else
+      {
+        chosenSkill = skillB;
+      }
+
+      if (chosenSkill.isDamage)
+      {
+        int damage = (int)(enemyStats.Concentration * chosenSkill.skillRatio) - p.GetPlayerStats().Defence;
+        if (damage <= 0)
+        {
+          damage = 1;
+        }
+        p.GetPlayerStats().SubtractHealth(damage);
+      }
+      else if (chosenSkill.isHealing)
+      {
+        int health = (int)(enemyStats.Concentration * chosenSkill.skillRatio);
+        e.GetEnemyStats().addHealth(health);
+        Console.WriteLine(health);
+      }
+      return chosenSkill;
+    }
+    public bool IsAlive()
+    {
+      return enemyStats.Health != 0;
+    }
   }
 }

@@ -175,7 +175,7 @@ namespace BlackHoleLoans
 
         else if (whichRace == 2)
         {
-          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterDownUp");
+          playerSprites[0] = _content.Load<Texture2D>("PlayerSprites/mShooterUp");
           playerSprites[1] = _content.Load<Texture2D>("PlayerSprites/mShooterRightGreen");
           playerSprites[2] = _content.Load<Texture2D>("PlayerSprites/mShooterDownGreen");
           playerSprites[3] = _content.Load<Texture2D>("PlayerSprites/mShooterLeftGreen");
@@ -599,9 +599,14 @@ namespace BlackHoleLoans
       Texture2D[] pMember2=new Texture2D[4]{partyMember2,partyMember2,partyMember2,partyMember2};
 
       Player[] thePlayerList =new Player[3]{
-        new Player(chosenStats, playerSprites, classIdentifier[0], playerName),
-        new Player(partyMemStats, pMember1, classIdentifier[1]),
-        new Player(partyMemStats, pMember2, classIdentifier[2])
+        new Player(chosenStats[0],chosenStats[1],chosenStats[2], playerSprites, classIdentifier[0], 
+          playerName, new Skill(Skills.Fire), new Skill(Skills.Ice)),
+
+        new Player(partyMemStats, pMember1, classIdentifier[1],
+          new Skill(Skills.Fire), new Skill(Skills.Ice)),
+
+        new Player(partyMemStats, pMember2, classIdentifier[2], new Skill(Skills.Fire),
+                new Skill(Skills.Ice))
       };
       return thePlayerList;
     }

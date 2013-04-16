@@ -6,31 +6,54 @@ using BlackHoleLoans.PlayerRelated;
 
 namespace BlackHoleLoans
 {
-  class PlayerStatistics
+  public class PlayerStatistics
   {
     //int attack, defence, concentration;
     //int health, level, experience;
-    private int attack, defence, concentration, health;
+    private int attack, defence, concentration, health, level, experience;
+    public int TotalHealth { get; set; }
 
-    public int Attack { 
-      get { return attack; } 
+    public int Attack
+    {
+      get { return attack; }
     }
-    public int Defence { 
+    public int Defence
+    {
       get { return defence; }
     }
 
-    public int Concentration {
+    public int Concentration
+    {
       get { return concentration; }
     }
 
-    public int Health { 
+    public int Health
+    {
       get { return health; }
     }
 
+    public bool isDead()
+    {
+      if (health <= 0)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
 
-    int level, experience;
-
-
+    public PlayerStatistics(int atk, int def, int con, int h)
+    {
+      attack = atk;
+      defence = def;
+      concentration = con;
+      health = h;
+      TotalHealth = health;
+      level = 1;
+      experience = 0;
+    }
 
     public PlayerStatistics(int atk, int def, int con)
     {
@@ -38,11 +61,28 @@ namespace BlackHoleLoans
       defence = def;
       concentration = con;
       health = 100;
+      TotalHealth = health;
       level = 1;
       experience = 0;
     }
 
+    public void SubtractHealth(int dmg)
+    {
+      health -= dmg;
+      if (health < 0)
+      {
+        health = 0;
+      }
+    }
 
+    public void addHealth(int h)
+    {
+      health += h;
+      if (health > TotalHealth)
+      {
+        health = TotalHealth;
+      }
+    }
 
 
     /// <summary>

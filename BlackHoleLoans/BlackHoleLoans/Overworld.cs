@@ -63,6 +63,7 @@ namespace BlackHoleLoans
       get;
       set;
     }
+    bool InCombat = false;
 
     public OverWorld(TileMap owm, int x, int y, Game1 g)
     {
@@ -202,6 +203,13 @@ namespace BlackHoleLoans
         return false;
       else if (forward.entity != null)
       {
+        if (forward.entity.IsEnemy())
+        {
+          InCombat = true;
+          Console.WriteLine("JUST ENTERED COMBAT BABY!");
+          forward.entity.remove();
+          return false;
+        }
         forward.entity.OnCollision();
         return false;
       }
@@ -252,6 +260,14 @@ namespace BlackHoleLoans
         target.OnInteract();
         return true;
       }
+    }
+    public bool IsInCombat()
+    {
+      return InCombat;
+    }
+    public void FinishedCombat()
+    {
+      InCombat = false;
     }
   }
 }

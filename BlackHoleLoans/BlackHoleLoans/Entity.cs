@@ -143,6 +143,16 @@ namespace BlackHoleLoans
       }
     }
 
+    public virtual bool remove()
+    {
+      tile.entity = null;
+      overworld.EntityList.Remove(this);
+      return true; // should return true if entity is "safe" to remove, other entities might return false if not safe.
+    }
 
+    public virtual bool IsEnemy()
+    {
+      return false;
+    }
   }
 }

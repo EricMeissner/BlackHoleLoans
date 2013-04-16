@@ -60,3 +60,13 @@ Content\Textures\ground.xnb
 Content\Textures\mud.xnb
 Content\Textures\road.xnb
 Content\Textures\wood_axis.xnb
+Content\Combat\combatmenubase.xnb
+Content\Combat\cursor.xnb
+Content\Combat\dummyenemytexture.xnb
+Content\Combat\dummyplayertexture.xnb
+Content\Combat\gray.xnb
+Content\Combat\healthbar.xnb
+Content\Combat\messagebase.xnb
+Content\Combat\combatfontbig.xnb
+Content\Combat\combatfontsmall.xnb
+Content\Combat\verysmallfont.xnb
