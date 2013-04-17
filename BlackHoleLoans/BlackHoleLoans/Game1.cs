@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using BlackHoleLoans.PlayerRelated;
+using System.Threading;
 
 namespace BlackHoleLoans
 {
@@ -38,6 +39,7 @@ namespace BlackHoleLoans
     public Enemy[] enemy;
     //end chad
     bool createdCombat;
+    int onlyDoOnce = 0;
 
     public Game1()
     {
@@ -178,6 +180,7 @@ namespace BlackHoleLoans
 
       #endregion
     }
+
     /// <summary>
     /// UnloadContent will be called once per game and is the place to unload
     /// all content.
@@ -285,13 +288,27 @@ namespace BlackHoleLoans
           CreateCombat(OW.GetOpponent());
           createdCombat = true;
         }
+
         combat.Update(gameTime);
+
         if (combat.WonFight())
         {
           currentGameState = 2;
           OW.FinishedCombat();
+          
+          foreach (Player player in party)
+          {
+            player.hasGone = false;
+          }
+           
           createdCombat = false;
           Console.WriteLine("WON THE FIGHT!");
+        }
+          
+        else if (combat.LostFight())
+        {
+          if(combat.messageQueue.Count==0)
+            currentGameState = 0;
         }
       }
 
@@ -319,9 +336,9 @@ namespace BlackHoleLoans
 
       enemy = new Enemy[3]
             {
-                new Enemy(5,5,5,1,"Dummy1", enemySprite),//Can also add skills
-                new Enemy(5,5,5,1,"Dummy2", enemySprite),
-                new Enemy(5,5,5,1,"Dummy3", enemySprite)
+                new Enemy(1000,5,5,100,"Dummy1", enemySprite),//Can also add skills
+                new Enemy(1000,5,5,100,"Dummy2", enemySprite),
+                new Enemy(1000,500,500,1000,"Dummy3", enemySprite)
             };
       combat = new Combat(Content, graphics.PreferredBackBufferHeight,
           graphics.PreferredBackBufferWidth, this, party, enemy);

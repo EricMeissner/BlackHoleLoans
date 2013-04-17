@@ -17,7 +17,7 @@ namespace BlackHoleLoans
   {
     #region global variables
     private Game1 maingame;
-    private Queue<string> messageQueue;
+    public Queue<string> messageQueue;//change back to private
     private SpriteBatch spriteBatch;
     private ContentManager _content;
     private int _height, _width, menuoption;
@@ -37,6 +37,7 @@ namespace BlackHoleLoans
     private bool executeMenuLogic;
     private Skill chosenEnemySkill;
     private Texture2D[] enemySprites;
+    public int onlyDoOnce = 0;
     #endregion
     public enum MenuOption { Fight = 1, Run = 2, Attack = 3, SkillA = 4, SkillB = 5 }
 
@@ -159,11 +160,22 @@ namespace BlackHoleLoans
 
     private void ChangeTurns(GameTime gameTime)
     {
-      StartEnemyTurn(gameTime);
-      AddMessage("Player Turn");
+      if(!WonFight() && !LostFight())
+        StartEnemyTurn(gameTime);
+      if (!LostFight())
+        AddMessage("Player Turn");
+      else
+      {
+        if (onlyDoOnce == 0)
+        {
+          AddMessage("You have been defeated!");
+          onlyDoOnce++;
+        }
+      }
       for (int i = 0; i < thePlayers.Length; i++)
       {
-        thePlayers[i].hasGone = false;
+        if(!thePlayers[i].isFainted)
+          thePlayers[i].hasGone = false;
       }
     }
 
@@ -420,7 +432,8 @@ namespace BlackHoleLoans
     private void SelectPlayer()
     {
       enemySelectedPlayer = thePlayers[random.Next(0, 3)];
-      while (enemySelectedPlayer.isFainted)
+      
+      while (enemySelectedPlayer.isFainted && !LostFight())
       {
         enemySelectedPlayer = thePlayers[random.Next(0, 3)];
       }
@@ -724,7 +737,7 @@ namespace BlackHoleLoans
             + " health!");
       }
 
-      else if (p.GetPlayerStats().Health == 0 && p.isFainted == false)
+      else if (p.GetPlayerStats().Health <= 0 && p.isFainted == false)
       {
         AddMessage(p.Name + " fainted!");
         p.isFainted = true;
@@ -739,12 +752,13 @@ namespace BlackHoleLoans
 
     public bool WonFight()
     {
-      foreach(Enemy e in theEnemies)
-      {
-        if (e.IsAlive())
-          return false;
-      }
-      return true;
+      return AllEnemiesAreDead();
     }
+
+    public bool LostFight()
+    {
+      return AllPlayersAreFainted();
+    }
+
   }
 }

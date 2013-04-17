@@ -27,7 +27,7 @@ namespace BlackHoleLoans
      
     public Player(int atk, int def, int con, Texture2D[]pS, int cI, string n, Skill a, Skill b)
     //also pass in array of textures (player dir movement) & an int (for which class
-    //the player is?) - don't need anything for the race
+    //the player is?) - don't need anything the race
     {
       playerStats = new PlayerStatistics(atk, def, con);
       playerSprites = pS;
