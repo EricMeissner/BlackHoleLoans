@@ -36,6 +36,7 @@ namespace BlackHoleLoans
     private TimeSpan lastMenuChoiceTime, lastMessageTime;
     private bool executeMenuLogic;
     private Skill chosenEnemySkill;
+    private Texture2D[] enemySprites;
     #endregion
     public enum MenuOption { Fight = 1, Run = 2, Attack = 3, SkillA = 4, SkillB = 5 }
 
@@ -625,9 +626,9 @@ namespace BlackHoleLoans
       {
         if (!theEnemies[i].isDead)
         {
-          spriteBatch.Draw(dummyenemytexture,
-              new Rectangle(7 * _width / 8 - dummyenemytexture.Width, (i + 1) * _height / 6,
-              dummyenemytexture.Width, dummyenemytexture.Height), Color.White);
+          spriteBatch.Draw(theEnemies[i].enemySprite,
+              new Rectangle(7 * _width / 8 - theEnemies[i].enemySprite.Width, (i + 1) * _height / 6,
+              theEnemies[i].enemySprite.Width, theEnemies[i].enemySprite.Height), Color.White);
         }
       }
     }

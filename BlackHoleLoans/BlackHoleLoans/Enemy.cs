@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 using BlackHoleLoans.PlayerRelated;
 
 namespace BlackHoleLoans
@@ -25,6 +27,7 @@ namespace BlackHoleLoans
     Random random;
     public int lastEnemyHealth { get; set; }
     bool startCombat = false;
+    public Texture2D enemySprite { get; set; }
 
     public Enemy(OverWorld ow, Tile t, int[] newpath)
       : base(ow, t)
@@ -44,15 +47,16 @@ namespace BlackHoleLoans
 
     //chad
 
-   public Enemy(int att, int def, int con, int health, string n)
+   public Enemy(int att, int def, int con, int health, string n, Texture2D eS)
     {
       enemyStats = new EnemyStatistics(att, def, con, health);
       Name = n;
       whichAi = 1;
       isDead = false;
+      enemySprite = eS;
     }
     //creates an enemy with 1 skill
-    public Enemy(int att, int def, int con, int health, string n, Skill a)
+   public Enemy(int att, int def, int con, int health, string n, Texture2D eS, Skill a)
     {
       enemyStats = new EnemyStatistics(att, def, con, health);
       Name = n;
@@ -60,9 +64,10 @@ namespace BlackHoleLoans
       random = new Random();
       whichAi = 2;
       isDead = false;
+      enemySprite = eS;
     }
     //creates an enemy with 2 skills
-    public Enemy(int att, int def, int con, int health, string n, Skill a, Skill b)
+   public Enemy(int att, int def, int con, int health, string n, Texture2D eS, Skill a, Skill b)
     {
       enemyStats = new EnemyStatistics(att, def, con, health);
       Name = n;
@@ -71,6 +76,7 @@ namespace BlackHoleLoans
       random = new Random();
       whichAi = 3;
       isDead = false;
+      enemySprite = eS;
     }
 
     //end chad
@@ -100,6 +106,7 @@ namespace BlackHoleLoans
         }
       }
     }
+
     public override bool IsEnemy()
     {
       return true;
@@ -188,9 +195,22 @@ namespace BlackHoleLoans
       }
       return chosenSkill;
     }
+
     public bool IsAlive()
     {
       return enemyStats.Health != 0;
+    }
+
+    public void SetEnemySprites()
+    {
+      Texture2D[] tmp = new Texture2D[EntityAvatar.Count];
+      tmp = EntityAvatar.ToArray();
+      enemySprite = tmp[EntityAvatar.Count-1];
+    }
+
+    public Texture2D EnemySprite()
+    {
+      return enemySprite;
     }
   }
 }

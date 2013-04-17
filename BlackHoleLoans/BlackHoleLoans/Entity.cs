@@ -113,6 +113,7 @@ namespace BlackHoleLoans
         return false;
       }
     }
+
     public bool MoveAdjacent(int direction)
     {
       Facing = direction;
@@ -127,6 +128,7 @@ namespace BlackHoleLoans
         return MoveTo(temp);
       }
     }
+
     public void setAvatarFileString(params string[] fileNames)
     {
       if (fileNames == null)
@@ -135,7 +137,7 @@ namespace BlackHoleLoans
       }
       else
       {
-        AvatarFileString = new string[4];
+        AvatarFileString = new string[fileNames.Length];
         for (int i = 0; i < fileNames.Length; i++)
         {
           AvatarFileString[i] = fileNames[i];

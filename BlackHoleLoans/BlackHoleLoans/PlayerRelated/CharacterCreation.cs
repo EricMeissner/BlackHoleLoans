@@ -287,6 +287,8 @@ namespace BlackHoleLoans
       {
         RequestBackToMM();
         letterIndex[0] = letterIndex[1] = letterIndex[2] = letterIndex[3] = 0;
+        chosenStats[0] = chosenStats[1] = chosenStats[2] = 5;
+        remainingStatPoints = 10;
       }
 
       else if (prevKeyboardState.IsKeyDown(Keys.Enter) && currentKeyboardState.IsKeyUp(Keys.Enter))
@@ -386,6 +388,7 @@ namespace BlackHoleLoans
         cursorX = 20;
         cursorY = 188;
         chosenStats[0] = chosenStats[1] = chosenStats[2] = 5;
+        remainingStatPoints = 10;
       }
 
       else if (prevKeyboardState.IsKeyDown(Keys.Enter) && currentKeyboardState.IsKeyUp(Keys.Enter))

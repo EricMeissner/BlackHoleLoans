@@ -23,7 +23,7 @@ namespace BlackHoleLoans
     MainMenu mainMenu;
     CharacterCreation characterCreation;
     OverWorld OW;
-    Player []party;
+    Player[] party;
     int currentGameState;
 
     //Eric's code start
@@ -55,65 +55,6 @@ namespace BlackHoleLoans
       characterCreation = new CharacterCreation();
 
       createdCombat = false;
-
-      //Eric's code start
-
-      OW = ContentRepository.getMap(3, this);
-      //OWlist = new List<OverWorld>();
-      //OWlist.Add(OW);
-      graphics.PreferredBackBufferWidth = 800;
-      graphics.PreferredBackBufferHeight = 600;
-
-      TileMap tempTileMap = ContentRepository.getMap(4);
-      OW.mapList.Add(tempTileMap);
-      
-      Entity temp = new Enemy(OW, OW.OWmap.getTile(5, 5), 0, new int[] { 0, 1, 2, 3 });
-      temp.setAvatarFileString("EntityAvatar/RedTest/RedArrowUp", "EntityAvatar/RedTest/RedArrowRight",
-          "EntityAvatar/RedTest/RedArrowDown", "EntityAvatar/RedTest/RedArrowLeft");
-      tempTileMap.EntityList.Add(temp);
-      
-      temp = new Door(OW, OW.OWmap.getTile(2, 7), 3, tempTileMap, null);
-      temp.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
-          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
-      Door tempSister = new Door(OW, tempTileMap.getTile(1, 0), 1, OW.OWmap, (Door)temp);
-      tempSister.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
-          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
-      ((Door)temp).sister = tempSister;
-      OW.EntityList.Add(temp);
-      tempTileMap.EntityList.Add(tempSister);
-      //end
-
-      //map2 crashes when going back through the door
-      TileMap tempTileMap2 = ContentRepository.getMap(5);
-      OW.mapList.Add(tempTileMap2);
-      
-      Entity temp2 = new Door(OW, tempTileMap.getTile(10, 15), 3, tempTileMap2, null);//10 15
-      temp2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
-     "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
-      
-      Door tempSister2 = new Door(OW, tempTileMap2.getTile(10, 0), 1, tempTileMap, (Door)temp2);
-      tempSister2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
-          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
-      ((Door)temp2).sister = tempSister2;
-      tempTileMap.EntityList.Add(temp2);
-      tempTileMap2.EntityList.Add(tempSister2);
-
-      
-      //Map 3 - Change names..lol
-      TileMap tempTileMap3 = ContentRepository.getMap(5);//change
-      OW.mapList.Add(tempTileMap3);
-
-      Entity temp3 = new Door(OW, tempTileMap2.getTile(10, 15), 3, tempTileMap3, null);//10 15
-      temp3.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
-     "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
-
-      Door tempSister3 = new Door(OW, tempTileMap3.getTile(10, 0), 1, tempTileMap2, (Door)temp3);
-      tempSister3.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
-          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
-      ((Door)temp3).sister = tempSister3;
-      tempTileMap2.EntityList.Add(temp3);
-      tempTileMap3.EntityList.Add(tempSister3);
-      
     }
     /// <summary>
     /// Allows the game to perform any initialization it needs to before starting to run.
@@ -163,10 +104,85 @@ namespace BlackHoleLoans
 
     }
 
+    protected void CreateOverWorld()
+    {
+      //Eric's code start
+
+      OW = ContentRepository.getMap(3, this);
+      //OWlist = new List<OverWorld>();
+      //OWlist.Add(OW);
+      graphics.PreferredBackBufferWidth = 800;
+      graphics.PreferredBackBufferHeight = 600;
+
+      TileMap tempTileMap = ContentRepository.getMap(4);
+      OW.mapList.Add(tempTileMap);
+
+      #region Enemy Creation
+
+      Entity enemy1 = new Enemy(OW, tempTileMap.getTile(5, 5), 0, new int[] { 0, 1, 2, 3 });
+      enemy1.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
+        "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
+      tempTileMap.EntityList.Add(enemy1);
+
+      Entity enemy2 = new Enemy(OW, tempTileMap.getTile(8, 8), 0, new int[] { 2, 3, 0, 1 });
+      enemy2.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
+        "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
+      tempTileMap.EntityList.Add(enemy2);
+
+      #endregion
+
+      #region Level creation
+      Entity temp;
+
+      temp = new Door(OW, OW.OWmap.getTile(2, 7), 3, tempTileMap, null);
+      temp.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      Door tempSister = new Door(OW, tempTileMap.getTile(1, 0), 1, OW.OWmap, (Door)temp);
+      tempSister.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      ((Door)temp).sister = tempSister;
+      OW.EntityList.Add(temp);
+      tempTileMap.EntityList.Add(tempSister);
+      //end
+
+      //map2 crashes when going back through the door
+      TileMap tempTileMap2 = ContentRepository.getMap(5);
+      OW.mapList.Add(tempTileMap2);
+
+      Entity temp2 = new Door(OW, tempTileMap.getTile(10, 15), 3, tempTileMap2, null);//10 15
+      temp2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+     "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+
+      Door tempSister2 = new Door(OW, tempTileMap2.getTile(10, 0), 1, tempTileMap, (Door)temp2);
+      tempSister2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      ((Door)temp2).sister = tempSister2;
+      tempTileMap.EntityList.Add(temp2);
+      tempTileMap2.EntityList.Add(tempSister2);
+
+
+      //Map 3 - Change names..lol
+      TileMap tempTileMap3 = ContentRepository.getMap(5);//change
+      OW.mapList.Add(tempTileMap3);
+
+      Entity temp3 = new Door(OW, tempTileMap2.getTile(10, 15), 3, tempTileMap3, null);//10 15
+      temp3.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+     "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+
+      Door tempSister3 = new Door(OW, tempTileMap3.getTile(10, 0), 1, tempTileMap2, (Door)temp3);
+      tempSister3.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      ((Door)temp3).sister = tempSister3;
+      tempTileMap2.EntityList.Add(temp3);
+      tempTileMap3.EntityList.Add(tempSister3);
+
+      #endregion
+    }
     /// <summary>
     /// UnloadContent will be called once per game and is the place to unload
     /// all content.
     /// </summary>
+    /// 
     protected override void UnloadContent()
     {
       // TODO: Unload any non ContentManager content here
@@ -185,12 +201,16 @@ namespace BlackHoleLoans
       // TODO: Add your update logic here
       KeyboardState keyState = Keyboard.GetState();
 
+      #region main menu
       if (currentGameState == 0)
       {
         currentGameState = mainMenu.Update();
         if (currentGameState == -1)
           this.Exit();
       }
+      #endregion
+
+      #region Character Creation
 
       else if (currentGameState == 1)
       {
@@ -200,9 +220,13 @@ namespace BlackHoleLoans
         {
           party = characterCreation.CreatePlayer();
           currentGameState = 2;
+          CreateOverWorld();
           LoadOverWorldContent();
         }
       }
+      #endregion
+
+      #region OW
 
       else if (currentGameState == 2)//Overworld change back to 2
       {
@@ -250,12 +274,15 @@ namespace BlackHoleLoans
           currentGameState = 3;
         }
       }
+      #endregion
+
+      #region Combat
 
       else if (currentGameState == 3)//Combat
       {
         if (!createdCombat)
         {
-          CreateCombat();
+          CreateCombat(OW.GetOpponent());
           createdCombat = true;
         }
         combat.Update(gameTime);
@@ -263,8 +290,12 @@ namespace BlackHoleLoans
         {
           currentGameState = 2;
           OW.FinishedCombat();
+          createdCombat = false;
+          Console.WriteLine("WON THE FIGHT!");
         }
       }
+
+      #endregion
 
       else if (currentGameState == 4)//In-game menu
       {
@@ -281,21 +312,22 @@ namespace BlackHoleLoans
       base.Update(gameTime);
     }
 
-    private void CreateCombat()
+    private void CreateCombat(Enemy e)
     {
-      //Chad
+      e.SetEnemySprites();
+      Texture2D enemySprite = e.EnemySprite();
+
       enemy = new Enemy[3]
             {
-                new Enemy(5,5,5,1,"Dummy1"),
-                new Enemy(5,5,5,1,"Dummy2"),
-                new Enemy(5,5,5,1,"Dummy3")
+                new Enemy(5,5,5,1,"Dummy1", enemySprite),//Can also add skills
+                new Enemy(5,5,5,1,"Dummy2", enemySprite),
+                new Enemy(5,5,5,1,"Dummy3", enemySprite)
             };
       combat = new Combat(Content, graphics.PreferredBackBufferHeight,
           graphics.PreferredBackBufferWidth, this, party, enemy);
       combat.LoadContent();
       combat.SetSpriteBatch(spriteBatch);
 
-      //end chad
     }
     /// <summary>
     /// This is called when the game should draw itself.
@@ -325,7 +357,7 @@ namespace BlackHoleLoans
 
       else if (currentGameState == 3)
       {
-        if(createdCombat)
+        if (createdCombat)
           combat.Draw(gameTime);
       }
 

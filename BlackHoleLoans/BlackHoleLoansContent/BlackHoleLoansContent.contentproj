@@ -381,7 +381,13 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="EnemySprites\BlueCreatureLeft.png">
+      <Name>BlueCreatureLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Combat\combatfontbig.spritefont">
       <Name>combatfontbig</Name>
@@ -432,6 +438,13 @@
     </Compile>
     <Compile Include="Combat\messagebase.png">
       <Name>messagebase</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EnemySprites\BlueCreatureRight.png">
+      <Name>BlueCreatureRight</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

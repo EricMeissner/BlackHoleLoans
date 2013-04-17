@@ -63,7 +63,9 @@ namespace BlackHoleLoans
       get;
       set;
     }
+
     bool InCombat = false;
+    Enemy combatEnemy;
 
     public OverWorld(TileMap owm, int x, int y, Game1 g)
     {
@@ -88,6 +90,7 @@ namespace BlackHoleLoans
       mapList = new List<TileMap>();
       mapList.Add(OWmap);
     }
+
     public OverWorld(int[,] existingMap, int[,] existingCollisionMap, int x, int y, Game1 g)
     {
       OWmap = new TileMap(existingMap, existingCollisionMap);
@@ -99,6 +102,7 @@ namespace BlackHoleLoans
       mapList = new List<TileMap>();
       mapList.Add(OWmap);
     }
+
     public void LoadTileTextures(ContentManager content, params string[] fileNames)
     {
       Texture2D tileTexture;
@@ -111,6 +115,7 @@ namespace BlackHoleLoans
 
 
     }
+
     public void LoadAvatar(ContentManager content, Texture2D[] playerSprites)
     {
       foreach (Texture2D pSprite in playerSprites)
@@ -118,6 +123,7 @@ namespace BlackHoleLoans
         avatar.Add(pSprite);
       }
     }
+
     public void Draw(SpriteBatch spriteBatch, GraphicsDeviceManager graphics)
     {
       spriteBatch.Begin();
@@ -154,10 +160,12 @@ namespace BlackHoleLoans
 
       spriteBatch.End();
     }
+
     public Tile getCurrent()
     {
       return OWmap.getTile(Xpos, Ypos);
     }
+
     public Tile getAdjacent(int direction)
     {
       int dir = direction % 4;
@@ -174,6 +182,7 @@ namespace BlackHoleLoans
         return null;
       }
     }
+
     public Tile getAdjacent(Tile t, int direction)
     {
       int x = t.getX();
@@ -192,10 +201,12 @@ namespace BlackHoleLoans
         return null;
       }
     }
+
     public Tile getForward()
     {
       return getAdjacent(Facing);
     }
+
     public bool playerStep() //defaults to current direction
     {
       Tile forward = getForward();
@@ -206,7 +217,8 @@ namespace BlackHoleLoans
         if (forward.entity.IsEnemy())
         {
           InCombat = true;
-          Console.WriteLine("JUST ENTERED COMBAT BABY!");
+          Console.WriteLine("ENTERED COMBAT!");
+          combatEnemy = (Enemy)forward.entity;
           forward.entity.remove();
           return false;
         }
@@ -228,6 +240,7 @@ namespace BlackHoleLoans
         return true;
       }
     }
+
     public bool playerStep(int direction)
     {
       int dir = direction % 4;
@@ -261,10 +274,17 @@ namespace BlackHoleLoans
         return true;
       }
     }
+
     public bool IsInCombat()
     {
       return InCombat;
     }
+
+    public Enemy GetOpponent()
+    {
+      return combatEnemy;
+    }
+
     public void FinishedCombat()
     {
       InCombat = false;
