@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using BlackHoleLoans.PlayerRelated;
-using System.Threading;
 
 namespace BlackHoleLoans
 {
@@ -35,11 +34,9 @@ namespace BlackHoleLoans
 
     //Chad
     public Combat combat;
-    float frameRate;
     public Enemy[] enemy;
     //end chad
     bool createdCombat;
-    int onlyDoOnce = 0;
 
     public Game1()
     {
@@ -52,9 +49,9 @@ namespace BlackHoleLoans
 
       mainMenu = new MainMenu(Content, graphics.PreferredBackBufferWidth,
         graphics.PreferredBackBufferHeight);
+      characterCreation = new CharacterCreation();
 
       currentGameState = 0;//change back to 0
-      characterCreation = new CharacterCreation();
 
       createdCombat = false;
     }
@@ -106,7 +103,18 @@ namespace BlackHoleLoans
 
     }
 
-    protected void CreateOverWorld()
+    private void CreateMainMenu()
+    {
+      mainMenu = new MainMenu(Content, graphics.PreferredBackBufferWidth,
+         graphics.PreferredBackBufferHeight);
+    }
+
+    private void CreateCharacterCreation()
+    {
+      characterCreation = new CharacterCreation();
+    }
+
+    private void CreateOverWorld()
     {
       //Eric's code start
 
@@ -179,6 +187,32 @@ namespace BlackHoleLoans
       tempTileMap3.EntityList.Add(tempSister3);
 
       #endregion
+    }
+
+    private void CreateCombat(Enemy e)
+    {
+      e.SetEnemySprites();
+      Texture2D enemySprite = e.EnemySprite();
+
+      enemy = new Enemy[3]
+            {
+                new Enemy(1000,5,5,100,"Dummy1", enemySprite),//Can also add skills
+                new Enemy(1000,5,5,100,"Dummy2", enemySprite),
+                new Enemy(1000,5,1,100,"Dummy3", enemySprite)
+            };
+      combat = new Combat(Content, graphics.PreferredBackBufferHeight,
+          graphics.PreferredBackBufferWidth, this, party, enemy);
+      combat.LoadContent();
+      combat.SetSpriteBatch(spriteBatch);
+
+    }
+
+    private void RestartFromMainMenu()
+    {
+      CreateMainMenu();
+      CreateCharacterCreation();
+      CreateOverWorld();
+      LoadContent();
     }
 
     /// <summary>
@@ -291,7 +325,7 @@ namespace BlackHoleLoans
 
         combat.Update(gameTime);
 
-        if (combat.WonFight())
+        if (combat.WonFight() && combat.messageQueue.Count==0)
         {
           currentGameState = 2;
           OW.FinishedCombat();
@@ -307,8 +341,14 @@ namespace BlackHoleLoans
           
         else if (combat.LostFight())
         {
-          if(combat.messageQueue.Count==0)
+          if (combat.messageQueue.Count == 0)
+          {
+            RestartFromMainMenu();
             currentGameState = 0;
+            createdCombat = false;
+          }
+
+          
         }
       }
 
@@ -329,23 +369,7 @@ namespace BlackHoleLoans
       base.Update(gameTime);
     }
 
-    private void CreateCombat(Enemy e)
-    {
-      e.SetEnemySprites();
-      Texture2D enemySprite = e.EnemySprite();
-
-      enemy = new Enemy[3]
-            {
-                new Enemy(1000,5,5,100,"Dummy1", enemySprite),//Can also add skills
-                new Enemy(1000,5,5,100,"Dummy2", enemySprite),
-                new Enemy(1000,500,500,1000,"Dummy3", enemySprite)
-            };
-      combat = new Combat(Content, graphics.PreferredBackBufferHeight,
-          graphics.PreferredBackBufferWidth, this, party, enemy);
-      combat.LoadContent();
-      combat.SetSpriteBatch(spriteBatch);
-
-    }
+ 
     /// <summary>
     /// This is called when the game should draw itself.
     /// </summary>

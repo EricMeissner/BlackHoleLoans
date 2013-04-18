@@ -160,17 +160,28 @@ namespace BlackHoleLoans
 
     private void ChangeTurns(GameTime gameTime)
     {
-      if(!WonFight() && !LostFight())
+      if (!WonFight() && !LostFight())
+      {
         StartEnemyTurn(gameTime);
-      if (!LostFight())
         AddMessage("Player Turn");
-      else
+      }
+      else if (WonFight())
+      {
+        if (onlyDoOnce == 0)
+        {
+          AddMessage("You have defeated the enemy!");
+          onlyDoOnce++;
+        }
+      }
+
+      else if (LostFight())
       {
         if (onlyDoOnce == 0)
         {
           AddMessage("You have been defeated!");
           onlyDoOnce++;
         }
+
       }
       for (int i = 0; i < thePlayers.Length; i++)
       {
@@ -582,12 +593,12 @@ namespace BlackHoleLoans
           Color.White);
       for (int i = 0; i < thePlayers.Length; i++)
       {
-        DrawHealthBars(2 * _width / 8, 3 * _height / 4 + (i * 50), thePlayers[i]);
+        DrawHealthBars((2 * _width / 8)-30, 3 * _height / 4 + (i * 50), thePlayers[i]);
         spriteBatch.DrawString(combatfontsmall,
             thePlayers[i].GetPlayerStats().Health + "/"
             + thePlayers[i].GetPlayerStats().TotalHealth,
-            new Vector2(2 * _width / 8 + healthbar.Width + 10, 3 * _height / 4 + (i * 50) - 3), Color.White);
-        spriteBatch.DrawString(combatfontsmall, thePlayers[i].Name, new Vector2(_width / 8, 3 * _height / 4 + (i * 50) - 7), Color.White);
+            new Vector2((2 * _width / 8)-30 + healthbar.Width + 10, 3 * _height / 4 + (i * 50) - 3), Color.White);
+        spriteBatch.DrawString(combatfontsmall, thePlayers[i].Name, new Vector2(_width / 16, 3 * _height / 4 + (i * 50) - 7), Color.White);
       }
       GrayOutPlayers();
     }
