@@ -598,7 +598,7 @@ namespace BlackHoleLoans
             thePlayers[i].GetPlayerStats().Health + "/"
             + thePlayers[i].GetPlayerStats().TotalHealth,
             new Vector2((2 * _width / 8)-30 + healthbar.Width + 10, 3 * _height / 4 + (i * 50) - 3), Color.White);
-        spriteBatch.DrawString(combatfontsmall, thePlayers[i].Name, new Vector2(_width / 16, 3 * _height / 4 + (i * 50) - 7), Color.White);
+        spriteBatch.DrawString(combatfontsmall, thePlayers[i].Name, new Vector2(_width / 16, 3 * _height / 4 + (i * 50) - 7), StatusColor(thePlayers[i]));
       }
       GrayOutPlayers();
     }
@@ -771,5 +771,14 @@ namespace BlackHoleLoans
       return AllPlayersAreFainted();
     }
 
+    private Color StatusColor(Player player)
+    {
+      if (player.isFainted == true)
+        return Color.Black;
+      else if (((double)(player.GetPlayerStats().Health) / (double)(player.GetPlayerStats().TotalHealth)) <= .25)
+        return Color.Red;
+      else
+        return Color.White;
+    }
   }
 }

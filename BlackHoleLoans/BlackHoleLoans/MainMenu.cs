@@ -185,6 +185,8 @@ namespace BlackHoleLoans
     {
       spriteBatch.DrawString(bigFont, "Controls", new Vector2(200, 150), Color.White);
 
+      spriteBatch.DrawString(bigFont, "Please read the README.txt file", new Vector2(200,250), Color.White);
+      spriteBatch.DrawString(bigFont, "for information related to controls", new Vector2(200, 350), Color.White);
       //Add in all the keys we'll be using in the game
     }
 

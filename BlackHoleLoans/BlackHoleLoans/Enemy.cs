@@ -29,18 +29,20 @@ namespace BlackHoleLoans
     bool startCombat = false;
     public Texture2D enemySprite { get; set; }
 
-    public Enemy(OverWorld ow, Tile t, int[] newpath)
+    public Enemy(OverWorld ow, Tile t, int[] newpath, string name)
       : base(ow, t)
     {
       path_index = 0;
       path = newpath;
+      Name = name;
     }
 
-    public Enemy(OverWorld ow, Tile t, int f, int[] newpath)
+    public Enemy(OverWorld ow, Tile t, int f, int[] newpath, string name)
       : base(ow, t, f)
     {
       path_index = 0;
       path = newpath;
+      Name = name;
     }
 
 

@@ -103,5 +103,9 @@ namespace BlackHoleLoans
       experience = leftOverEXP;
     }
 
+    public void FullHeal()
+    {
+      health = TotalHealth;
+    }
   }
 }

@@ -330,6 +330,9 @@ namespace BlackHoleLoans
     {
       if (prevKeyboardState.IsKeyDown(Keys.B) && currentKeyboardState.IsKeyUp(Keys.B))
       {
+        cursorLocation = 1;
+        cursorX = 20;
+        cursorY = 188;
         if (currentScreen == 1)
         {
           currentScreen = 0;
@@ -640,6 +643,9 @@ namespace BlackHoleLoans
       SelectClass();
       SelectRace();
       SavePartyMembers();
+      chosenStats[0] = 15;
+      chosenStats[1] = 15;
+      chosenStats[2] = 15;
 
     }
   }

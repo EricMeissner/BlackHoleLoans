@@ -89,7 +89,8 @@ namespace BlackHoleLoans
 
       //Eric's code start
       OW.LoadTileTextures(Content, "Textures/grass", "Textures/dirt", "Textures/ground",
-            "Textures/mud", "Textures/road", "Textures/bricks");
+            "Textures/mud", "Textures/road", "Textures/bricks", "Textures/blackYellowFloor",
+            "Textures/brownFloor", "Textures/redFloor", "Textures/grayFloor");
       OW.LoadAvatar(Content, (party[0].GetPlayerSprites()));
 
       foreach (TileMap map in OW.mapList)
@@ -125,23 +126,61 @@ namespace BlackHoleLoans
       graphics.PreferredBackBufferHeight = 600;
 
       TileMap tempTileMap = ContentRepository.getMap(4);
+      TileMap tempTileMap2 = ContentRepository.getMap(5);
+      TileMap tempTileMap3 = ContentRepository.getMap(8);
+      TileMap tempTileMap4 = ContentRepository.getMap(7);
       OW.mapList.Add(tempTileMap);
+      OW.mapList.Add(tempTileMap2);
+      OW.mapList.Add(tempTileMap3);
+      OW.mapList.Add(tempTileMap4);
 
       #region Enemy Creation
 
-      Entity enemy1 = new Enemy(OW, tempTileMap.getTile(5, 5), 0, new int[] { 0, 1, 2, 3 });
+      Entity enemy1 = new Enemy(OW, tempTileMap.getTile(5, 5), 0, new int[] { 0, 1, 2, 3 }, "Blue Spider");
       enemy1.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
         "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
       tempTileMap.EntityList.Add(enemy1);
 
-      Entity enemy2 = new Enemy(OW, tempTileMap.getTile(8, 8), 0, new int[] { 2, 3, 0, 1 });
+      Entity enemy2 = new Enemy(OW, tempTileMap.getTile(8, 8), 0, new int[] { 2, 3, 0, 1 }, "Blue Spider");
       enemy2.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
         "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
       tempTileMap.EntityList.Add(enemy2);
 
+      Entity enemy3 = new Enemy(OW, tempTileMap2.getTile(8, 8), 0, 
+        new int[] { 1, 1, 1, 1, 3, 3, 3, 3 }, 
+        "Purple Spider");
+      enemy3.setAvatarFileString("EnemySprites/PurpleSpiderRight", "EnemySprites/PurpleSpiderRight",
+        "EnemySprites/PurpleSpiderLeft", "EnemySprites/PurpleSpiderLeft");
+      tempTileMap2.EntityList.Add(enemy3);
+
+
+      Entity enemy4 = new Enemy(OW, tempTileMap2.getTile(5, 4), 0,
+  new int[] { 0, 0, 2, 2, 2, 2, 0, 0 },
+  "Purple Spider");
+      enemy4.setAvatarFileString("EnemySprites/PurpleSpiderRight", "EnemySprites/PurpleSpiderRight",
+        "EnemySprites/PurpleSpiderLeft", "EnemySprites/PurpleSpiderLeft");
+      tempTileMap2.EntityList.Add(enemy4);
+
+
+      Entity enemy5 = new Enemy(OW, tempTileMap3.getTile(8, 14), 0,
+new int[] { 0, 0, 0, 0, 2, 2, 2, 2 },
+"Purple Monster");
+      enemy5.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
+        "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
+      tempTileMap3.EntityList.Add(enemy5);
+
+      Entity enemy6 = new Enemy(OW, tempTileMap3.getTile(4, 13), 0,
+new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
+"Purple Monster");
+      enemy6.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
+        "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
+      tempTileMap3.EntityList.Add(enemy6);
+
+
       #endregion
 
-      #region Level creation
+      #region Map Creation (includes doors)
+
       Entity temp;
 
       temp = new Door(OW, OW.OWmap.getTile(2, 7), 3, tempTileMap, null);
@@ -155,9 +194,6 @@ namespace BlackHoleLoans
       tempTileMap.EntityList.Add(tempSister);
       //end
 
-      //map2 crashes when going back through the door
-      TileMap tempTileMap2 = ContentRepository.getMap(5);
-      OW.mapList.Add(tempTileMap2);
 
       Entity temp2 = new Door(OW, tempTileMap.getTile(10, 15), 3, tempTileMap2, null);//10 15
       temp2.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
@@ -171,11 +207,8 @@ namespace BlackHoleLoans
       tempTileMap2.EntityList.Add(tempSister2);
 
 
-      //Map 3 - Change names..lol
-      TileMap tempTileMap3 = ContentRepository.getMap(5);//change
-      OW.mapList.Add(tempTileMap3);
 
-      Entity temp3 = new Door(OW, tempTileMap2.getTile(10, 15), 3, tempTileMap3, null);//10 15
+      Entity temp3 = new Door(OW, tempTileMap2.getTile(1, 15), 3, tempTileMap3, null);//10 15
       temp3.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
      "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
 
@@ -186,19 +219,39 @@ namespace BlackHoleLoans
       tempTileMap2.EntityList.Add(temp3);
       tempTileMap3.EntityList.Add(tempSister3);
 
+
+
+      Entity temp4 = new Door(OW, tempTileMap3.getTile(6, 15), 3, tempTileMap4, null);//10 15
+      temp4.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+     "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+
+      Door tempSister4 = new Door(OW, tempTileMap4.getTile(5, 0), 1, tempTileMap3, (Door)temp4);
+      tempSister4.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      ((Door)temp4).sister = tempSister4;
+      tempTileMap3.EntityList.Add(temp4);
+      tempTileMap4.EntityList.Add(tempSister4);
+
       #endregion
     }
 
     private void CreateCombat(Enemy e)
     {
+      PlayerStatistics playerStats = party[0].GetPlayerStats();
+      int[] pToE = new int[4] //player to enemy stats
+      {
+        playerStats.Attack, playerStats.Defence, playerStats.Concentration, playerStats.Health
+      };
+
       e.SetEnemySprites();
       Texture2D enemySprite = e.EnemySprite();
+      string enemyName = e.Name;
 
       enemy = new Enemy[3]
             {
-                new Enemy(1000,5,5,100,"Dummy1", enemySprite),//Can also add skills
-                new Enemy(1000,5,5,100,"Dummy2", enemySprite),
-                new Enemy(1000,5,1,100,"Dummy3", enemySprite)
+                new Enemy(pToE[0]*5,pToE[1]-5,pToE[2]-5,pToE[3]-75, enemyName+" 1", enemySprite),//Can also add skills
+                new Enemy(pToE[1]*3,pToE[1]-3,pToE[2]-3,pToE[3]-50, enemyName+" 2", enemySprite),
+                new Enemy(pToE[0]*1,pToE[1]-1,pToE[2]-1,pToE[3]-25, enemyName+" 3", enemySprite)
             };
       combat = new Combat(Content, graphics.PreferredBackBufferHeight,
           graphics.PreferredBackBufferWidth, this, party, enemy);
@@ -268,7 +321,7 @@ namespace BlackHoleLoans
       else if (currentGameState == 2)//Overworld change back to 2
       {
         action_timer++;
-        if (action_timer >= 60)
+        if (action_timer >= 20)//change back to 60!!!
         {
           action_timer = 0;
         }
@@ -329,12 +382,14 @@ namespace BlackHoleLoans
         {
           currentGameState = 2;
           OW.FinishedCombat();
+          party[0].GetPlayerStats().FullHeal();
+          party[1].GetPlayerStats().FullHeal();
+          party[2].GetPlayerStats().FullHeal();
           
           foreach (Player player in party)
           {
             player.hasGone = false;
           }
-           
           createdCombat = false;
           Console.WriteLine("WON THE FIGHT!");
         }
@@ -376,7 +431,7 @@ namespace BlackHoleLoans
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime)
     {
-      GraphicsDevice.Clear(Color.Green);
+      GraphicsDevice.Clear(Color.Brown);
 
       // TODO: Add your drawing code here
       spriteBatch.Begin();
