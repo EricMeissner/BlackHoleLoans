@@ -321,7 +321,7 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
       else if (currentGameState == 2)//Overworld change back to 2
       {
         action_timer++;
-        if (action_timer >= 20)//change back to 60!!!
+        if (action_timer >= 60)//change back to 60!!!
         {
           action_timer = 0;
         }

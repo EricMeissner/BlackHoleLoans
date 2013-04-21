@@ -36,8 +36,8 @@ namespace BlackHoleLoans
     private TimeSpan lastMenuChoiceTime, lastMessageTime;
     private bool executeMenuLogic;
     private Skill chosenEnemySkill;
-    private Texture2D[] enemySprites;
     public int onlyDoOnce = 0;
+    public bool ranAway;
     #endregion
     public enum MenuOption { Fight = 1, Run = 2, Attack = 3, SkillA = 4, SkillB = 5 }
 
@@ -58,6 +58,7 @@ namespace BlackHoleLoans
       theEnemies = e;
       messageQueue = new Queue<string>();
       AddMessage("Player Turn");
+      ranAway = false;
     }
 
     public bool IsDone()
@@ -332,7 +333,7 @@ namespace BlackHoleLoans
         if (lastMenuChoiceTime + menuinterval < gameTime.TotalGameTime)
         {
           AddMessage("Player ran away!");
-          ChangeLayers(0);
+          ranAway = true;
         }
       }
       if (IsKeyClicked(Keys.X))
@@ -763,7 +764,7 @@ namespace BlackHoleLoans
 
     public bool WonFight()
     {
-      return AllEnemiesAreDead();
+      return AllEnemiesAreDead() || ranAway;
     }
 
     public bool LostFight()

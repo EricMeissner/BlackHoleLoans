@@ -18,9 +18,9 @@ namespace BlackHoleLoans
     SpriteBatch spriteBatch;
     ContentManager _content;
     Texture2D[] classes, races, playerSprites;
-    SpriteFont bigFont, className, classDescription;
+    SpriteFont bigFont, className;
     Texture2D stars, spaceship, arrow, flippedArrow, rightArrow, leftArrow;
-    Texture2D chosenClass, chosenRace, partyMember1, partyMember2;
+    Texture2D chosenClass, partyMember1, partyMember2;
     int cursorX, cursorY;
     int cursorLocation;
     int currentScreen;
