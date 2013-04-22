@@ -228,7 +228,7 @@ namespace BlackHoleLoans
                        }, 10, 0, g);
 
         default:
-          Console.WriteLine("Tried to get a bad map.");
+          //Console.WriteLine("Tried to get a bad map.");
           return null;
       }
     }
@@ -244,7 +244,7 @@ namespace BlackHoleLoans
         case "dungeon1":
           return getMap(3, g);
         default:
-          Console.WriteLine("Tried to get a bad map.");
+          //Console.WriteLine("Tried to get a bad map.");
           return null;
       }
     }
@@ -469,7 +469,7 @@ namespace BlackHoleLoans
                        });
 
         default:
-          Console.WriteLine("Tried to get a bad map.");
+          //Console.WriteLine("Tried to get a bad map.");
           return null;
       }
 
@@ -489,7 +489,7 @@ namespace BlackHoleLoans
         case "large_dungeon1":
           return getMap(4);
         default:
-          Console.WriteLine("Tried to get a bad map.");
+          //Console.WriteLine("Tried to get a bad map.");
           return null;
       }
     }

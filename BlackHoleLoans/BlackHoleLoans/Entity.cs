@@ -41,7 +41,7 @@ namespace BlackHoleLoans
       }
       else
       {
-        Console.Write("Error, attempted to make entity in occupied tile");
+        //Console.Write("Error, attempted to make entity in occupied tile");
         tile = null;
       }
       Facing = 0;
@@ -57,7 +57,7 @@ namespace BlackHoleLoans
       }
       else
       {
-        Console.Write("Error, attempted to make entity in occupied tile");
+        //Console.Write("Error, attempted to make entity in occupied tile");
         tile = null;
       }
       Facing = f;
@@ -88,11 +88,11 @@ namespace BlackHoleLoans
 
     virtual public void OnCollision()
     {
-      Console.Write("An entity has collided with a player.\n");
+      //Console.Write("An entity has collided with a player.\n");
     }
     virtual public void OnInteract()
     {
-      Console.Write("The player interacted with an entity.\n");
+      //Console.Write("The player interacted with an entity.\n");
     }
     virtual public void OnUpdate()
     {
@@ -133,7 +133,7 @@ namespace BlackHoleLoans
     {
       if (fileNames == null)
       {
-        Console.Write("Invalid input to setAvatarFileString.\n");
+        //Console.Write("Invalid input to setAvatarFileString.\n");
       }
       else
       {

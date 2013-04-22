@@ -249,9 +249,9 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
 
       enemy = new Enemy[3]
             {
-                new Enemy(pToE[0]*5,pToE[1]-5,pToE[2]-5,pToE[3]-75, enemyName+" 1", enemySprite),//Can also add skills
-                new Enemy(pToE[1]*3,pToE[1]-3,pToE[2]-3,pToE[3]-50, enemyName+" 2", enemySprite),
-                new Enemy(pToE[0]*1,pToE[1]-1,pToE[2]-1,pToE[3]-25, enemyName+" 3", enemySprite)
+                new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,pToE[3]-75, enemyName+" 1", enemySprite),//Can also add skills
+                new Enemy(pToE[1]-3,pToE[1]-3,pToE[2]-3,pToE[3]-50, enemyName+" 2", enemySprite),
+                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,pToE[3]-25, enemyName+" 3", enemySprite)
             };
       combat = new Combat(Content, graphics.PreferredBackBufferHeight,
           graphics.PreferredBackBufferWidth, this, party, enemy);
@@ -382,16 +382,15 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
         {
           currentGameState = 2;
           OW.FinishedCombat();
-          party[0].GetPlayerStats().FullHeal();
-          party[1].GetPlayerStats().FullHeal();
-          party[2].GetPlayerStats().FullHeal();
-          
+
           foreach (Player player in party)
           {
+            player.isFainted = false;
+            player.GetPlayerStats().FullHeal();
             player.hasGone = false;
           }
           createdCombat = false;
-          Console.WriteLine("WON THE FIGHT!");
+          //Console.WriteLine("WON THE FIGHT!");
         }
           
         else if (combat.LostFight())
@@ -417,7 +416,7 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
       //Eric's Code start
       else
       {
-        Console.WriteLine("Error, Unknown gamestate reached: gamestate = " + currentGameState);
+        //Console.WriteLine("Error, Unknown gamestate reached: gamestate = " + currentGameState);
         this.Exit();
       }
       //End

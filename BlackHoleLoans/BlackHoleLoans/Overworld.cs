@@ -217,7 +217,7 @@ namespace BlackHoleLoans
         if (forward.entity.IsEnemy())
         {
           InCombat = true;
-          Console.WriteLine("ENTERED COMBAT!");
+          //Console.WriteLine("ENTERED COMBAT!");
           combatEnemy = (Enemy)forward.entity;
           forward.entity.remove();
           return false;
@@ -258,14 +258,14 @@ namespace BlackHoleLoans
       Tile forwardTile = getForward();//added this
       if (forwardTile == null)//added a check when trying to access tile out of bounds
       {
-        Console.WriteLine("Tried to access tile out of bounds");//added this
+        //Console.WriteLine("Tried to access tile out of bounds");//added this
         return false;
       }
 
       Entity target = forwardTile.entity;
       if (target == null)
       {
-        Console.WriteLine("Player attempted to interact with entity in tile without an entity.");
+        //Console.WriteLine("Player attempted to interact with entity in tile without an entity.");
         return false;
       }
       else

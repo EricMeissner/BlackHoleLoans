@@ -32,7 +32,7 @@ namespace BlackHoleLoans
 
     public override void OnInteract()
     {
-      Console.Write("Player has moved through a door!\n");
+      //Console.Write("Player has moved through a door!\n");
       overworld.OWmap = destination;
       Tile target = overworld.getAdjacent(sister.tile, sister.Facing);
       overworld.Xpos = target.getX();

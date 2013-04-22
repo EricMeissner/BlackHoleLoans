@@ -87,13 +87,13 @@ namespace BlackHoleLoans
     public override void OnCollision()
     {
       //run combat encounter
-      Console.Write("Entered combat with entity by collision!\n");
+      //Console.Write("Entered combat with entity by collision!\n");
     }
 
     public override void OnInteract()
     {
       //run combat encounter
-      Console.Write("Entered combat with entity by interaction!\n");
+      //Console.Write("Entered combat with entity by interaction!\n");
       //
     }
 

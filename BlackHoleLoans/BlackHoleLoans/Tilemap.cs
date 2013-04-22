@@ -48,7 +48,7 @@ namespace BlackHoleLoans
           Map[x, y] = new Tile(existingCollisionMap[x, y], existingMap[x, y], Tile.calcID(x, y));
           //Console.Write(existingMap[x, y] + ", ");
         }
-        Console.Write("\n");
+        //Console.Write("\n");
       }
       EntityList = new List<Entity>();
     }
