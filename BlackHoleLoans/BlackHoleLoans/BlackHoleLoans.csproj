@@ -16,8 +16,8 @@
     <XnaProfile>Reach</XnaProfile>
     <XnaCrossPlatformGroupID>a082b6dd-418a-48a8-8b01-9f0ee073cac3</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <ApplicationIcon>Game.ico</ApplicationIcon>
-    <Thumbnail>GameThumbnail.png</Thumbnail>
+    <ApplicationIcon>BHLicon.ico</ApplicationIcon>
+    <Thumbnail>BHLicon.png</Thumbnail>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -129,6 +129,8 @@
     <Compile Include="Tilemap.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BHLicon.ico" />
+    <Content Include="BHLicon.png" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>

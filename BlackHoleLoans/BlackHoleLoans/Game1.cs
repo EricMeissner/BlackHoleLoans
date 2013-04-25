@@ -246,13 +246,21 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
       e.SetEnemySprites();
       Texture2D enemySprite = e.EnemySprite();
       string enemyName = e.Name;
-
+      /*
       enemy = new Enemy[3]
             {
                 new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,pToE[3]-75, enemyName+" 1", enemySprite),//Can also add skills
                 new Enemy(pToE[1]-3,pToE[1]-3,pToE[2]-3,pToE[3]-50, enemyName+" 2", enemySprite),
                 new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,pToE[3]-25, enemyName+" 3", enemySprite)
             };
+       * */
+      enemy = new Enemy[3]
+            {
+                new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,1, enemyName+" 1", enemySprite),//Can also add skills
+                new Enemy(pToE[1]-3,pToE[1]-3,pToE[2]-3,1, enemyName+" 2", enemySprite),
+                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,1, enemyName+" 3", enemySprite)
+            };
+
       combat = new Combat(Content, graphics.PreferredBackBufferHeight,
           graphics.PreferredBackBufferWidth, this, party, enemy);
       combat.LoadContent();
@@ -390,6 +398,7 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
             player.hasGone = false;
           }
           createdCombat = false;
+          
           //Console.WriteLine("WON THE FIGHT!");
         }
           
@@ -430,7 +439,7 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime)
     {
-      GraphicsDevice.Clear(Color.Brown);
+      //GraphicsDevice.Clear(Color.Brown);
 
       // TODO: Add your drawing code here
       spriteBatch.Begin();

@@ -38,6 +38,7 @@ namespace BlackHoleLoans
     private Skill chosenEnemySkill;
     public int onlyDoOnce = 0;
     public bool ranAway;
+    private Texture2D background;
     #endregion
     public enum MenuOption { Fight = 1, Run = 2, Attack = 3, SkillA = 4, SkillB = 5 }
 
@@ -83,6 +84,8 @@ namespace BlackHoleLoans
       healthbar = _content.Load<Texture2D>("Combat/healthbar");
       gray = _content.Load<Texture2D>("Combat/gray");
       messagebase = _content.Load<Texture2D>("Combat/messagebase");
+
+      background = _content.Load<Texture2D>("CombatBackgrounds/CombatBackgroundBrown");
       #endregion
       #region fonts
       combatfontbig = _content.Load<SpriteFont>("Combat/combatfontbig");
@@ -366,6 +369,7 @@ namespace BlackHoleLoans
 
     public void Draw(GameTime gameTime)
     {
+      DrawBackground();
       DrawCombatMenu();
       DrawEntities();
       DrawMessageQueue(gameTime);
@@ -781,5 +785,11 @@ namespace BlackHoleLoans
       else
         return Color.White;
     }
+
+    private void DrawBackground()
+    {
+      spriteBatch.Draw(background, Vector2.Zero, Color.White);//change
+    }
+
   }
 }

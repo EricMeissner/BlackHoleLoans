@@ -33,6 +33,7 @@ namespace BlackHoleLoans
     KeyboardState prevKeyboardState, currentKeyboardState;
     const int SELECT_NAME=0, SELECT_CLASS=1, SELECT_RACE=2, SELECT_STATS = 3;
     bool backToMM, startOverworld;
+    Texture2D nameFrame;
 
     #endregion End Class fields
 
@@ -52,10 +53,10 @@ namespace BlackHoleLoans
       prevKeyboardState = Keyboard.GetState();
 
       chosenStats[0] = chosenStats[1] = chosenStats[2] = 5;
-      letterIndex = new int[4];
-      letters = new string[26] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+      letterIndex = new int[6];
+      letters = new string[27] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
                                 "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", 
-                                  "U","V","W","X","Y","Z",};
+                                  "U","V","W","X","Y","Z"," "};
       backToMM = startOverworld = false;      
     }
 
@@ -72,6 +73,7 @@ namespace BlackHoleLoans
       flippedArrow = content.Load<Texture2D>("Arrows/theFlippedArrow");
       rightArrow = content.Load<Texture2D>("Arrows/theRightArrow");
       leftArrow = content.Load<Texture2D>("Arrows/theLeftArrow");
+      nameFrame = content.Load<Texture2D>("Combat/cursor");
 
       _content = content;
     }
@@ -297,7 +299,7 @@ namespace BlackHoleLoans
       }
       else if (prevKeyboardState.IsKeyUp(Keys.Down) && currentKeyboardState.IsKeyDown(Keys.Down))
       {
-        if (letterIndex[cursorLocation - 1] == 25)
+        if (letterIndex[cursorLocation - 1] == 26)
           letterIndex[cursorLocation - 1] = 0;
         else
           letterIndex[cursorLocation - 1]++;
@@ -306,14 +308,14 @@ namespace BlackHoleLoans
       else if (prevKeyboardState.IsKeyUp(Keys.Up) && currentKeyboardState.IsKeyDown(Keys.Up))
       {
         if (letterIndex[cursorLocation - 1] == 0)
-          letterIndex[cursorLocation - 1] = 25;
+          letterIndex[cursorLocation - 1] = 26;
         else
           letterIndex[cursorLocation - 1]--;
       }
 
       else if (prevKeyboardState.IsKeyUp(Keys.Right) && currentKeyboardState.IsKeyDown(Keys.Right))
       {
-        if (cursorLocation != 4)
+        if (cursorLocation != 6)
           cursorLocation++;
       }
 
@@ -445,7 +447,9 @@ namespace BlackHoleLoans
       thePlayerName += letters[letterIndex[1]];
       thePlayerName += letters[letterIndex[2]];
       thePlayerName += letters[letterIndex[3]];
-      playerName = thePlayerName;
+      thePlayerName += letters[letterIndex[4]];
+      thePlayerName += letters[letterIndex[5]];
+      playerName = thePlayerName.Trim();
       currentScreen = 1;
       cursorLocation = 1;
     }
@@ -497,7 +501,7 @@ namespace BlackHoleLoans
 
     private void DrawNameSelection()
     {
-      Color[] letterColors = { Color.White, Color.White, Color.White , Color.White};
+      Color[] letterColors = { Color.White, Color.White, Color.White , Color.White, Color.White, Color.White};
       letterColors[cursorLocation - 1] = Color.Red;
 
       spriteBatch. DrawString(bigFont, "Select your name (Press enter to continue)", new Vector2(0,50), Color.White);
@@ -507,9 +511,11 @@ namespace BlackHoleLoans
       spriteBatch.DrawString(bigFont, "" + letters[letterIndex[1]], new Vector2(230, 150), letterColors[1]);
       spriteBatch.DrawString(bigFont, "" + letters[letterIndex[2]], new Vector2(260, 150), letterColors[2]);
       spriteBatch.DrawString(bigFont, "" + letters[letterIndex[3]], new Vector2(290, 150), letterColors[3]);
+      spriteBatch.DrawString(bigFont, "" + letters[letterIndex[4]], new Vector2(320, 150), letterColors[4]);
+      spriteBatch.DrawString(bigFont, "" + letters[letterIndex[5]], new Vector2(350, 150), letterColors[5]);
 
-      spriteBatch.Draw(arrow, new Vector2((210+cursorLocation*30)-arrow.Width, 170-arrow.Height), Color.White);
-      spriteBatch.Draw(flippedArrow, new Vector2((210+cursorLocation*30)-arrow.Width, 250-arrow.Height), Color.White);
+      spriteBatch.Draw(arrow, new Vector2((210+cursorLocation*30)-arrow.Width, 150-arrow.Height), Color.White);
+      spriteBatch.Draw(flippedArrow, new Vector2((210+cursorLocation*30)-arrow.Width, 270-arrow.Height), Color.White);
 
       spriteBatch.DrawString(bigFont, "Press D for default character!", new Vector2(0, 300), Color.White);
     }
