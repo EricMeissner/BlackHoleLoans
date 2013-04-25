@@ -23,6 +23,7 @@ namespace BlackHoleLoans
     MainMenu mainMenu;
     CharacterCreation characterCreation;
     OverWorld OW;
+    OWMenu ingameMenu;
     Player[] party;
     int currentGameState;
 
@@ -30,13 +31,15 @@ namespace BlackHoleLoans
     int OWcontrolspeed = 4;
     int OWentityspeed = 2;
     int action_timer = 0;
+    int player_timer=0, enemy_timer = 0;
     //End
 
     //Chad
     public Combat combat;
     public Enemy[] enemy;
     //end chad
-    bool createdCombat;
+    bool createdCombat, pausedGame;
+    KeyboardState keyState, prevKeystate;
 
     public Game1()
     {
@@ -53,7 +56,9 @@ namespace BlackHoleLoans
 
       currentGameState = 0;//change back to 0
 
-      createdCombat = false;
+      createdCombat = pausedGame = false;
+      keyState = Keyboard.GetState();
+      prevKeystate = keyState;
     }
     /// <summary>
     /// Allows the game to perform any initialization it needs to before starting to run.
@@ -297,7 +302,8 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
       if (Keyboard.GetState().IsKeyDown(Keys.Escape))
         this.Exit();
       // TODO: Add your update logic here
-      KeyboardState keyState = Keyboard.GetState();
+      keyState = Keyboard.GetState();
+
 
       #region main menu
       if (currentGameState == 0)
@@ -328,30 +334,79 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
 
       else if (currentGameState == 2)//Overworld change back to 2
       {
-        action_timer++;
+        if (keyState.IsKeyDown(Keys.M))
+        {
+          currentGameState = 4;
+        }
+        //action_timer++;
+        enemy_timer++;
+        player_timer++;
+
         if (action_timer >= 60)//change back to 60!!!
         {
           action_timer = 0;
         }
+        if(enemy_timer >= 60){
+          enemy_timer = 0;
+        }
+        if (player_timer >= 60)
+        {
+          player_timer = 0;
+        }
         //Eric's code start
         //Console.WriteLine("Player x position"+OW.Xpos+" Player y position"+OW.Ypos);
-        if (action_timer % (60 / OWcontrolspeed) == 0)
+        #region Tapping directional keys
+        if (prevKeystate.IsKeyUp(Keys.Up) && keyState.IsKeyDown(Keys.Up))
+        {
+          this.OW.playerStep(0);
+          //action_timer = 0;
+          player_timer = 0;
+        }
+
+        else if (prevKeystate.IsKeyUp(Keys.Right) && keyState.IsKeyDown(Keys.Right))
+        {
+          this.OW.playerStep(1);
+          //action_timer = 0;
+          player_timer = 0;
+        }
+
+        else if (prevKeystate.IsKeyUp(Keys.Down) && keyState.IsKeyDown(Keys.Down))
+        {
+          this.OW.playerStep(2);
+          player_timer = 0;
+          //action_timer = 0;
+        }
+
+        else if (prevKeystate.IsKeyUp(Keys.Left) && keyState.IsKeyDown(Keys.Left))
+        {
+          this.OW.playerStep(3);
+          player_timer = 0;
+          //action_timer = 0;
+        }
+        #endregion
+
+        #region Holding down directional keys
+        else if (player_timer % (60 / OWcontrolspeed) == 0)
         {
           if (keyState.IsKeyDown(Keys.Up))
           {
             this.OW.playerStep(0);
           }
-          if (keyState.IsKeyDown(Keys.Right))
+          else if (keyState.IsKeyDown(Keys.Right))
           {
             this.OW.playerStep(1);
           }
-          if (keyState.IsKeyDown(Keys.Down))
+          else if (keyState.IsKeyDown(Keys.Down))
           {
             this.OW.playerStep(2);
           }
-          if (keyState.IsKeyDown(Keys.Left))
+          else if (keyState.IsKeyDown(Keys.Left))
           {
             this.OW.playerStep(3);
+          }
+          else
+          {
+            player_timer = 0;
           }
           if (keyState.IsKeyDown(Keys.Z))
           {
@@ -359,7 +414,9 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
           }
           //end
         }
-        if (action_timer % (60 / OWentityspeed) == 0)
+        #endregion
+
+        if (enemy_timer % (60 / OWentityspeed) == 0)
         {
           foreach (Entity current in OW.EntityList)
           {
@@ -371,6 +428,8 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
         {
           currentGameState = 3;
         }
+
+
       }
       #endregion
 
@@ -419,7 +478,19 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
 
       else if (currentGameState == 4)//In-game menu
       {
-
+        if (!pausedGame)
+        {
+          ingameMenu = new OWMenu(party);
+          ingameMenu.LoadContent(Content);
+          pausedGame = true;
+        }
+        currentGameState = ingameMenu.Update(this);
+        if (currentGameState == 0)
+          RestartFromMainMenu();
+        if (currentGameState != 4)
+        {
+          pausedGame = false;
+        }
       }
 
       //Eric's Code start
@@ -429,6 +500,8 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
         this.Exit();
       }
       //End
+
+      prevKeystate = keyState;
       base.Update(gameTime);
     }
 
@@ -463,6 +536,12 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
       {
         if (createdCombat)
           combat.Draw(gameTime);
+      }
+
+      else if (currentGameState == 4)
+      {
+        if (pausedGame)
+          ingameMenu.Draw(spriteBatch);
       }
 
       if (currentGameState != 2)//change back to 2

@@ -444,12 +444,15 @@ namespace BlackHoleLoans
     private void SelectPlayerName()
     {
       string thePlayerName = letters[letterIndex[0]];//append all chars
-      thePlayerName += letters[letterIndex[1]];
-      thePlayerName += letters[letterIndex[2]];
-      thePlayerName += letters[letterIndex[3]];
-      thePlayerName += letters[letterIndex[4]];
-      thePlayerName += letters[letterIndex[5]];
+      for(int i=0; i<letterIndex.Length; i++)
+      {
+        thePlayerName += letters[letterIndex[i]];
+      }
       playerName = thePlayerName.Trim();
+
+      if (playerName == "")
+        playerName = "UTROLL";
+
       currentScreen = 1;
       cursorLocation = 1;
     }

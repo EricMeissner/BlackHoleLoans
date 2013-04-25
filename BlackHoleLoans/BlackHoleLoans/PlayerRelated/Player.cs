@@ -60,6 +60,7 @@ namespace BlackHoleLoans
     {
       return playerSprites;
     }
+
     public PlayerStatistics GetPlayerStats()
     {
       return playerStats;

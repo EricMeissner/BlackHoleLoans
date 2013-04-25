@@ -117,6 +117,7 @@
     <Compile Include="EnemyStatistics.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="OverWorld.cs" />
+    <Compile Include="OWMenu.cs" />
     <Compile Include="PlayerRelated\CharacterCreation.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="PlayerRelated\Player.cs" />

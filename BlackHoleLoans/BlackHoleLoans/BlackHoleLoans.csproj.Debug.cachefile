@@ -75,11 +75,12 @@ Content\EnemySprites\PurpleMonsterLeft.xnb
 Content\EnemySprites\PurpleMonsterRight.xnb
 Content\EnemySprites\PurpleSpiderLeft.xnb
 Content\EnemySprites\PurpleSpiderRight.xnb
+Content\CombatBackgrounds\CombatBackgroundBrown.xnb
+Content\CombatBackgrounds\CombatBackgroundRed.xnb
+Content\CombatBackgrounds\CombatBackgroundYellow.xnb
 Content\Fonts\MenuOptions.xnb
 Content\Fonts\MenuTitles.xnb
 Content\Combat\combatfontbig.xnb
 Content\Combat\combatfontsmall.xnb
 Content\Combat\verysmallfont.xnb
-Content\CombatBackgrounds\CombatBackgroundBrown.xnb
-Content\CombatBackgrounds\CombatBackgroundRed.xnb
-Content\CombatBackgrounds\CombatBackgroundYellow.xnb
+Content\Fonts\PauseMenu.xnb
