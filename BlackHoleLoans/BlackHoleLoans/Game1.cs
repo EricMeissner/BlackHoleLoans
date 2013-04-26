@@ -39,6 +39,8 @@ namespace BlackHoleLoans
     public Enemy[] enemy;
     //end chad
     bool createdCombat, pausedGame;
+    int combatBackgroundID;
+    bool paralyzed = false;//Player ran away -> used to paralyzed enemy for a tiny bit
     KeyboardState keyState, prevKeystate;
 
     public Game1()
@@ -264,12 +266,14 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
                 new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,1, enemyName+" 1", enemySprite),//Can also add skills
                 new Enemy(pToE[1]-3,pToE[1]-3,pToE[2]-3,1, enemyName+" 2", enemySprite),
                 new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,1, enemyName+" 3", enemySprite)
-            };
+            };//Change health back to normal
 
       combat = new Combat(Content, graphics.PreferredBackBufferHeight,
           graphics.PreferredBackBufferWidth, this, party, enemy);
       combat.LoadContent();
       combat.SetSpriteBatch(spriteBatch);
+
+      combatBackgroundID = OW.OWmap.getTile(OW.Xpos, OW.Ypos).Texture;
 
     }
 
@@ -424,7 +428,8 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
           }
         }
         OW.Draw(spriteBatch, graphics);
-        if (OW.IsInCombat())
+
+        if (OW.IsInCombat() || OW.CheckForEnemyCollision())
         {
           currentGameState = 3;
         }
@@ -448,6 +453,7 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
         if (combat.WonFight() && combat.messageQueue.Count==0)
         {
           currentGameState = 2;
+          OW.GetOpponent().remove();//added
           OW.FinishedCombat();
 
           foreach (Player player in party)
@@ -457,8 +463,6 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
             player.hasGone = false;
           }
           createdCombat = false;
-          
-          //Console.WriteLine("WON THE FIGHT!");
         }
           
         else if (combat.LostFight())
@@ -469,13 +473,27 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
             currentGameState = 0;
             createdCombat = false;
           }
+        }
 
-          
+        else if (combat.RanAway())
+        {
+          currentGameState = 2;
+          OW.GetOpponent().ParalyzeEnemy();
+          OW.FinishedCombat();
+          createdCombat = false;
+
+          foreach (Player player in party)
+          {
+            player.isFainted = false;
+            player.GetPlayerStats().FullHeal();
+            player.hasGone = false;
+          }
         }
       }
 
       #endregion
 
+      #region OWMenu
       else if (currentGameState == 4)//In-game menu
       {
         if (!pausedGame)
@@ -492,7 +510,7 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
           pausedGame = false;
         }
       }
-
+      #endregion
       //Eric's Code start
       else
       {
@@ -535,7 +553,7 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
       else if (currentGameState == 3)
       {
         if (createdCombat)
-          combat.Draw(gameTime);
+          combat.Draw(gameTime, combatBackgroundID);
       }
 
       else if (currentGameState == 4)
