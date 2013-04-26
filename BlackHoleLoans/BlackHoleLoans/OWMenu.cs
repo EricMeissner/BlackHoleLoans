@@ -67,20 +67,16 @@ namespace BlackHoleLoans
       spriteBatch.DrawString(font, "Back to Main Menu (M)", new Vector2(325, 200), Color.White);
       spriteBatch.DrawString(font, "Exit Game (E)", new Vector2(325, 250), Color.White);
 
-      spriteBatch.DrawString(font, party[0].Name, new Vector2(150,300), Color.White);
-      spriteBatch.DrawString(font, party[1].Name, new Vector2(150, 350), Color.White);
-      spriteBatch.DrawString(font, party[2].Name, new Vector2(150, 400), Color.White);
+      for (int i = 0; i < 3; i++)
+      {
 
-      spriteBatch.Draw(party[0].GetPlayerSprites()[1], new Vector2(300,300), Color.White);
+        spriteBatch.DrawString(font, party[i].Name, new Vector2(150, 300+(i*50)), Color.White);
+        spriteBatch.DrawString(font, "Health: " + party[i].GetPlayerStats().Health + "/" +
+                  party[i].GetPlayerStats().TotalHealth, new Vector2(350, 300+(i*50)), Color.White);
+      }
+      spriteBatch.Draw(party[0].GetPlayerSprites()[1], new Vector2(300, 300), Color.White);
       spriteBatch.Draw(party[1].GetPlayerSprites()[0], new Vector2(300, 350), Color.White);
       spriteBatch.Draw(party[2].GetPlayerSprites()[0], new Vector2(300, 400), Color.White);
-
-      spriteBatch.DrawString(font, "Health: "+party[0].GetPlayerStats().Health+"/"+
-                party[0].GetPlayerStats().TotalHealth, new Vector2(350,300), Color.White);
-      spriteBatch.DrawString(font, "Health: " + party[0].GetPlayerStats().Health + "/" +
-                party[1].GetPlayerStats().TotalHealth, new Vector2(350, 350), Color.White);
-      spriteBatch.DrawString(font, "Health: " + party[0].GetPlayerStats().Health + "/" +
-                party[2].GetPlayerStats().TotalHealth, new Vector2(350, 400), Color.White);
     }         
   }
 }

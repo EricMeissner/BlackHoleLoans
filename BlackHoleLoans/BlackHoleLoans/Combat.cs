@@ -38,7 +38,7 @@ namespace BlackHoleLoans
     private Skill chosenEnemySkill;
     public int onlyDoOnce = 0;
     public bool ranAway;
-    private Texture2D background;
+    private Texture2D[] backgrounds;
     #endregion
     public enum MenuOption { Fight = 1, Run = 2, Attack = 3, SkillA = 4, SkillB = 5 }
 
@@ -60,6 +60,7 @@ namespace BlackHoleLoans
       messageQueue = new Queue<string>();
       AddMessage("Player Turn");
       ranAway = false;
+      backgrounds = new Texture2D[3];
     }
 
     public bool IsDone()
@@ -85,7 +86,9 @@ namespace BlackHoleLoans
       gray = _content.Load<Texture2D>("Combat/gray");
       messagebase = _content.Load<Texture2D>("Combat/messagebase");
 
-      background = _content.Load<Texture2D>("CombatBackgrounds/CombatBackgroundBrown");
+      backgrounds[0] = _content.Load<Texture2D>("CombatBackgrounds/CombatBackgroundBrown");
+      backgrounds[1] = _content.Load<Texture2D>("CombatBackgrounds/CombatBackgroundYellow");
+      backgrounds[2] = _content.Load<Texture2D>("CombatBackgrounds/CombatBackgroundRed");
       #endregion
       #region fonts
       combatfontbig = _content.Load<SpriteFont>("Combat/combatfontbig");
@@ -333,11 +336,22 @@ namespace BlackHoleLoans
       if (menuoption == 2 &&
           IsKeyClicked(Keys.Z))
       {
-        if (lastMenuChoiceTime + menuinterval < gameTime.TotalGameTime)
+        if (lastMenuChoiceTime + menuinterval < gameTime.TotalGameTime)//here
         {
-          AddMessage("Player ran away!");
-          ranAway = true;
+          
+          Random random = new Random();
+          if ((random.Next(0, 100) + 1) <= 20)
+          {
+            AddMessage("Player ran away!");
+            ranAway = true;
+          }
+          else
+            AddMessage("You failed to run away!");
+
+          selectedPlayer.hasGone = true;
+          ChangeLayers(0);
         }
+        lastMessageTime = gameTime.TotalGameTime;
       }
       if (IsKeyClicked(Keys.X))
       {
@@ -367,9 +381,9 @@ namespace BlackHoleLoans
       menuLayer = layer;
     }
 
-    public void Draw(GameTime gameTime)
+    public void Draw(GameTime gameTime, int whichBG)
     {
-      DrawBackground();
+      DrawBackground(whichBG);
       DrawCombatMenu();
       DrawEntities();
       DrawMessageQueue(gameTime);
@@ -768,7 +782,7 @@ namespace BlackHoleLoans
 
     public bool WonFight()
     {
-      return AllEnemiesAreDead() || ranAway;
+      return AllEnemiesAreDead();
     }
 
     public bool LostFight()
@@ -786,9 +800,21 @@ namespace BlackHoleLoans
         return Color.White;
     }
 
-    private void DrawBackground()
+    private void DrawBackground(int whichBG)
     {
-      spriteBatch.Draw(background, Vector2.Zero, Color.White);//change
+      if (whichBG == 7)
+        spriteBatch.Draw(backgrounds[0], Vector2.Zero, Color.White);//change
+
+      else if (whichBG == 6)
+        spriteBatch.Draw(backgrounds[1], Vector2.Zero, Color.White);
+
+      else if(whichBG == 8)
+        spriteBatch.Draw(backgrounds[2], Vector2.Zero, Color.White);
+    }
+
+    public bool RanAway()
+    {
+      return ranAway;
     }
 
   }
