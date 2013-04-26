@@ -53,7 +53,7 @@ namespace BlackHoleLoans
       prevKeyboardState = Keyboard.GetState();
 
       chosenStats[0] = chosenStats[1] = chosenStats[2] = 5;
-      letterIndex = new int[6];
+      letterIndex = new int[5];
       letters = new string[27] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
                                 "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", 
                                   "U","V","W","X","Y","Z"," "};
@@ -288,7 +288,7 @@ namespace BlackHoleLoans
       if (prevKeyboardState.IsKeyDown(Keys.B) && currentKeyboardState.IsKeyUp(Keys.B))
       {
         RequestBackToMM();
-        letterIndex[0] = letterIndex[1] = letterIndex[2] = letterIndex[3] = 0;
+        letterIndex[0] = letterIndex[1] = letterIndex[2] = letterIndex[3] = letterIndex[4] = 0;
         chosenStats[0] = chosenStats[1] = chosenStats[2] = 5;
         remainingStatPoints = 10;
       }
@@ -315,7 +315,7 @@ namespace BlackHoleLoans
 
       else if (prevKeyboardState.IsKeyUp(Keys.Right) && currentKeyboardState.IsKeyDown(Keys.Right))
       {
-        if (cursorLocation != 6)
+        if (cursorLocation != 5)
           cursorLocation++;
       }
 
@@ -444,14 +444,14 @@ namespace BlackHoleLoans
     private void SelectPlayerName()
     {
       string thePlayerName = letters[letterIndex[0]];//append all chars
-      for(int i=0; i<letterIndex.Length; i++)
+      for(int i=1; i<letterIndex.Length; i++)
       {
         thePlayerName += letters[letterIndex[i]];
       }
       playerName = thePlayerName.Trim();
 
       if (playerName == "")
-        playerName = "UTROLL";
+        playerName = "Player";
 
       currentScreen = 1;
       cursorLocation = 1;
@@ -510,13 +510,11 @@ namespace BlackHoleLoans
       spriteBatch. DrawString(bigFont, "Select your name (Press enter to continue)", new Vector2(0,50), Color.White);
 
       spriteBatch.DrawString(bigFont, "Your Name: ", new Vector2(0, 150), Color.White);
-      spriteBatch.DrawString(bigFont, "" + letters[letterIndex[0]], new Vector2(200, 150), letterColors[0]);
-      spriteBatch.DrawString(bigFont, "" + letters[letterIndex[1]], new Vector2(230, 150), letterColors[1]);
-      spriteBatch.DrawString(bigFont, "" + letters[letterIndex[2]], new Vector2(260, 150), letterColors[2]);
-      spriteBatch.DrawString(bigFont, "" + letters[letterIndex[3]], new Vector2(290, 150), letterColors[3]);
-      spriteBatch.DrawString(bigFont, "" + letters[letterIndex[4]], new Vector2(320, 150), letterColors[4]);
-      spriteBatch.DrawString(bigFont, "" + letters[letterIndex[5]], new Vector2(350, 150), letterColors[5]);
 
+      for (int i = 0; i < letterIndex.Length; i++)
+      {
+        spriteBatch.DrawString(bigFont, "" + letters[letterIndex[i]], new Vector2(200+30*(i), 150), letterColors[i]);
+      }
       spriteBatch.Draw(arrow, new Vector2((210+cursorLocation*30)-arrow.Width, 150-arrow.Height), Color.White);
       spriteBatch.Draw(flippedArrow, new Vector2((210+cursorLocation*30)-arrow.Width, 270-arrow.Height), Color.White);
 
