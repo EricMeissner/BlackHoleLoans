@@ -26,8 +26,9 @@ namespace BlackHoleLoans
     public Skill skillB { get; set; }
     Random random;
     public int lastEnemyHealth { get; set; }
-    bool startCombat = false;
     public Texture2D enemySprite { get; set; }
+    public bool startCombat = false;
+    int paralyzedCounter = 0;
 
     public Enemy(OverWorld ow, Tile t, int[] newpath, string name)
       : base(ow, t)
@@ -87,18 +88,31 @@ namespace BlackHoleLoans
     public override void OnCollision()
     {
       //run combat encounter
-      //Console.Write("Entered combat with entity by collision!\n");
+      Console.Write("Entered combat with entity by collision!\n");
+      startCombat = true;
     }
 
     public override void OnInteract()
     {
       //run combat encounter
-      //Console.Write("Entered combat with entity by interaction!\n");
+      Console.Write("Entered combat with entity by interaction!\n");
       //
+      startCombat = true;
+    }
+
+    public override bool StartCombat()
+    {
+      return startCombat;
     }
 
     public override void OnUpdate()
     {
+      if (paralyzedCounter > 0)
+      {
+        paralyzedCounter--;
+        return;
+      }
+
       if (MoveAdjacent(path[path_index]))
       {
         path_index++;
@@ -112,6 +126,11 @@ namespace BlackHoleLoans
     public override bool IsEnemy()
     {
       return true;
+    }
+
+    public void StopCombat()
+    {
+      startCombat = false;
     }
 
     //chad
@@ -213,6 +232,11 @@ namespace BlackHoleLoans
     public Texture2D EnemySprite()
     {
       return enemySprite;
+    }
+
+    public void ParalyzeEnemy()
+    {
+      paralyzedCounter = 10;
     }
   }
 }

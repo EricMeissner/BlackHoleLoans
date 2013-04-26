@@ -64,7 +64,7 @@ namespace BlackHoleLoans
       set;
     }
 
-    bool InCombat = false;
+    bool inCombat = false;
     Enemy combatEnemy;
 
     public OverWorld(TileMap owm, int x, int y, Game1 g)
@@ -212,14 +212,13 @@ namespace BlackHoleLoans
       Tile forward = getForward();
       if (forward == null || forward.Impassable)
         return false;
+
       else if (forward.entity != null)
       {
         if (forward.entity.IsEnemy())
         {
-          InCombat = true;
-          //Console.WriteLine("ENTERED COMBAT!");
+          inCombat = true;
           combatEnemy = (Enemy)forward.entity;
-          forward.entity.remove();
           return false;
         }
         forward.entity.OnCollision();
@@ -277,7 +276,7 @@ namespace BlackHoleLoans
 
     public bool IsInCombat()
     {
-      return InCombat;
+      return inCombat;
     }
 
     public Enemy GetOpponent()
@@ -287,7 +286,22 @@ namespace BlackHoleLoans
 
     public void FinishedCombat()
     {
-      InCombat = false;
+      inCombat = false;
+    }
+
+    public bool CheckForEnemyCollision()
+    {
+
+      foreach (Entity e in EntityList)
+      {
+        if (e.IsEnemy() && e.StartCombat())
+        {
+          ((Enemy)e).StopCombat();
+          combatEnemy = (Enemy)e;
+          return true;
+        }
+      }
+      return false;
     }
   }
 }

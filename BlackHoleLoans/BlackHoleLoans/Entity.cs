@@ -156,5 +156,10 @@ namespace BlackHoleLoans
     {
       return false;
     }
+
+    public virtual bool StartCombat()
+    {
+      return false;
+    }
   }
 }
