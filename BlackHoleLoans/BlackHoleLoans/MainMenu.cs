@@ -81,13 +81,16 @@ namespace BlackHoleLoans
       #region Entering a menu options
 
       //If enter was pressed..
+      if (prevKeyboardState.IsKeyDown(Keys.B) && currentKeyboardState.IsKeyUp(Keys.B))
+      {
+        if (menuScreen == CONTROLS || menuScreen == CREDITS)
+          menuScreen = MAINMENU;
+      }
+
       if (prevKeyboardState.IsKeyDown(Keys.Enter) && currentKeyboardState.IsKeyUp(Keys.Enter))
       {
         if ((menuCursorLocation == 1 && menuScreen == MAINMENU))
           return 1;
-
-        if (menuScreen == CONTROLS || menuScreen == CREDITS)
-          menuScreen = MAINMENU;
 
         else if (menuCursorLocation == 2)
         {
@@ -182,6 +185,8 @@ namespace BlackHoleLoans
     {
       spriteBatch.DrawString(bigFont, "Controls", new Vector2(200, 150), Color.White);
 
+      spriteBatch.DrawString(bigFont, "Please read the README.txt file", new Vector2(200,250), Color.White);
+      spriteBatch.DrawString(bigFont, "for information related to controls", new Vector2(200, 350), Color.White);
       //Add in all the keys we'll be using in the game
     }
 
