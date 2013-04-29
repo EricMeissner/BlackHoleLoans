@@ -24,8 +24,11 @@ namespace BlackHoleLoans
     CharacterCreation characterCreation;
     OverWorld OW;
     OWMenu ingameMenu;
-    Player[] party;
+    public Player[] party;
     int currentGameState;
+    public String messageString = null;
+    public Queue<string> messageQueue;
+    MessageBox message;
 
     //Eric's code start
     int OWcontrolspeed = 4;
@@ -59,6 +62,8 @@ namespace BlackHoleLoans
       currentGameState = 0;//change back to 0
 
       createdCombat = pausedGame = false;
+      message = new MessageBox(Content, graphics.PreferredBackBufferHeight, graphics.PreferredBackBufferWidth);
+      messageQueue = new Queue<string>();
       keyState = Keyboard.GetState();
       prevKeystate = keyState;
     }
@@ -89,6 +94,7 @@ namespace BlackHoleLoans
 
       mainMenu.LoadContent();
       characterCreation.LoadContent(Content);
+      message.LoadContent();
     }
 
     protected void LoadOverWorldContent()
@@ -190,7 +196,7 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
 
       Entity temp;
 
-      temp = new Door(OW, OW.OWmap.getTile(2, 7), 3, tempTileMap, null);
+      temp = new LockedDoor(OW, OW.OWmap.getTile(2, 7), 3, tempTileMap, null, 777);
       temp.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
           "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
       Door tempSister = new Door(OW, tempTileMap.getTile(1, 0), 1, OW.OWmap, (Door)temp);
@@ -238,6 +244,28 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
       ((Door)temp4).sister = tempSister4;
       tempTileMap3.EntityList.Add(temp4);
       tempTileMap4.EntityList.Add(tempSister4);
+
+      #endregion
+
+      #region Chest ceation
+
+      List<Item> temp_chest_items = new List<Item>();
+      temp_chest_items.Add(new Key("Test Chest Key", 1));
+      Chest tempChest = new Chest(OW, OW.OWmap.getTile(1, 5), 100, temp_chest_items);
+      tempChest.setAvatarFileString("EntityAvatar/Chest/Chest_Only_HeatherLeeHarvey", "EntityAvatar/Chest/Chest_Only_HeatherLeeHarvey",
+          "EntityAvatar/Chest/Chest_Only_HeatherLeeHarvey", "EntityAvatar/Chest/Chest_Only_HeatherLeeHarvey");
+      OW.OWmap.EntityList.Add(tempChest);
+
+      temp_chest_items = new List<Item>();
+      temp_chest_items.Add(new Key("Door Key", 777));
+      //temp_chest_items.Add(new Item("Rat-Tail"));
+      //temp_chest_items.Add(new Item("MacGuffin"));
+      //temp_chest_items.Add(new Item("Red Potion"));
+      //temp_chest_items.Add(new Item("Katana"));
+      tempChest = new LockedChest(OW, OW.OWmap.getTile(1, 3), 100, temp_chest_items, 1);
+      tempChest.setAvatarFileString("EntityAvatar/Chest/Chest_Only_HeatherLeeHarvey", "EntityAvatar/Chest/Chest_Only_HeatherLeeHarvey",
+          "EntityAvatar/Chest/Chest_Only_HeatherLeeHarvey", "EntityAvatar/Chest/Chest_Only_HeatherLeeHarvey");
+      OW.OWmap.EntityList.Add(tempChest);
 
       #endregion
     }
@@ -335,7 +363,6 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
       #endregion
 
       #region OW
-
       else if (currentGameState == 2)//Overworld change back to 2
       {
         if (keyState.IsKeyDown(Keys.M))
@@ -358,77 +385,102 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
           player_timer = 0;
         }
         //Eric's code start
-        //Console.WriteLine("Player x position"+OW.Xpos+" Player y position"+OW.Ypos);
-        #region Tapping directional keys
-        if (prevKeystate.IsKeyUp(Keys.Up) && keyState.IsKeyDown(Keys.Up))
+        if (messageString == null && messageQueue.Count() == 0)
         {
-          this.OW.playerStep(0);
-          //action_timer = 0;
-          player_timer = 0;
-        }
+            //Console.WriteLine("Player x position"+OW.Xpos+" Player y position"+OW.Ypos);
+            #region Tapping directional keys
+            if (prevKeystate.IsKeyUp(Keys.Up) && keyState.IsKeyDown(Keys.Up))
+            {
+                this.OW.playerStep(0);
+                //action_timer = 0;
+                player_timer = 0;
+            }
 
-        else if (prevKeystate.IsKeyUp(Keys.Right) && keyState.IsKeyDown(Keys.Right))
+            else if (prevKeystate.IsKeyUp(Keys.Right) && keyState.IsKeyDown(Keys.Right))
+            {
+                this.OW.playerStep(1);
+                //action_timer = 0;
+                player_timer = 0;
+            }
+
+            else if (prevKeystate.IsKeyUp(Keys.Down) && keyState.IsKeyDown(Keys.Down))
+            {
+                this.OW.playerStep(2);
+                player_timer = 0;
+                //action_timer = 0;
+            }
+
+            else if (prevKeystate.IsKeyUp(Keys.Left) && keyState.IsKeyDown(Keys.Left))
+            {
+                this.OW.playerStep(3);
+                player_timer = 0;
+                //action_timer = 0;
+            }
+            else if (prevKeystate.IsKeyUp(Keys.Z) &&  keyState.IsKeyDown(Keys.Z))
+            {
+                this.OW.playerInteract();
+                player_timer = 0;
+            }
+            #endregion
+
+            #region Holding down directional keys
+            else if (player_timer % (60 / OWcontrolspeed) == 0)
+            {
+                if (keyState.IsKeyDown(Keys.Up))
+                {
+                    this.OW.playerStep(0);
+                }
+                else if (keyState.IsKeyDown(Keys.Right))
+                {
+                    this.OW.playerStep(1);
+                }
+                else if (keyState.IsKeyDown(Keys.Down))
+                {
+                    this.OW.playerStep(2);
+                }
+                else if (keyState.IsKeyDown(Keys.Left))
+                {
+                    this.OW.playerStep(3);
+                }
+                else
+                {
+                    player_timer = 0;
+                }
+                if (keyState.IsKeyDown(Keys.Z))
+                {
+                    this.OW.playerInteract();
+                }
+                if (keyState.IsKeyDown(Keys.I) || keyState.IsKeyDown(Keys.Tab)) // tab might not work
+                {
+                    messageQueue.Enqueue(this.party[0].toString());
+                }
+                //end
+            }
+            #endregion
+
+            if (enemy_timer % (60 / OWentityspeed) == 0)
+            {
+                foreach (Entity current in OW.EntityList)
+                {
+                    current.OnUpdate();
+                }
+            }
+        }
+        else
         {
-          this.OW.playerStep(1);
-          //action_timer = 0;
-          player_timer = 0;
+            if ((messageString == null)
+                || (prevKeystate.IsKeyUp(Keys.Z) && keyState.IsKeyDown(Keys.Z)))
+            {
+                if (messageQueue.Count() != 0)
+                {
+                    messageString = messageQueue.Dequeue();
+                }
+                else
+                    messageString = null;
+            }
         }
-
-        else if (prevKeystate.IsKeyUp(Keys.Down) && keyState.IsKeyDown(Keys.Down))
-        {
-          this.OW.playerStep(2);
-          player_timer = 0;
-          //action_timer = 0;
-        }
-
-        else if (prevKeystate.IsKeyUp(Keys.Left) && keyState.IsKeyDown(Keys.Left))
-        {
-          this.OW.playerStep(3);
-          player_timer = 0;
-          //action_timer = 0;
-        }
-        #endregion
-
-        #region Holding down directional keys
-        else if (player_timer % (60 / OWcontrolspeed) == 0)
-        {
-          if (keyState.IsKeyDown(Keys.Up))
-          {
-            this.OW.playerStep(0);
-          }
-          else if (keyState.IsKeyDown(Keys.Right))
-          {
-            this.OW.playerStep(1);
-          }
-          else if (keyState.IsKeyDown(Keys.Down))
-          {
-            this.OW.playerStep(2);
-          }
-          else if (keyState.IsKeyDown(Keys.Left))
-          {
-            this.OW.playerStep(3);
-          }
-          else
-          {
-            player_timer = 0;
-          }
-          if (keyState.IsKeyDown(Keys.Z))
-          {
-            this.OW.playerInteract();
-          }
-          //end
-        }
-        #endregion
-
-        if (enemy_timer % (60 / OWentityspeed) == 0)
-        {
-          foreach (Entity current in OW.EntityList)
-          {
-            current.OnUpdate();
-          }
-        }
-        OW.Draw(spriteBatch, graphics);
-
+        //OW.Draw(spriteBatch, graphics);  // I think I was drawing twice
+        
         if (OW.IsInCombat() || OW.CheckForEnemyCollision())
         {
           currentGameState = 3;
@@ -545,9 +597,13 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
       }
       else if (currentGameState == 2)//change back to 2
       {
-        spriteBatch.End();
+        
         OW.Draw(spriteBatch, graphics);
-
+        if (messageString != null)
+        {
+            message.DrawMessage(messageString, spriteBatch);
+        }
+        spriteBatch.End();
       }
 
       else if (currentGameState == 3)

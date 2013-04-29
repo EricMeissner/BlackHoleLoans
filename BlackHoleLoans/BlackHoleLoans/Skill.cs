@@ -7,13 +7,15 @@ using BlackHoleLoans.PlayerRelated;
 namespace BlackHoleLoans
 {
   [Flags]
-  public enum Skills { Fire, Ice, Heal }//add skill name
+  public enum Skills { Fire, Ice, Heal, HealOther }//add skill name
+  public enum Target_Type { Self, Enemy, Ally };
   public class Skill
   {
     public float skillRatio { get; set; }
     public string Name { get; set; }
     public bool isDamage;
     public bool isHealing;
+    public Target_Type target_type;
     public Skill(Skills skill)//add new if statement for new skill
     {
       isDamage = false;
@@ -25,6 +27,7 @@ namespace BlackHoleLoans
         Name = "Fire";
         isDamage = true;
         isHealing = false;
+        target_type = Target_Type.Enemy;
       }
       if (skill.HasFlag(Skills.Ice))
       {
@@ -32,13 +35,23 @@ namespace BlackHoleLoans
         Name = "Ice";
         isDamage = true;
         isHealing = false;
+        target_type = Target_Type.Enemy;
       }
-      if (skill.HasFlag(Skills.Heal))
+      if (skill.HasFlag(Skills.Heal)) //rename HealSelf?
       {
         skillRatio = 1.0f;
         Name = "Heal";
         isDamage = false;
         isHealing = true;
+        target_type = Target_Type.Self;
+      }
+      if (skill.HasFlag(Skills.HealOther))
+      {
+          skillRatio = 1.0f;
+          Name = "Heal Other";
+          isDamage = false;
+          isHealing = true;
+          target_type = Target_Type.Ally;
       }
     }
   }
