@@ -24,6 +24,7 @@ namespace BlackHoleLoans
     public bool isFainted { get; set; }
     public bool hasGone { get; set; }
     public int lastPlayerHealth { get; set; }
+    public List<Item> inventory; // only for main character?
      
     public Player(int atk, int def, int con, Texture2D[]pS, int cI, string n, Skill a, Skill b)
     //also pass in array of textures (player dir movement) & an int (for which class
@@ -38,6 +39,7 @@ namespace BlackHoleLoans
       skillB = b;
       isFainted = false;
       hasGone = false;
+      inventory = new List<Item>();
     }
 
     public Player(int[]stats, Texture2D []partyMemberSprite, int cI, Skill a, Skill b)
@@ -47,6 +49,7 @@ namespace BlackHoleLoans
       skillA = a;
       skillB = b;
       playerStats = new PlayerStatistics(stats[0], stats[1], stats[2]);
+      inventory = new List<Item>();
 
       if (cI == 1)
         Name = "WARRIOR";
@@ -111,6 +114,33 @@ namespace BlackHoleLoans
         int health = (int)(playerStats.Concentration * skillB.skillRatio);
         p.GetPlayerStats().addHealth(health);
       }
+    }
+    public bool addItem(Item i)
+    {
+        inventory.Add(i);
+
+        return true; //put in code for full inventory here if need-be
+
+    }
+
+    public void addGold(int newgold)
+    {
+        gold += newgold;
+    }
+
+    public String toString()
+    {
+        String result = "";
+        result += "Player info: ";
+        result += "Name: " + Name + "; ";
+        result += "Gold: " + gold + "; ";
+        //result += "Class id: " + classIdentifier + "\n";
+        result += "Inventory: ";
+        foreach (Item i in inventory)
+        {
+            result += "" + i.name + ", ";
+        }
+        return result;
     }
   }
 }

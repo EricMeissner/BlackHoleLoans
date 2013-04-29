@@ -110,12 +110,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chest.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="ContentRepository.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyStatistics.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="Key.cs" />
+    <Compile Include="LockedChest.cs" />
+    <Compile Include="LockedDoor.cs" />
+    <Compile Include="MessageBox.cs" />
     <Compile Include="OverWorld.cs" />
     <Compile Include="OWMenu.cs" />
     <Compile Include="PlayerRelated\CharacterCreation.cs" />
