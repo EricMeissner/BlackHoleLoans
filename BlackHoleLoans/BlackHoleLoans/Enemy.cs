@@ -112,8 +112,15 @@ namespace BlackHoleLoans
         paralyzedCounter--;
         return;
       }
-
-      if (MoveAdjacent(path[path_index]))
+      if (path[path_index] == -1)
+      {
+          path_index++;
+          if (path_index >= path.Length)
+          {
+              path_index = 0;
+          }
+      }
+      else if (MoveAdjacent(path[path_index]))
       {
         path_index++;
         if (path_index >= path.Length)
