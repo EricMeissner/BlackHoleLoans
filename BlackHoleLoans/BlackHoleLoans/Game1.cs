@@ -501,9 +501,13 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
                 if (messageQueue.Count() != 0)
                 {
                     messageString = messageQueue.Dequeue();
+                    player_timer = 0;
                 }
                 else
+                {
                     messageString = null;
+                    player_timer = 0;
+                }
             }
         }
         //OW.Draw(spriteBatch, graphics);  // I think I was drawing twice

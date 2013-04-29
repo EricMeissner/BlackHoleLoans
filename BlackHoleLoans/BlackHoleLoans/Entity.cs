@@ -101,7 +101,7 @@ namespace BlackHoleLoans
 
     protected bool MoveTo(Tile t)
     { //does not check collision with player, check before you call it
-      if (t != tile && t.entity == null)
+      if (t != tile && t.entity == null && !(t.Impassable))
       {
         t.entity = this;
         tile.entity = null;
