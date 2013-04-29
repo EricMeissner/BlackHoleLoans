@@ -25,7 +25,17 @@ namespace BlackHoleLoans
     public bool hasGone { get; set; }
     public int lastPlayerHealth { get; set; }
     public List<Item> inventory; // only for main character?
-     
+      /*
+    public List<Equip> gear;
+    PlayerStatistics ModifiedStats
+    {
+        get
+        {
+            //TODO implementation;
+        }
+    }
+    */
+
     public Player(int atk, int def, int con, Texture2D[]pS, int cI, string n, Skill a, Skill b)
     //also pass in array of textures (player dir movement) & an int (for which class
     //the player is?) - don't need anything the race
