@@ -73,6 +73,9 @@ namespace BlackHoleLoans
         spriteBatch.DrawString(font, party[i].Name, new Vector2(150, 300+(i*50)), Color.White);
         spriteBatch.DrawString(font, "Health: " + party[i].GetPlayerStats().Health + "/" +
                   party[i].GetPlayerStats().TotalHealth, new Vector2(350, 300+(i*50)), Color.White);
+
+        spriteBatch.DrawString(font, "Level: "+party[i].GetPlayerStats().Level, 
+          new Vector2(600,300 + (i * 50)), Color.White);
       }
       spriteBatch.Draw(party[0].GetPlayerSprites()[1], new Vector2(300, 300), Color.White);
       spriteBatch.Draw(party[1].GetPlayerSprites()[0], new Vector2(300, 350), Color.White);

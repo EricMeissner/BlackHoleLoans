@@ -43,7 +43,6 @@ namespace BlackHoleLoans
     //end chad
     bool createdCombat, pausedGame;
     int combatBackgroundID;
-    bool paralyzed = false;//Player ran away -> used to paralyzed enemy for a tiny bit
     KeyboardState keyState, prevKeystate;
 
     public Game1()
@@ -53,7 +52,7 @@ namespace BlackHoleLoans
 
       graphics.PreferredBackBufferWidth = 800;
       graphics.PreferredBackBufferHeight = 600;
-      IsMouseVisible = true;
+      //IsMouseVisible = true;
 
       mainMenu = new MainMenu(Content, graphics.PreferredBackBufferWidth,
         graphics.PreferredBackBufferHeight);
@@ -149,47 +148,75 @@ namespace BlackHoleLoans
 
       #region Enemy Creation
 
-      Entity enemy1 = new Enemy(OW, tempTileMap.getTile(5, 5), 0, new int[] { 0, 1, 2, 3 }, "Blue Spider");
+      Entity enemy1 = new Enemy(OW, tempTileMap.getTile(3, 4), 0, 
+        new int[] { 2, 2, 3, 3, 0, 0, 0, 0, 1, 1, 1, 1 , 2, 2, 3, 3 } , "Blue Spider");
       enemy1.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
         "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
       tempTileMap.EntityList.Add(enemy1);
 
-      Entity enemy2 = new Enemy(OW, tempTileMap.getTile(8, 8), 0, new int[] { 2, 3, 0, 1 }, "Blue Spider");
+      Entity enemy2 = new Enemy(OW, tempTileMap.getTile(8, 11), 0, 
+        new int[] { 0,0,1,1,2,2,2,2,3,3,3,3,0,0,1,1 }, "Blue Spider");
       enemy2.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
         "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
       tempTileMap.EntityList.Add(enemy2);
 
-      Entity enemy3 = new Enemy(OW, tempTileMap2.getTile(8, 8), 0, 
-        new int[] { 1, 1, 1, 1, 3, 3, 3, 3 }, 
+      Entity enemy3 = new Enemy(OW, tempTileMap2.getTile(2, 12), 0, 
+        new int[] { 1, 1, 3, 3, 3, 3, 1, 1 }, 
         "Purple Spider");
       enemy3.setAvatarFileString("EnemySprites/PurpleSpiderRight", "EnemySprites/PurpleSpiderRight",
         "EnemySprites/PurpleSpiderLeft", "EnemySprites/PurpleSpiderLeft");
       tempTileMap2.EntityList.Add(enemy3);
 
 
-      Entity enemy4 = new Enemy(OW, tempTileMap2.getTile(5, 4), 0,
-  new int[] { 0, 0, 2, 2, 2, 2, 0, 0 },
+      Entity enemy4 = new Enemy(OW, tempTileMap2.getTile(1, 2), 0,
+  new int[] {3,2,2,1,2,2,3,2,2,1,0,0,3,0,0,1,0,0},
   "Purple Spider");
       enemy4.setAvatarFileString("EnemySprites/PurpleSpiderRight", "EnemySprites/PurpleSpiderRight",
         "EnemySprites/PurpleSpiderLeft", "EnemySprites/PurpleSpiderLeft");
       tempTileMap2.EntityList.Add(enemy4);
 
 
-      Entity enemy5 = new Enemy(OW, tempTileMap3.getTile(8, 14), 0,
-new int[] { 0, 0, 0, 0, 2, 2, 2, 2 },
+      Entity enemy5 = new Enemy(OW, tempTileMap3.getTile(1, 3), 0,
+new int[] {2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3},
 "Purple Monster");
       enemy5.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
         "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
       tempTileMap3.EntityList.Add(enemy5);
 
-      Entity enemy6 = new Enemy(OW, tempTileMap3.getTile(4, 13), 0,
-new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
+      Entity enemy6 = new Enemy(OW, tempTileMap3.getTile(8, 3), 0,
+new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2 },
 "Purple Monster");
       enemy6.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
         "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
       tempTileMap3.EntityList.Add(enemy6);
 
+      Entity enemy7 = new Enemy(OW, tempTileMap3.getTile(8, 14), 0,
+new int[] { 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+"Purple Monster");
+      enemy7.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
+        "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
+      tempTileMap3.EntityList.Add(enemy7);
 
+      Entity enemy8 = new Enemy(OW, tempTileMap3.getTile(1, 14), 0,
+new int[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1  ,0, 0, 0, 0, 0, 0, 0},
+"Purple Monster");
+      enemy8.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
+        "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
+      tempTileMap3.EntityList.Add(enemy8);
+
+      Entity enemy9 = new Enemy(OW, tempTileMap3.getTile(3, 11), 0,
+new int[] { 2,2,2,3,3,3,3,3,0,0,0,1,1,1,1,1 },
+"Purple Monster");
+      enemy9.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
+        "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
+      tempTileMap3.EntityList.Add(enemy9);
+
+      Entity enemy10 = new Enemy(OW, tempTileMap3.getTile(6, 6), 0,
+new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
+"Purple Monster");
+      enemy10.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
+        "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
+      tempTileMap3.EntityList.Add(enemy10);
       #endregion
 
       #region Map Creation (includes doors)
@@ -221,11 +248,11 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
 
 
 
-      Entity temp3 = new Door(OW, tempTileMap2.getTile(1, 15), 3, tempTileMap3, null);//10 15
+      Entity temp3 = new Door(OW, tempTileMap2.getTile(0, 8), 2, tempTileMap3, null);//10 15
       temp3.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
      "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
 
-      Door tempSister3 = new Door(OW, tempTileMap3.getTile(10, 0), 1, tempTileMap2, (Door)temp3);
+      Door tempSister3 = new Door(OW, tempTileMap3.getTile(11, 7), 0, tempTileMap2, (Door)temp3);
       tempSister3.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
           "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
       ((Door)temp3).sister = tempSister3;
@@ -234,11 +261,11 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
 
 
 
-      Entity temp4 = new Door(OW, tempTileMap3.getTile(6, 15), 3, tempTileMap4, null);//10 15
+      Entity temp4 = new Door(OW, tempTileMap3.getTile(6, 0), 1, tempTileMap4, null);//10 15
       temp4.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
      "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
 
-      Door tempSister4 = new Door(OW, tempTileMap4.getTile(5, 0), 1, tempTileMap3, (Door)temp4);
+      Door tempSister4 = new Door(OW, tempTileMap4.getTile(6, 15), 3, tempTileMap3, (Door)temp4);
       tempSister4.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
           "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
       ((Door)temp4).sister = tempSister4;
@@ -513,6 +540,7 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
             player.isFainted = false;
             player.GetPlayerStats().FullHeal();
             player.hasGone = false;
+            player.GetPlayerStats().LevelUp();
           }
           createdCombat = false;
         }
@@ -537,7 +565,7 @@ new int[] { 2, 2, 2, 2, 0, 0, 0, 0},
           foreach (Player player in party)
           {
             player.isFainted = false;
-            player.GetPlayerStats().FullHeal();
+            //player.GetPlayerStats().FullHeal();
             player.hasGone = false;
           }
         }

@@ -32,6 +32,11 @@ namespace BlackHoleLoans
       get { return health; }
     }
 
+    public int Level
+    {
+      get { return level; }
+    }
+
     public bool isDead()
     {
       if (health <= 0)
@@ -93,14 +98,14 @@ namespace BlackHoleLoans
     /// <param name="exp"></param>
     public void GainExperience(int exp) { }
 
-    private void LevelUp(int leftOverEXP)
+    public void LevelUp()
     {
       attack++;
       defence++;
       concentration++;
-      health += 10;
+      TotalHealth += 10;
+      this.FullHeal();
       level++;
-      experience = leftOverEXP;
     }
 
     public void FullHeal()
