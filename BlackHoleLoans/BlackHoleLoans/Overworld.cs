@@ -126,7 +126,7 @@ namespace BlackHoleLoans
 
     public void Draw(SpriteBatch spriteBatch, GraphicsDeviceManager graphics)
     {
-      spriteBatch.Begin();
+      //spriteBatch.Begin();
 
       for (int x = 0; x < OWmap.Map.GetLength(0); x++)
       {
@@ -158,7 +158,7 @@ namespace BlackHoleLoans
         }
       }
 
-      spriteBatch.End();
+      //spriteBatch.End();
     }
 
     public Tile getCurrent()
