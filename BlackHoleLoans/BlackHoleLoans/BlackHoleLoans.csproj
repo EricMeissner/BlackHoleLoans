@@ -135,8 +135,8 @@
     <Compile Include="Skill.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="Tilemap.cs" />
-    <Compile Include="Vendor.cs" />
-    <Compile Include="VendorMenu.cs" />
+    <Compile Include="NPC.cs" />
+    <Compile Include="NPCMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="BHLicon.ico" />

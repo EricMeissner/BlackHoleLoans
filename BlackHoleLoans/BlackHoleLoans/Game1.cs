@@ -29,6 +29,7 @@ namespace BlackHoleLoans
     public String messageString = null;
     public Queue<string> messageQueue;
     MessageBox message;
+    public NPCMenu npc_menu;
 
     //Eric's code start
     int OWcontrolspeed = 4;
@@ -63,6 +64,7 @@ namespace BlackHoleLoans
       createdCombat = pausedGame = false;
       message = new MessageBox(Content, graphics.PreferredBackBufferHeight, graphics.PreferredBackBufferWidth);
       messageQueue = new Queue<string>();
+      npc_menu = new NPCMenu(Content, graphics.PreferredBackBufferHeight, graphics.PreferredBackBufferWidth);
       keyState = Keyboard.GetState();
       prevKeystate = keyState;
     }
@@ -94,6 +96,7 @@ namespace BlackHoleLoans
       mainMenu.LoadContent();
       characterCreation.LoadContent(Content);
       message.LoadContent();
+      npc_menu.LoadContent();
     }
 
     protected void LoadOverWorldContent()
@@ -295,6 +298,11 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
       OW.OWmap.EntityList.Add(tempChest);
 
       #endregion
+
+      NPC doc = new NPC(OW, tempTileMap.getTile(8, 8), NPC_Type.Doctor);
+      doc.setAvatarFileString("EntityAvatar/NPC/NPC_Doctor_Bot", "EntityAvatar/NPC/NPC_Doctor_Bot",
+          "EntityAvatar/NPC/NPC_Doctor_Bot", "EntityAvatar/NPC/NPC_Doctor_Bot");
+      tempTileMap.EntityList.Add(doc);
     }
 
     private void CreateCombat(Enemy e)
@@ -412,7 +420,7 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
           player_timer = 0;
         }
         //Eric's code start
-        if (messageString == null && messageQueue.Count() == 0)
+        if (messageString == null && messageQueue.Count() == 0 && (npc_menu._asker == null))
         {
             //Console.WriteLine("Player x position"+OW.Xpos+" Player y position"+OW.Ypos);
             #region Tapping directional keys
@@ -495,18 +503,28 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
         }
         else
         {
-            if ((messageString == null)
-                || (prevKeystate.IsKeyUp(Keys.Z) && keyState.IsKeyDown(Keys.Z)))
+            if (npc_menu._asker != null)
             {
-                if (messageQueue.Count() != 0)
+                if (npc_menu.Answer(keyState, prevKeystate))
                 {
-                    messageString = messageQueue.Dequeue();
-                    player_timer = 0;
+                    npc_menu._asker = null;
                 }
-                else
+            }
+            else
+            {
+                if ((messageString == null)
+                    || (prevKeystate.IsKeyUp(Keys.Z) && keyState.IsKeyDown(Keys.Z)))
                 {
-                    messageString = null;
-                    player_timer = 0;
+                    if (messageQueue.Count() != 0)
+                    {
+                        messageString = messageQueue.Dequeue();
+                        player_timer = 0;
+                    }
+                    else
+                    {
+                        messageString = null;
+                        player_timer = 0;
+                    }
                 }
             }
         }
@@ -631,7 +649,11 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
       {
         
         OW.Draw(spriteBatch, graphics);
-        if (messageString != null)
+        if (npc_menu._asker != null)
+        {
+            npc_menu.DrawMessage(spriteBatch);
+        }
+        else if (messageString != null)
         {
             message.DrawMessage(messageString, spriteBatch);
         }

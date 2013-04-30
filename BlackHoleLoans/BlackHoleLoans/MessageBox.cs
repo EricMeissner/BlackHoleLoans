@@ -34,9 +34,9 @@ namespace BlackHoleLoans
 
         public void DrawMessage(String message, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(messagebase, new Rectangle(0, 0, _width, messagebase.Height * 3), Color.White);
+            spriteBatch.Draw(messagebase, new Rectangle(0, 0, _width, 3*messagebase.Height), Color.White);
             Vector2 textCenter = combatfontsmall.MeasureString(message) * .5f;
-            spriteBatch.DrawString(combatfontsmall, message, new Vector2(_width / 2 - textCenter.X, messagebase.Height / 2 - textCenter.Y), Color.White);
+            spriteBatch.DrawString(combatfontsmall, message, new Vector2(_width / 2 - textCenter.X, messagebase.Height / 2 - textCenter.Y/3), Color.White);
         }
     }
 }
