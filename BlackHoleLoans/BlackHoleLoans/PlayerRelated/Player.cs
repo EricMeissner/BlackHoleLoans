@@ -17,6 +17,7 @@ namespace BlackHoleLoans
     Texture2D[] playerSprites;
     int classIdentifier;//1=warrior, 2=wizard, 3=shooter
     int gold;
+    public int Gold { get { return gold; } }
 
     public string Name { get; set; }
     public Skill skillA{get;set;}
