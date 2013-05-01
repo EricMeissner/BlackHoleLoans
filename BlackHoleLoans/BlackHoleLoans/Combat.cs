@@ -25,6 +25,8 @@ namespace BlackHoleLoans
     private int highestMenuOption, lowestMenuOption, menuLayer;
     private Texture2D combatmenubase, cursor, dummyplayertexture, dummyenemytexture, healthbar, gray, messagebase;
     private SpriteFont combatfontbig, combatfontsmall, verysmallfont;
+    private SoundEffect menuselect,menuconfirm,menuback,enemydeath,winsound,losesound;
+    private Song battletheme;
     private Player selectedPlayer, enemySelectedPlayer;
     private Enemy selectedEnemy;
     private Player[] thePlayers;
@@ -42,7 +44,7 @@ namespace BlackHoleLoans
     #endregion
     public enum MenuOption { Fight = 1, Run = 2, Attack = 3, SkillA = 4, SkillB = 5 }
 
-    public Combat(ContentManager content, int height, int width, Game1 game, Player[] p, Enemy[] e)
+    public Combat(ContentManager content, int height, int width, Game1 game, Player[] p, Enemy[] e, float vol)
     {
       _content = content;
       _height = height;
@@ -61,6 +63,8 @@ namespace BlackHoleLoans
       AddMessage("Player Turn");
       ranAway = false;
       backgrounds = new Texture2D[3];
+      MediaPlayer.IsRepeating = true;
+      MediaPlayer.Volume = vol;
     }
 
     public bool IsDone()
@@ -95,10 +99,21 @@ namespace BlackHoleLoans
       combatfontsmall = _content.Load<SpriteFont>("Combat/combatfontsmall");
       verysmallfont = _content.Load<SpriteFont>("Combat/verysmallfont");
       #endregion
+      #region sounds
+      menuselect = _content.Load<SoundEffect>("Combat/menuselect");
+      menuconfirm = _content.Load<SoundEffect>("Combat/menuconfirm");
+      menuback = _content.Load<SoundEffect>("Combat/menuback");
+      battletheme = _content.Load<Song>("Combat/battletheme");
+      enemydeath = _content.Load<SoundEffect>("Combat/enemydeath");
+      winsound = _content.Load<SoundEffect>("Combat/winsound");
+      losesound = _content.Load<SoundEffect>("Combat/losesound");
+      MediaPlayer.Play(battletheme);
+      #endregion
     }
 
     public void Update(GameTime gameTime)
     {
+      UpdateCombatStatus();
       prevKeyboardState = currentKeyboardState;
       currentKeyboardState = Keyboard.GetState();
       #region combat menu logic
@@ -127,6 +142,20 @@ namespace BlackHoleLoans
         ChangeTurns(gameTime);
       }
       #endregion
+      PlayMenuSounds();
+      UpdatePlayers();
+    }
+
+    private void PlayMenuSounds()
+    {
+        if (IsKeyClicked(Keys.Z))
+        {
+            menuconfirm.Play(MediaPlayer.Volume*4, 0f, 0f);
+        }
+        if (IsKeyClicked(Keys.X))
+        {
+          menuback.Play(MediaPlayer.Volume * 4, 0f, 0f);
+        }
     }
 
     private bool AllPlayersHaveGone()
@@ -172,24 +201,7 @@ namespace BlackHoleLoans
         StartEnemyTurn(gameTime);
         AddMessage("Player Turn");
       }
-      else if (WonFight())
-      {
-        if (onlyDoOnce == 0)
-        {
-          AddMessage("You have defeated the enemy!");
-          onlyDoOnce++;
-        }
-      }
 
-      else if (LostFight())
-      {
-        if (onlyDoOnce == 0)
-        {
-          AddMessage("You have been defeated!");
-          onlyDoOnce++;
-        }
-
-      }
       for (int i = 0; i < thePlayers.Length; i++)
       {
         if(!thePlayers[i].isFainted)
@@ -202,10 +214,12 @@ namespace BlackHoleLoans
       if (IsKeyClicked(Keys.Down) && menuoption != lowestMenuOption)
       {
         menuoption++;
+        menuselect.Play(MediaPlayer.Volume * 4, 0f, 0f);
       }
       if (IsKeyClicked(Keys.Up) && menuoption != highestMenuOption)
       {
         menuoption--;
+        menuselect.Play(MediaPlayer.Volume * 4, 0f, 0f);
       }
     }
 
@@ -243,9 +257,12 @@ namespace BlackHoleLoans
       {
         if (lastMenuChoiceTime + menuinterval < gameTime.TotalGameTime)
         {
-          selectedEnemy = theEnemies[0];
-          ExecutePlayerAction(selectedPlayerAction, gameTime);
-          selectedPlayer.hasGone = true;
+            if (!theEnemies[0].isDead)
+            {
+                selectedEnemy = theEnemies[0];
+                ExecutePlayerAction(selectedPlayerAction, gameTime);
+                selectedPlayer.hasGone = true;
+            }
         }
       }
 
@@ -254,9 +271,13 @@ namespace BlackHoleLoans
       {
         if (lastMenuChoiceTime + menuinterval < gameTime.TotalGameTime)
         {
-          selectedEnemy = theEnemies[1];
-          ExecutePlayerAction(selectedPlayerAction, gameTime);
-          selectedPlayer.hasGone = true;
+            if (!theEnemies[1].isDead)
+            {
+                selectedEnemy = theEnemies[1];
+
+                ExecutePlayerAction(selectedPlayerAction, gameTime);
+                selectedPlayer.hasGone = true;
+            }
         }
       }
 
@@ -265,9 +286,12 @@ namespace BlackHoleLoans
       {
         if (lastMenuChoiceTime + menuinterval < gameTime.TotalGameTime)
         {
-          selectedEnemy = theEnemies[2];
-          ExecutePlayerAction(selectedPlayerAction, gameTime);
-          selectedPlayer.hasGone = true;
+            if (!theEnemies[2].isDead)
+            {
+                selectedEnemy = theEnemies[2];
+                ExecutePlayerAction(selectedPlayerAction, gameTime);
+                selectedPlayer.hasGone = true;
+            }
         }
       }
       if (IsKeyClicked(Keys.X))
@@ -342,6 +366,7 @@ namespace BlackHoleLoans
           Random random = new Random();
           if ((random.Next(0, 100) + 1) <= 20)
           {
+            MediaPlayer.Stop();
             AddMessage("Player ran away!");
             ranAway = true;
           }
@@ -590,8 +615,16 @@ namespace BlackHoleLoans
     {
       for (int i = 0; i < theEnemies.Length; i++)
       {
-        spriteBatch.DrawString(combatfontsmall, theEnemies[i].Name,
-            new Vector2(5 * _width / 8, (12 + i) * _height / 16), Color.White);
+          if (!theEnemies[i].isDead)
+          {
+              spriteBatch.DrawString(combatfontsmall, theEnemies[i].Name,
+                  new Vector2(5 * _width / 8, (12 + i) * _height / 16), Color.White);
+          }
+          else
+          {
+              spriteBatch.DrawString(combatfontsmall, theEnemies[i].Name,
+                  new Vector2(5 * _width / 8, (12 + i) * _height / 16), Color.Gray);
+          }
       }
     }
 
@@ -721,6 +754,9 @@ namespace BlackHoleLoans
 
     private void DetermineOtherMessages(Player p)
     {
+      if (selectedEnemy == null)
+        return;
+
       if (p.lastPlayerHealth == p.GetPlayerStats().Health &&
           selectedEnemy.lastEnemyHealth == selectedEnemy.GetEnemyStats().Health)
       {
@@ -746,6 +782,7 @@ namespace BlackHoleLoans
       else if (selectedEnemy.GetEnemyStats().Health == 0 && selectedEnemy.isDead == false)
       {
         AddMessage(selectedEnemy.Name + " died!");
+        enemydeath.Play(MediaPlayer.Volume * 4, 0f, 0f);
         selectedEnemy.isDead = true;
       }
     }
@@ -772,6 +809,18 @@ namespace BlackHoleLoans
         AddMessage(p.Name + " fainted!");
         p.isFainted = true;
       }
+    }
+
+    public void UpdatePlayers()
+    {
+        for (int i = 0; i < thePlayers.Length; i++)
+        {
+            if (thePlayers[i].GetPlayerStats().Health <= 0 && thePlayers[i].isFainted == false)
+            {
+                AddMessage(thePlayers[i].Name + " fainted!");
+                thePlayers[i].isFainted = true;
+            }
+        }
     }
 
     public bool IsKeyClicked(Keys key)
@@ -816,6 +865,35 @@ namespace BlackHoleLoans
     {
       return ranAway;
     }
+    public void StopSound()
+    {
+      MediaPlayer.Stop();
+    }
 
+    public void UpdateCombatStatus()
+    {
+      if (WonFight())
+      {
+        if (onlyDoOnce == 0)
+        {
+          MediaPlayer.Stop();
+          winsound.Play(MediaPlayer.Volume * 4, 0f, 0f);
+          AddMessage("You have defeated the enemy!");
+          AddMessage("You leveled up!");
+          onlyDoOnce++;
+        }
+      }
+
+      else if (LostFight())
+      {
+        if (onlyDoOnce == 0)
+        {
+          MediaPlayer.Stop();
+          losesound.Play(MediaPlayer.Volume * 4, 0f, 0f);
+          AddMessage("You have been defeated!");
+          onlyDoOnce++;
+        }
+      }
+    }
   }
 }
