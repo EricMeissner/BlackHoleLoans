@@ -29,21 +29,34 @@ namespace BlackHoleLoans
     public Texture2D enemySprite { get; set; }
     public bool startCombat = false;
     int paralyzedCounter = 0;
+    Random randomDir = new Random();
+    private bool hasRandomPath = false;
+    bool isBoss;
 
-    public Enemy(OverWorld ow, Tile t, int[] newpath, string name)
+    public Enemy(OverWorld ow, Tile t, int f, string name, bool iB)
+      : base(ow, t, f)
+    {
+      Name = name;
+      hasRandomPath = true;
+      isBoss = iB;
+    }
+
+    public Enemy(OverWorld ow, Tile t, int[] newpath, string name, bool iB)
       : base(ow, t)
     {
       path_index = 0;
       path = newpath;
       Name = name;
+      isBoss = iB;
     }
 
-    public Enemy(OverWorld ow, Tile t, int f, int[] newpath, string name)
+    public Enemy(OverWorld ow, Tile t, int f, int[] newpath, string name, bool iB)
       : base(ow, t, f)
     {
       path_index = 0;
       path = newpath;
       Name = name;
+      isBoss = iB;
     }
 
 
@@ -113,7 +126,13 @@ namespace BlackHoleLoans
         return;
       }
 
-      if (MoveAdjacent(path[path_index]))
+      if (hasRandomPath)
+      {
+        int randomNumber = randomDir.Next(0, 4);
+        MoveAdjacent(randomNumber);
+      }
+
+      else if (MoveAdjacent(path[path_index]))
       {
         path_index++;
         if (path_index >= path.Length)
@@ -237,6 +256,11 @@ namespace BlackHoleLoans
     public void ParalyzeEnemy()
     {
       paralyzedCounter = 10;
+    }
+
+    public bool IsTheBoss()
+    {
+      return isBoss;
     }
   }
 }

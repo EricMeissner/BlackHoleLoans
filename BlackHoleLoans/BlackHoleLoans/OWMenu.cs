@@ -19,12 +19,14 @@ namespace BlackHoleLoans
     SpriteFont font, largeFont;
     KeyboardState keystate, prevKeystate;
     Player[] party;
+    float volume = 0.25f;
 
-    public OWMenu(Player[] p)//Should pass in the Player[] party from game1
+    public OWMenu(Player[] p, float vol)//Should pass in the Player[] party from game1
     {
       keystate = Keyboard.GetState();
       prevKeystate = keystate;
       party = p;
+      volume = vol;
     }
 
     public void LoadContent(ContentManager content)
@@ -49,6 +51,11 @@ namespace BlackHoleLoans
         return 0;
       }
 
+      else if (keystate.IsKeyDown(Keys.V) && prevKeystate.IsKeyUp(Keys.V))
+      {
+        volume = .25f - volume;
+      }
+
       else if (keystate.IsKeyDown(Keys.E))
       {
         g.Exit();
@@ -60,26 +67,37 @@ namespace BlackHoleLoans
 
     public void Draw(SpriteBatch spriteBatch)
     {
+      string volMuted;
+      if(volume==0)
+        volMuted = "Unmute";
+      else
+        volMuted = "Mute";
+
       spriteBatch.Draw(background, new Rectangle(0, 0, 800, 600), Color.White);
       
       spriteBatch.DrawString(largeFont,"Paused", new Vector2(325,100), Color.White);
       spriteBatch.DrawString(font, "Resume (R)", new Vector2(325, 150), Color.White);
       spriteBatch.DrawString(font, "Back to Main Menu (M)", new Vector2(325, 200), Color.White);
-      spriteBatch.DrawString(font, "Exit Game (E)", new Vector2(325, 250), Color.White);
+      spriteBatch.DrawString(font, volMuted + " (V)", new Vector2(325,250), Color.White);
+      spriteBatch.DrawString(font, "Exit Game (E)", new Vector2(325, 300), Color.White);
 
       for (int i = 0; i < 3; i++)
       {
 
-        spriteBatch.DrawString(font, party[i].Name, new Vector2(150, 300+(i*50)), Color.White);
+        spriteBatch.DrawString(font, party[i].Name, new Vector2(150, 350+(i*50)), Color.White);
         spriteBatch.DrawString(font, "Health: " + party[i].GetPlayerStats().Health + "/" +
-                  party[i].GetPlayerStats().TotalHealth, new Vector2(350, 300+(i*50)), Color.White);
+                  party[i].GetPlayerStats().TotalHealth, new Vector2(350, 350+(i*50)), Color.White);
 
         spriteBatch.DrawString(font, "Level: "+party[i].GetPlayerStats().Level, 
-          new Vector2(600,300 + (i * 50)), Color.White);
+          new Vector2(600,350 + (i * 50)), Color.White);
       }
-      spriteBatch.Draw(party[0].GetPlayerSprites()[1], new Vector2(300, 300), Color.White);
-      spriteBatch.Draw(party[1].GetPlayerSprites()[0], new Vector2(300, 350), Color.White);
-      spriteBatch.Draw(party[2].GetPlayerSprites()[0], new Vector2(300, 400), Color.White);
-    }         
+      spriteBatch.Draw(party[0].GetPlayerSprites()[1], new Vector2(300, 350), Color.White);
+      spriteBatch.Draw(party[1].GetPlayerSprites()[0], new Vector2(300, 400), Color.White);
+      spriteBatch.Draw(party[2].GetPlayerSprites()[0], new Vector2(300, 450), Color.White);
+    }
+    public float GetVol()
+    {
+      return volume;
+    }
   }
 }

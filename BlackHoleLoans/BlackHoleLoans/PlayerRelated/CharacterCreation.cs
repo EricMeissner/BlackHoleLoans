@@ -18,7 +18,7 @@ namespace BlackHoleLoans
     SpriteBatch spriteBatch;
     ContentManager _content;
     Texture2D[] classes, races, playerSprites;
-    SpriteFont bigFont, className;
+    SpriteFont bigFont, className, smallFont;
     Texture2D stars, spaceship, arrow, flippedArrow, rightArrow, leftArrow;
     Texture2D chosenClass, partyMember1, partyMember2;
     int cursorX, cursorY;
@@ -31,13 +31,16 @@ namespace BlackHoleLoans
     string[] letters;
     int[] letterIndex;
     KeyboardState prevKeyboardState, currentKeyboardState;
-    const int SELECT_NAME=0, SELECT_CLASS=1, SELECT_RACE=2, SELECT_STATS = 3;
+    const int SELECT_NAME = 0, SELECT_CLASS = 1, SELECT_RACE = 2, SELECT_STATS = 3, INFO_SCREEN=4;
     bool backToMM, startOverworld;
-    Texture2D nameFrame;
+    String begin = "Press Enter ->"; //strings used for on - screen controls
+    String back = "<- Press B";
+    Texture2D shark, infoHeader;
 
     #endregion End Class fields
 
-    public CharacterCreation() {
+    public CharacterCreation()
+    {
 
       classes = new Texture2D[3];
       races = new Texture2D[3];
@@ -57,7 +60,7 @@ namespace BlackHoleLoans
       letters = new string[27] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
                                 "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", 
                                   "U","V","W","X","Y","Z"," "};
-      backToMM = startOverworld = false;      
+      backToMM = startOverworld = false;
     }
 
     public void LoadContent(ContentManager content)
@@ -65,7 +68,7 @@ namespace BlackHoleLoans
       classes[0] = content.Load<Texture2D>("PlayerSprites/mFighterDown");
       classes[1] = content.Load<Texture2D>("PlayerSprites/mWizardDown");
       classes[2] = content.Load<Texture2D>("PlayerSprites/mShooterDown");
-      stars = content.Load<Texture2D>("MainMenu/stars");
+      stars = content.Load<Texture2D>("MainMenu/space");
       spaceship = content.Load<Texture2D>("MainMenu/spaceship");
       bigFont = content.Load<SpriteFont>("Fonts/MenuTitles");
       className = content.Load<SpriteFont>("Fonts/MenuTitles");
@@ -73,7 +76,9 @@ namespace BlackHoleLoans
       flippedArrow = content.Load<Texture2D>("Arrows/theFlippedArrow");
       rightArrow = content.Load<Texture2D>("Arrows/theRightArrow");
       leftArrow = content.Load<Texture2D>("Arrows/theLeftArrow");
-      nameFrame = content.Load<Texture2D>("Combat/cursor");
+      smallFont = content.Load<SpriteFont>("Fonts/MenuOptions");
+      infoHeader = content.Load<Texture2D>("MainMenu/Info");
+      shark = content.Load<Texture2D>("MainMenu/Shark-desk");
 
       _content = content;
     }
@@ -104,7 +109,7 @@ namespace BlackHoleLoans
     private void SaveRace()
     {//human, green, blue
       classIdentifier[0] = whichClass;
-     
+
       if (whichClass == 1)//warrior
       {
         classIdentifier[1] = 2;
@@ -264,7 +269,7 @@ namespace BlackHoleLoans
       }
     }
 
-    public void Update() 
+    public void Update()
     {
       backToMM = false;
       currentKeyboardState = Keyboard.GetState();
@@ -277,6 +282,8 @@ namespace BlackHoleLoans
 
       else if (currentScreen == SELECT_CLASS || currentScreen == SELECT_RACE)
         UpdateClassesOrRaces();
+      else if (currentScreen == INFO_SCREEN)
+        UpdateInfoScreen();
       else
         UpdateStats();
 
@@ -365,7 +372,7 @@ namespace BlackHoleLoans
         }
         else
         {
-          cursorY-=300;
+          cursorY -= 300;
           cursorLocation = 1;
         }
       }
@@ -378,7 +385,7 @@ namespace BlackHoleLoans
         }
         else
         {
-          cursorY +=300;
+          cursorY += 300;
           cursorLocation = 3;
         }
       }
@@ -398,10 +405,8 @@ namespace BlackHoleLoans
 
       else if (prevKeyboardState.IsKeyDown(Keys.Enter) && currentKeyboardState.IsKeyUp(Keys.Enter))
       {
-        if (remainingStatPoints == 0)
-        {
-          startOverworld = true;
-        }
+        if(remainingStatPoints==0)
+          currentScreen = INFO_SCREEN;
 
       }
       else if (prevKeyboardState.IsKeyUp(Keys.Down) && currentKeyboardState.IsKeyDown(Keys.Down))
@@ -441,10 +446,22 @@ namespace BlackHoleLoans
       }
     }
 
+    private void UpdateInfoScreen()
+    {
+      if (prevKeyboardState.IsKeyDown(Keys.B) && currentKeyboardState.IsKeyUp(Keys.B))    // if "b" is pressed, it travels back to previous screen
+      {
+        currentScreen = SELECT_STATS;
+      }
+      if (prevKeyboardState.IsKeyUp(Keys.Enter) && currentKeyboardState.IsKeyDown(Keys.Enter))    //if enter is pressed the boolean is set to true
+      {
+        startOverworld = true;
+      }
+    }
+
     private void SelectPlayerName()
     {
       string thePlayerName = letters[letterIndex[0]];//append all chars
-      for(int i=1; i<letterIndex.Length; i++)
+      for (int i = 1; i < letterIndex.Length; i++)
       {
         thePlayerName += letters[letterIndex[i]];
       }
@@ -461,7 +478,7 @@ namespace BlackHoleLoans
     {
       //The cursor location is the same value as the class image in the array of classes
       //-1 because array index starts from 0, cursor location starts at 1
-      chosenClass = classes[cursorLocation-1];//need to determine other 3 pictures for this
+      chosenClass = classes[cursorLocation - 1];//need to determine other 3 pictures for this
       currentScreen = 2;
       whichClass = cursorLocation;
       cursorLocation = 1;
@@ -483,12 +500,13 @@ namespace BlackHoleLoans
     public void Draw()
     {
       spriteBatch.Draw(stars, new Rectangle(0, 0, 800, 600), Color.White);
-
-      if(currentScreen!=3 && currentScreen!= 0)
+      spriteBatch.DrawString(smallFont, begin, new Vector2(625, 560), Color.Aqua); // displayes the on - screen controls
+      spriteBatch.DrawString(smallFont, back, new Vector2(0, 560), Color.Aqua);
+      if (currentScreen != 3 && currentScreen != 0 && currentScreen != 4)
         spriteBatch.Draw(spaceship, new Vector2(cursorX, cursorY), null,
            Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
-
-      spriteBatch.DrawString(bigFont, "Character Creation Step: "+(currentScreen+1), Vector2.Zero, Color.White);
+      if(currentScreen != 4)
+        spriteBatch.DrawString(bigFont, "Character Creation Step: " + (currentScreen + 1), Vector2.Zero, Color.White);
       if (currentScreen == SELECT_NAME)
         DrawNameSelection();
 
@@ -500,23 +518,26 @@ namespace BlackHoleLoans
 
       else if (currentScreen == SELECT_STATS)
         DrawCurrentStats();
+
+      else
+        DrawInfoScreen();
     }
 
     private void DrawNameSelection()
     {
-      Color[] letterColors = { Color.White, Color.White, Color.White , Color.White, Color.White, Color.White};
+      Color[] letterColors = { Color.White, Color.White, Color.White, Color.White, Color.White, Color.White };
       letterColors[cursorLocation - 1] = Color.Red;
 
-      spriteBatch. DrawString(bigFont, "Select your name (Press enter to continue)", new Vector2(0,50), Color.White);
+      spriteBatch.DrawString(bigFont, "Select your name (Press enter to continue)", new Vector2(0, 50), Color.White);
 
       spriteBatch.DrawString(bigFont, "Your Name: ", new Vector2(0, 150), Color.White);
 
       for (int i = 0; i < letterIndex.Length; i++)
       {
-        spriteBatch.DrawString(bigFont, "" + letters[letterIndex[i]], new Vector2(200+30*(i), 150), letterColors[i]);
+        spriteBatch.DrawString(bigFont, "" + letters[letterIndex[i]], new Vector2(200 + 30 * (i), 150), letterColors[i]);
       }
-      spriteBatch.Draw(arrow, new Vector2((210+cursorLocation*30)-arrow.Width, 150-arrow.Height), Color.White);
-      spriteBatch.Draw(flippedArrow, new Vector2((210+cursorLocation*30)-arrow.Width, 270-arrow.Height), Color.White);
+      spriteBatch.Draw(arrow, new Vector2((210 + cursorLocation * 30) - arrow.Width, 150 - arrow.Height), Color.White);
+      spriteBatch.Draw(flippedArrow, new Vector2((210 + cursorLocation * 30) - arrow.Width, 270 - arrow.Height), Color.White);
 
       spriteBatch.DrawString(bigFont, "Press D for default character!", new Vector2(0, 300), Color.White);
     }
@@ -531,7 +552,7 @@ namespace BlackHoleLoans
 
       for (int i = 0; i < 3; i++)
       {
-        DrawCenterSprite(classes[i], 300, i*150+200);
+        DrawCenterSprite(classes[i], 300, i * 150 + 200);
       }
     }
 
@@ -552,8 +573,8 @@ namespace BlackHoleLoans
 
     private void DrawCurrentStats()
     {
-      
-      Color[] statColors = {Color.White, Color.White, Color.White};
+
+      Color[] statColors = { Color.White, Color.White, Color.White };
       statColors[cursorLocation - 1] = Color.Red;
 
       spriteBatch.DrawString(bigFont, "Player Statistics (Press Enter to Continue)", new Vector2(0, 50), Color.White);
@@ -563,23 +584,40 @@ namespace BlackHoleLoans
       spriteBatch.DrawString(bigFont, "Your Name: " + playerName, new Vector2(50, 150), Color.White);
 
       spriteBatch.DrawString(bigFont, "Remaining Stat Points (Must use ALL!): " + remainingStatPoints,
-        new Vector2(50,200), Color.White);
+        new Vector2(50, 200), Color.White);
 
       spriteBatch.DrawString(bigFont, "Attack:", new Vector2(50, 300), Color.White);
       spriteBatch.DrawString(bigFont, "Defense:", new Vector2(50, 400), Color.White);
       spriteBatch.DrawString(bigFont, "Concentration:", new Vector2(50, 500), Color.White);
 
-      spriteBatch.DrawString(bigFont, ""+chosenStats[0], new Vector2(350, 300), statColors[0]);
-      spriteBatch.Draw(leftArrow, 
-        new Vector2(350 - leftArrow.Width, 240+cursorLocation*100 - leftArrow.Height), 
+      spriteBatch.DrawString(bigFont, "" + chosenStats[0], new Vector2(350, 300), statColors[0]);
+      spriteBatch.Draw(leftArrow,
+        new Vector2(350 - leftArrow.Width, 240 + cursorLocation * 100 - leftArrow.Height),
         Color.White);
 
       spriteBatch.DrawString(bigFont, "" + chosenStats[1], new Vector2(350, 400), statColors[1]);
-      spriteBatch.Draw(rightArrow, 
+      spriteBatch.Draw(rightArrow,
         new Vector2(450 - leftArrow.Width, 240 + cursorLocation * 100 - leftArrow.Height),
         Color.White);
 
       spriteBatch.DrawString(bigFont, "" + chosenStats[2], new Vector2(350, 500), statColors[2]);
+    }
+
+    public void DrawInfoScreen()
+    {
+
+      String infoText = " Hello " + playerName + ",\n   You have embarked on a new journey to pay \n"+  
+      "    back a loan you borrowed from a loan shark\n    at Black Hole Loans. The loan was used "+
+      "\n    to buy a spaceship. You must defeat \n    enemies and reach the end in order to\n    "+ 
+        "collect enough money to pay off the loan.\n     Failure to pay off the loan will"+
+        "\n    lead to being eaten by the shark.";
+     
+      
+      spriteBatch.DrawString(smallFont, infoText, new Vector2(0, 145), Color.White); //displays the information message
+      spriteBatch.Draw(infoHeader, new Vector2(150, 10), null,                    //displays a black hole loans banner
+          Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
+      spriteBatch.Draw(shark, new Vector2(300, 490), null, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);    // displays the shark sprite
+      spriteBatch.Draw(playerSprites[3], new Vector2(410, 540), null, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f); //displays the player sprite
     }
 
     private void DrawCenterSprite(Texture2D charImage, int x, int y)
@@ -592,34 +630,34 @@ namespace BlackHoleLoans
       Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
       Rectangle destinationRectangle = new Rectangle((int)x, (int)y, width, height);
 
-      spriteBatch.Draw(charImage, new Vector2(x,y), sourceRectangle,
+      spriteBatch.Draw(charImage, new Vector2(x, y), sourceRectangle,
             Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
 
     }
 
     public void setSpriteBatch(SpriteBatch sB)
     {
-      spriteBatch=sB;
+      spriteBatch = sB;
     }
 
-    public Player[] CreatePlayer() 
+    public Player[] CreatePlayer()
     {
-      int []partyMemStats=chosenStats;
-      partyMemStats[0]-=2;
-      partyMemStats[1]-=2;
-      partyMemStats[2]-=2;
-      Texture2D[] pMember1=new Texture2D[4]{partyMember1,partyMember1,partyMember1,partyMember1};
-      Texture2D[] pMember2=new Texture2D[4]{partyMember2,partyMember2,partyMember2,partyMember2};
+      int[] partyMemStats = chosenStats;
+      partyMemStats[0] -= 2;
+      partyMemStats[1] -= 2;
+      partyMemStats[2] -= 2;
+      Texture2D[] pMember1 = new Texture2D[4] { partyMember1, partyMember1, partyMember1, partyMember1 };
+      Texture2D[] pMember2 = new Texture2D[4] { partyMember2, partyMember2, partyMember2, partyMember2 };
 
-      Player[] thePlayerList =new Player[3]{
+      Player[] thePlayerList = new Player[3]{
         new Player(chosenStats[0],chosenStats[1],chosenStats[2], playerSprites, classIdentifier[0], 
-          playerName, new Skill(Skills.Fire), new Skill(Skills.Ice)),
+          playerName, new Skill(Skills.Blast), new Skill(Skills.LaserSword)),
 
         new Player(partyMemStats, pMember1, classIdentifier[1],
-          new Skill(Skills.Fire), new Skill(Skills.Ice)),
+          new Skill(Skills.Blast), new Skill(Skills.Leech)),
 
-        new Player(partyMemStats, pMember2, classIdentifier[2], new Skill(Skills.Fire),
-                new Skill(Skills.Ice))
+        new Player(partyMemStats, pMember2, classIdentifier[2], new Skill(Skills.Blast),
+                new Skill(Skills.BloodShot))
       };
       return thePlayerList;
     }

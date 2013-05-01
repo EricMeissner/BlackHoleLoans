@@ -41,6 +41,9 @@ namespace BlackHoleLoans
     bool createdCombat, pausedGame;
     int combatBackgroundID;
     KeyboardState keyState, prevKeystate;
+    float volume=0.25f;//0-muted, .25-not muted
+    Texture2D boss1, boss2, boss3;
+
 
     public Game1()
     {
@@ -49,7 +52,7 @@ namespace BlackHoleLoans
 
       graphics.PreferredBackBufferWidth = 800;
       graphics.PreferredBackBufferHeight = 600;
-      //IsMouseVisible = true;
+      IsMouseVisible = true;
 
       mainMenu = new MainMenu(Content, graphics.PreferredBackBufferWidth,
         graphics.PreferredBackBufferHeight);
@@ -88,6 +91,10 @@ namespace BlackHoleLoans
 
       mainMenu.LoadContent();
       characterCreation.LoadContent(Content);
+
+      boss1 = Content.Load<Texture2D>("EnemySprites/BHLBoss");
+      boss2 = Content.Load<Texture2D>("EnemySprites/BHLBoss2");
+      boss3 = Content.Load<Texture2D>("EnemySprites/BHLBoss3");
     }
 
     protected void LoadOverWorldContent()
@@ -134,29 +141,31 @@ namespace BlackHoleLoans
       TileMap tempTileMap = ContentRepository.getMap(4);
       TileMap tempTileMap2 = ContentRepository.getMap(5);
       TileMap tempTileMap3 = ContentRepository.getMap(8);
-      TileMap tempTileMap4 = ContentRepository.getMap(7);
+      TileMap tempTileMap4 = ContentRepository.getMap(9);
+      TileMap tempTileMap5 = ContentRepository.getMap(10);
       OW.mapList.Add(tempTileMap);
       OW.mapList.Add(tempTileMap2);
       OW.mapList.Add(tempTileMap3);
       OW.mapList.Add(tempTileMap4);
+      OW.mapList.Add(tempTileMap5);
 
       #region Enemy Creation
 
       Entity enemy1 = new Enemy(OW, tempTileMap.getTile(3, 4), 0, 
-        new int[] { 2, 2, 3, 3, 0, 0, 0, 0, 1, 1, 1, 1 , 2, 2, 3, 3 } , "Blue Spider");
+        new int[] { 2, 2, 3, 3, 0, 0, 0, 0, 1, 1, 1, 1 , 2, 2, 3, 3 } , "Blue Spider", false);
       enemy1.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
         "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
       tempTileMap.EntityList.Add(enemy1);
 
-      Entity enemy2 = new Enemy(OW, tempTileMap.getTile(8, 11), 0, 
-        new int[] { 0,0,1,1,2,2,2,2,3,3,3,3,0,0,1,1 }, "Blue Spider");
+      Entity enemy2 = new Enemy(OW, tempTileMap.getTile(8, 11), 0,
+        new int[] { 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 1, 1 }, "Blue Spider", false);
       enemy2.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
         "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
       tempTileMap.EntityList.Add(enemy2);
 
       Entity enemy3 = new Enemy(OW, tempTileMap2.getTile(2, 12), 0, 
-        new int[] { 1, 1, 3, 3, 3, 3, 1, 1 }, 
-        "Purple Spider");
+        new int[] { 1, 1, 3, 3, 3, 3, 1, 1 },
+        "Purple Spider", false);
       enemy3.setAvatarFileString("EnemySprites/PurpleSpiderRight", "EnemySprites/PurpleSpiderRight",
         "EnemySprites/PurpleSpiderLeft", "EnemySprites/PurpleSpiderLeft");
       tempTileMap2.EntityList.Add(enemy3);
@@ -164,53 +173,59 @@ namespace BlackHoleLoans
 
       Entity enemy4 = new Enemy(OW, tempTileMap2.getTile(1, 2), 0,
   new int[] {3,2,2,1,2,2,3,2,2,1,0,0,3,0,0,1,0,0},
-  "Purple Spider");
+  "Purple Spider", false);
       enemy4.setAvatarFileString("EnemySprites/PurpleSpiderRight", "EnemySprites/PurpleSpiderRight",
         "EnemySprites/PurpleSpiderLeft", "EnemySprites/PurpleSpiderLeft");
       tempTileMap2.EntityList.Add(enemy4);
 
-
       Entity enemy5 = new Enemy(OW, tempTileMap3.getTile(1, 3), 0,
 new int[] {2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3},
-"Purple Monster");
+"Purple Monster", false);
       enemy5.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
         "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
       tempTileMap3.EntityList.Add(enemy5);
 
       Entity enemy6 = new Enemy(OW, tempTileMap3.getTile(8, 3), 0,
 new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2 },
-"Purple Monster");
+"Purple Monster", false);
       enemy6.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
         "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
       tempTileMap3.EntityList.Add(enemy6);
 
       Entity enemy7 = new Enemy(OW, tempTileMap3.getTile(8, 14), 0,
 new int[] { 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-"Purple Monster");
+"Purple Monster", false);
       enemy7.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
         "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
       tempTileMap3.EntityList.Add(enemy7);
 
       Entity enemy8 = new Enemy(OW, tempTileMap3.getTile(1, 14), 0,
 new int[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1  ,0, 0, 0, 0, 0, 0, 0},
-"Purple Monster");
+"Purple Monster", false);
       enemy8.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
         "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
       tempTileMap3.EntityList.Add(enemy8);
 
       Entity enemy9 = new Enemy(OW, tempTileMap3.getTile(3, 11), 0,
 new int[] { 2,2,2,3,3,3,3,3,0,0,0,1,1,1,1,1 },
-"Purple Monster");
+"Purple Monster", false);
       enemy9.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
         "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
       tempTileMap3.EntityList.Add(enemy9);
 
       Entity enemy10 = new Enemy(OW, tempTileMap3.getTile(6, 6), 0,
 new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
-"Purple Monster");
+"Purple Monster", false);
       enemy10.setAvatarFileString("EnemySprites/PurpleMonsterRight", "EnemySprites/PurpleMonsterRight",
         "EnemySprites/PurpleMonsterLeft", "EnemySprites/PurpleMonsterLeft");
       tempTileMap3.EntityList.Add(enemy10);
+
+      Entity enemy11 = new Enemy(OW, tempTileMap5.getTile(1, 7), 0,
+new int[] {2},"Boss", true);
+      enemy11.setAvatarFileString("EnemySprites/BHLBoss", "EnemySprites/BHLBoss", "EnemySprites/BHLBoss", "EnemySprites/BHLBoss");
+      tempTileMap5.EntityList.Add(enemy11);
+
+
       #endregion
 
       #region Map Creation (includes doors)
@@ -266,6 +281,19 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
       tempTileMap3.EntityList.Add(temp4);
       tempTileMap4.EntityList.Add(tempSister4);
 
+
+
+      Entity temp5 = new Door(OW, tempTileMap4.getTile(0, 7), 2, tempTileMap5, null);//10 15
+      temp5.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+     "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+
+      Door tempSister5 = new Door(OW, tempTileMap5.getTile(11, 7), 0, tempTileMap4, (Door)temp5);
+      tempSister5.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
+          "EntityAvatar/Door/Door_2", "EntityAvatar/Door/Door_3");
+      ((Door)temp5).sister = tempSister5;
+      tempTileMap4.EntityList.Add(temp5);
+      tempTileMap5.EntityList.Add(tempSister5);
+
       #endregion
     }
 
@@ -280,23 +308,35 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
       e.SetEnemySprites();
       Texture2D enemySprite = e.EnemySprite();
       string enemyName = e.Name;
-      /*
-      enemy = new Enemy[3]
+
+      if (!e.IsTheBoss())
+      {
+        enemy = new Enemy[3]
             {
-                new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,pToE[3]-75, enemyName+" 1", enemySprite),//Can also add skills
-                new Enemy(pToE[1]-3,pToE[1]-3,pToE[2]-3,pToE[3]-50, enemyName+" 2", enemySprite),
-                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,pToE[3]-25, enemyName+" 3", enemySprite)
-            };
-       * */
-      enemy = new Enemy[3]
-            {
-                new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,1, enemyName+" 1", enemySprite),//Can also add skills
-                new Enemy(pToE[1]-3,pToE[1]-3,pToE[2]-3,1, enemyName+" 2", enemySprite),
-                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,1, enemyName+" 3", enemySprite)
+                new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,1, enemyName, enemySprite),//Can also add skills
+                new Enemy(pToE[0]-3,pToE[1]-3,pToE[2]-3,1, enemyName, enemySprite, new Skill(Skills.Blast)),
+                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,1, enemyName, enemySprite, new Skill(Skills.Blast), new Skill(Skills.Blast))
             };//Change health back to normal
+      }
+      else
+      {
+        enemy = new Enemy[3]
+            {
+                new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,1, "Boss Form 1", boss1,
+                  new Skill(Skills.LaserSword), new Skill(Skills.LaserSword)),//Can also add skills
+
+                new Enemy(pToE[0]-3,pToE[1]-3,pToE[2]-3,1, "Boss Form 2", boss2, 
+                  new Skill(Skills.Blast), new Skill(Skills.Blast)),
+
+                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,1, "Boss form 3", boss3, 
+                  new Skill(Skills.Leech), new Skill(Skills.Leech))
+
+
+            };//Change health back to normal
+      }
 
       combat = new Combat(Content, graphics.PreferredBackBufferHeight,
-          graphics.PreferredBackBufferWidth, this, party, enemy);
+          graphics.PreferredBackBufferWidth, this, party, enemy, volume);
       combat.LoadContent();
       combat.SetSpriteBatch(spriteBatch);
 
@@ -380,7 +420,7 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
         if(enemy_timer >= 60){
           enemy_timer = 0;
         }
-        if (player_timer >= 60)
+        if (player_timer >= 20)
         {
           player_timer = 0;
         }
@@ -460,8 +500,6 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
         {
           currentGameState = 3;
         }
-
-
       }
       #endregion
 
@@ -479,6 +517,7 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
 
         if (combat.WonFight() && combat.messageQueue.Count==0)
         {
+          combat.StopSound();
           currentGameState = 2;
           OW.GetOpponent().remove();//added
           OW.FinishedCombat();
@@ -497,6 +536,7 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
         {
           if (combat.messageQueue.Count == 0)
           {
+            combat.StopSound();
             RestartFromMainMenu();
             currentGameState = 0;
             createdCombat = false;
@@ -505,6 +545,7 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
 
         else if (combat.RanAway())
         {
+          combat.StopSound();
           currentGameState = 2;
           OW.GetOpponent().ParalyzeEnemy();
           OW.FinishedCombat();
@@ -526,10 +567,11 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
       {
         if (!pausedGame)
         {
-          ingameMenu = new OWMenu(party);
+          ingameMenu = new OWMenu(party, volume);
           ingameMenu.LoadContent(Content);
           pausedGame = true;
         }
+        volume = ingameMenu.GetVol();
         currentGameState = ingameMenu.Update(this);
         if (currentGameState == 0)
           RestartFromMainMenu();
@@ -546,7 +588,6 @@ new int[] { 0,0,0,1,1,1,1,1,2,2,2,3,3,3,3,3 },
         this.Exit();
       }
       //End
-
       prevKeystate = keyState;
       base.Update(gameTime);
     }

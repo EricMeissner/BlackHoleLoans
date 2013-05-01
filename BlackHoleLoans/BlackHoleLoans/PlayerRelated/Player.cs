@@ -19,13 +19,13 @@ namespace BlackHoleLoans
     int gold;
 
     public string Name { get; set; }
-    public Skill skillA{get;set;}
-    public Skill skillB{get;set;}
+    public Skill skillA { get; set; }
+    public Skill skillB { get; set; }
     public bool isFainted { get; set; }
     public bool hasGone { get; set; }
     public int lastPlayerHealth { get; set; }
-     
-    public Player(int atk, int def, int con, Texture2D[]pS, int cI, string n, Skill a, Skill b)
+
+    public Player(int atk, int def, int con, Texture2D[] pS, int cI, string n, Skill a, Skill b)
     //also pass in array of textures (player dir movement) & an int (for which class
     //the player is?) - don't need anything the race
     {
@@ -40,7 +40,7 @@ namespace BlackHoleLoans
       hasGone = false;
     }
 
-    public Player(int[]stats, Texture2D []partyMemberSprite, int cI, Skill a, Skill b)
+    public Player(int[] stats, Texture2D[] partyMemberSprite, int cI, Skill a, Skill b)
     {
       playerSprites = partyMemberSprite;
       classIdentifier = cI;
@@ -88,10 +88,22 @@ namespace BlackHoleLoans
         }
         e.GetEnemyStats().SubtractHealth(damage);
       }
-      else if (skillA.isHealing)
+      if (skillA.isHealing)
       {
         int health = (int)(playerStats.Concentration * skillA.skillRatio);
         p.GetPlayerStats().addHealth(health);
+      }
+      if (skillA.isSelfDamage)
+      {
+        p.GetPlayerStats().SubtractHealth(playerStats.Attack);
+      }
+      if (skillA.isPhysicalDamage)
+      {
+        e.GetEnemyStats().SubtractHealth((int)(playerStats.Attack * skillA.skillRatio));
+      }
+      if (skillA.isPiercing)
+      {
+        e.GetEnemyStats().SubtractHealth((int)(playerStats.Attack * skillB.skillRatio));
       }
     }
 
@@ -106,10 +118,22 @@ namespace BlackHoleLoans
         }
         e.GetEnemyStats().SubtractHealth(damage);
       }
-      else if (skillB.isHealing)
+      if (skillB.isHealing)
       {
         int health = (int)(playerStats.Concentration * skillB.skillRatio);
         p.GetPlayerStats().addHealth(health);
+      }
+      if (skillB.isSelfDamage)
+      {
+        p.GetPlayerStats().SubtractHealth(playerStats.Attack);
+      }
+      if (skillB.isPhysicalDamage)
+      {
+        e.GetEnemyStats().SubtractHealth((int)(playerStats.Attack * skillB.skillRatio) - e.GetEnemyStats().Defence);
+      }
+      if (skillB.isPiercing)
+      {
+        e.GetEnemyStats().SubtractHealth((int)(playerStats.Attack * skillB.skillRatio));
       }
     }
   }

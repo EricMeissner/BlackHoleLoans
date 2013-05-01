@@ -49,7 +49,7 @@ namespace BlackHoleLoans
     {
       //Loads all the images needed for the main menu
       spaceship = _content.Load<Texture2D>("MainMenu/spaceship");
-      stars = _content.Load<Texture2D>("MainMenu/stars");
+      stars = _content.Load<Texture2D>("MainMenu/space");
       BHLlogo = _content.Load<Texture2D>("MainMenu/BHL4");
       smallFont = _content.Load<SpriteFont>("Fonts/MenuOptions");
       bigFont = _content.Load<SpriteFont>("Fonts/MenuTitles");
