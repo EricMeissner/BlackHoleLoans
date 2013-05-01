@@ -21,9 +21,9 @@ namespace BlackHoleLoans
                 {
                     return "The ancient medical robot sparks and jerks to life.\n" +
                     "'Full party healing cost 100 UNIT NOT FOUND. CONFIRM!?'\n" +
-                    "Y: 'Yes, we want healing' /t N: 'Um... no thankyou.'";
+                    "Y: 'Yes, we want healing'  N: 'Um... no thankyou.'";
                 }
-                return "No message implemented for this NPC/n Z: exit";
+                return "No message implemented for this NPC\n Z: exit";
             }
         }
         
@@ -75,7 +75,7 @@ namespace BlackHoleLoans
                 }
                 else if (input.IsKeyDown(Keys.N))
                 {
-                    overworld.Game_Ref.messageQueue.Enqueue("'This unit wishes you great wealth and poor health.'/n" +
+                    overworld.Game_Ref.messageQueue.Enqueue("'This unit wishes you great wealth and poor health.'\n" +
                     "'Please return soon...'");
                     return true;
                 }
