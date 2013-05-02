@@ -364,7 +364,7 @@ namespace BlackHoleLoans
         {
           
           Random random = new Random();
-          if ((random.Next(0, 100) + 1) <= 20)
+          if ((random.Next(0, 100) + 1) <= 70)//change
           {
             MediaPlayer.Stop();
             AddMessage("Player ran away!");
@@ -702,7 +702,7 @@ namespace BlackHoleLoans
         if (!theEnemies[i].isDead)
         {
           spriteBatch.Draw(theEnemies[i].enemySprite,
-              new Rectangle(7 * _width / 8 - theEnemies[i].enemySprite.Width, (i + 1) * _height / 6,
+              new Rectangle((7 * _width / 8) - (theEnemies[i].enemySprite.Width)-(22*(3-i)), (i + 1) * _height / 6,
               theEnemies[i].enemySprite.Width, theEnemies[i].enemySprite.Height), Color.White);
         }
       }
@@ -713,7 +713,7 @@ namespace BlackHoleLoans
       for (int i = 0; i < thePlayers.Length; i++)
       {
         spriteBatch.Draw(thePlayers[i].GetPlayerSprites()[1], 
-          new Rectangle(_width / 8, (i + 1) * _height / 6,
+          new Rectangle((_width / 8)+(22*(3-i)), (i + 1) * _height / 6,
             dummyplayertexture.Width, dummyplayertexture.Height), Color.White);
       }
     }

@@ -29,7 +29,7 @@ namespace BlackHoleLoans
     public Texture2D enemySprite { get; set; }
     public bool startCombat = false;
     int paralyzedCounter = 0;
-    Random randomDir = new Random();
+    Random randomDir;
     private bool hasRandomPath = false;
     bool isBoss;
 
@@ -39,6 +39,16 @@ namespace BlackHoleLoans
       Name = name;
       hasRandomPath = true;
       isBoss = iB;
+      randomDir = new Random();
+    }
+
+    public Enemy(OverWorld ow, Tile t, int f, string name, bool iB, int seed)
+      : base(ow, t, f)
+    {
+      Name = name;
+      hasRandomPath = true;
+      isBoss = iB;
+      randomDir = new Random(seed);
     }
 
     public Enemy(OverWorld ow, Tile t, int[] newpath, string name, bool iB)

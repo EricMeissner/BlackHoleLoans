@@ -10,7 +10,7 @@ namespace BlackHoleLoans
   {
     //int attack, defence, concentration;
     //int health, level, experience;
-    private int attack, defence, concentration, health, level, experience;
+    private int attack, defence, concentration, health, level;
     public int TotalHealth { get; set; }
 
     public int Attack
@@ -57,7 +57,6 @@ namespace BlackHoleLoans
       health = h;
       TotalHealth = health;
       level = 1;
-      experience = 0;
     }
 
     public PlayerStatistics(int atk, int def, int con)
@@ -68,7 +67,6 @@ namespace BlackHoleLoans
       health = 100;
       TotalHealth = health;
       level = 1;
-      experience = 0;
     }
 
     public void SubtractHealth(int dmg)

@@ -16,7 +16,6 @@ namespace BlackHoleLoans
     PlayerStatistics playerStats;
     Texture2D[] playerSprites;
     int classIdentifier;//1=warrior, 2=wizard, 3=shooter
-    int gold;
 
     public string Name { get; set; }
     public Skill skillA { get; set; }
@@ -32,7 +31,6 @@ namespace BlackHoleLoans
       playerStats = new PlayerStatistics(atk, def, con);
       playerSprites = pS;
       classIdentifier = cI;
-      gold = 0;
       Name = n;
       skillA = a;
       skillB = b;

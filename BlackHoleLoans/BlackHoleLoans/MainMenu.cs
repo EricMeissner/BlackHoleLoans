@@ -14,7 +14,7 @@ namespace BlackHoleLoans
   {
     private SpriteBatch spriteBatch;
     private ContentManager _content;
-    private Texture2D spaceship, stars, BHLlogo;
+    private Texture2D spaceship, stars, BHLlogo, blackHole;
 
     KeyboardState prevKeyboardState, currentKeyboardState;
     SpriteFont smallFont, bigFont;//Fonts used to display text on the screen
@@ -22,7 +22,7 @@ namespace BlackHoleLoans
     private int _height, _width; //Screen resolution
     private int numOptions, lowestPossibleY;//Number of menu options and the lowest Y value to draw the cursor
     private int cursorX, cursorY;
-    int volume, menuCursorLocation;
+    int menuCursorLocation;
     int menuScreen;//Used to determine which menu screen the user is currently on
 
     const int MAINMENU=1, CONTROLS=2, CREDITS=3;
@@ -36,10 +36,9 @@ namespace BlackHoleLoans
       prevKeyboardState = Keyboard.GetState();
       currentKeyboardState = Keyboard.GetState();
 
-      cursorX = 200;
+      cursorX = 325;
       cursorY = 200;
       menuCursorLocation = 1;
-      volume = 25;
       menuScreen = 1;
       numOptions = 4;
       lowestPossibleY = 425;
@@ -53,6 +52,7 @@ namespace BlackHoleLoans
       BHLlogo = _content.Load<Texture2D>("MainMenu/BHL4");
       smallFont = _content.Load<SpriteFont>("Fonts/MenuOptions");
       bigFont = _content.Load<SpriteFont>("Fonts/MenuTitles");
+      blackHole = _content.Load<Texture2D>("MainMenu/MainMenuInfoSpace");
     }
 
     public int Update()
@@ -154,8 +154,14 @@ namespace BlackHoleLoans
       //Draws the background
       spriteBatch.Draw(stars, new Rectangle(0, 0, _width, _height), Color.White);
       //Draws the BHL logo
+      spriteBatch.Draw(blackHole, new Vector2(200, 20), null, 
+        Color.White, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
+
       spriteBatch.Draw(BHLlogo, new Vector2(200, 20), null,
                     Color.White, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
+
+      if(menuScreen != MAINMENU)
+        spriteBatch.DrawString(smallFont, "<- Press B", new Vector2(0, 560), Color.Aqua);
       //Calls the Draw methods depending on the chosen option
       if (menuScreen == MAINMENU)
         drawMainMenu();
@@ -170,11 +176,11 @@ namespace BlackHoleLoans
 
     protected void drawMainMenu()
     {
-      spriteBatch.DrawString(bigFont, "Main Menu", new Vector2(200, 150), Color.White);
-      spriteBatch.DrawString(smallFont, "Start Game", new Vector2(350, 220), Color.White);
-      spriteBatch.DrawString(smallFont, "Controls", new Vector2(350, 295), Color.White);
-      spriteBatch.DrawString(smallFont, "Credits", new Vector2(350, 370), Color.White);
-      spriteBatch.DrawString(smallFont, "Exit", new Vector2(350, 445), Color.White);
+      spriteBatch.DrawString(bigFont, "Main Menu", new Vector2(475, 150), Color.White);
+      spriteBatch.DrawString(smallFont, "Start Game", new Vector2(475, 220), Color.White);
+      spriteBatch.DrawString(smallFont, "Controls", new Vector2(475, 295), Color.White);
+      spriteBatch.DrawString(smallFont, "Credits", new Vector2(475, 370), Color.White);
+      spriteBatch.DrawString(smallFont, "Exit", new Vector2(475, 445), Color.White);
 
       spriteBatch.Draw(spaceship, new Vector2(cursorX, cursorY), null,
                     Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
@@ -196,7 +202,7 @@ namespace BlackHoleLoans
       spriteBatch.DrawString(smallFont, "Created By:", new Vector2(200, 200), Color.White);
 
       spriteBatch.DrawString(smallFont, "Andy Tonoyan   Tyler Hall", new Vector2(250, 250), Color.White);
-      spriteBatch.DrawString(smallFont, "Charles Baker    Eric Meisner", new Vector2(250, 300), Color.White);
+      spriteBatch.DrawString(smallFont, "Charles Baker    Eric Meissner", new Vector2(250, 300), Color.White);
       spriteBatch.DrawString(smallFont, "Michael Briseno", new Vector2(250, 350), Color.White);
 
       spriteBatch.DrawString(smallFont, "Thanks to:", new Vector2(200, 400), Color.White);

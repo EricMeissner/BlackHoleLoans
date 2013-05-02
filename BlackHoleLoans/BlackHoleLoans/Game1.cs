@@ -43,7 +43,8 @@ namespace BlackHoleLoans
     KeyboardState keyState, prevKeystate;
     float volume=0.25f;//0-muted, .25-not muted
     Texture2D boss1, boss2, boss3;
-
+    bool startedBossFight = false;
+    EndGame endGame;
 
     public Game1()
     {
@@ -156,12 +157,28 @@ namespace BlackHoleLoans
       enemy1.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
         "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
       tempTileMap.EntityList.Add(enemy1);
+      
+      /*
+      Entity enemy1 = new Enemy(OW, tempTileMap.getTile(3, 4), 0, "Blue Spider", false,1);
+      enemy1.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
+        "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
+      tempTileMap.EntityList.Add(enemy1);
+      */
+
 
       Entity enemy2 = new Enemy(OW, tempTileMap.getTile(8, 11), 0,
         new int[] { 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 1, 1 }, "Blue Spider", false);
       enemy2.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
         "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
       tempTileMap.EntityList.Add(enemy2);
+      
+      /*
+      Entity enemy2 = new Enemy(OW, tempTileMap.getTile(8, 11), 0, "Blue Spider", false);
+      enemy2.setAvatarFileString("EnemySprites/BlueCreatureRight", "EnemySprites/BlueCreatureRight",
+        "EnemySprites/BlueCreatureLeft", "EnemySprites/BlueCreatureLeft");
+      tempTileMap.EntityList.Add(enemy2);
+      */
+
 
       Entity enemy3 = new Enemy(OW, tempTileMap2.getTile(2, 12), 0, 
         new int[] { 1, 1, 3, 3, 3, 3, 1, 1 },
@@ -231,6 +248,21 @@ new int[] {2},"Boss", true);
       #region Map Creation (includes doors)
 
       Entity temp;
+
+      Entity[] minerals = new Entity[52];
+
+      for (int i = 1; i <= 4; i++)
+      {
+        for (int j = 1; j <= 14; j++)
+        {
+          if (j == 7)
+            continue;
+          minerals[j-1] = new Entity(OW, tempTileMap5.getTile(i, j));
+          minerals[j-1].setAvatarFileString("Textures/minerals");
+          tempTileMap5.EntityList.Add(minerals[j-1]);
+        }
+      }
+
 
       temp = new Door(OW, OW.OWmap.getTile(2, 7), 3, tempTileMap, null);
       temp.setAvatarFileString("EntityAvatar/Door/Door_0", "EntityAvatar/Door/Door_1",
@@ -313,9 +345,15 @@ new int[] {2},"Boss", true);
       {
         enemy = new Enemy[3]
             {
+              /*
                 new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,1, enemyName, enemySprite),//Can also add skills
                 new Enemy(pToE[0]-3,pToE[1]-3,pToE[2]-3,1, enemyName, enemySprite, new Skill(Skills.Blast)),
                 new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,1, enemyName, enemySprite, new Skill(Skills.Blast), new Skill(Skills.Blast))
+            };//Change health back to normal
+               * */
+                new Enemy(1000,1000,1000,100, enemyName, enemySprite),//Can also add skills
+                new Enemy(1000,1000,1000,100, enemyName, enemySprite, new Skill(Skills.Blast)),
+                new Enemy(1000,1000,1000,100, enemyName, enemySprite, new Skill(Skills.Blast), new Skill(Skills.Blast))
             };//Change health back to normal
       }
       else
@@ -333,6 +371,7 @@ new int[] {2},"Boss", true);
 
 
             };//Change health back to normal
+        startedBossFight = true;
       }
 
       combat = new Combat(Content, graphics.PreferredBackBufferHeight,
@@ -420,7 +459,7 @@ new int[] {2},"Boss", true);
         if(enemy_timer >= 60){
           enemy_timer = 0;
         }
-        if (player_timer >= 20)
+        if (player_timer >= 60)
         {
           player_timer = 0;
         }
@@ -518,8 +557,7 @@ new int[] {2},"Boss", true);
         if (combat.WonFight() && combat.messageQueue.Count==0)
         {
           combat.StopSound();
-          currentGameState = 2;
-          OW.GetOpponent().remove();//added
+          OW.GetOpponent().remove();
           OW.FinishedCombat();
 
           foreach (Player player in party)
@@ -530,16 +568,55 @@ new int[] {2},"Boss", true);
             player.GetPlayerStats().LevelUp();
           }
           createdCombat = false;
+
+          if (startedBossFight)
+          {
+            currentGameState = 5;
+            Texture2D[] partySprites = new Texture2D[3];
+            partySprites[0] = party[0].GetPlayerSprites()[1];
+            partySprites[1] = party[1].GetPlayerSprites()[0];
+            partySprites[2] = party[2].GetPlayerSprites()[0];
+
+            endGame = new EndGame(1, spriteBatch, Content, partySprites);//Pass in a vlue for winning
+            endGame.LoadContent();
+          }
+
+          else
+          {
+            currentGameState = 2;
+          }
+
         }
+
+
+
           
         else if (combat.LostFight())
         {
           if (combat.messageQueue.Count == 0)
           {
             combat.StopSound();
-            RestartFromMainMenu();
-            currentGameState = 0;
+            //RestartFromMainMenu();
+            currentGameState = 5;
             createdCombat = false;
+
+            if (startedBossFight)
+            {
+              Texture2D[] partySprites = new Texture2D[3];
+              partySprites[0] = party[0].GetPlayerSprites()[1];
+              partySprites[1] = party[1].GetPlayerSprites()[0];
+              partySprites[2] = party[2].GetPlayerSprites()[0];
+              endGame = new EndGame(2, spriteBatch, Content, partySprites);//pass in a value for losing boss fight
+            }
+            else
+            {
+              Texture2D[] partySprites = new Texture2D[3];
+              partySprites[0] = party[0].GetPlayerSprites()[1];
+              partySprites[1] = party[1].GetPlayerSprites()[0];
+              partySprites[2] = party[2].GetPlayerSprites()[0];
+              endGame = new EndGame(3, spriteBatch, Content, partySprites);//pass in a value for dying in combat
+            }
+            endGame.LoadContent();
           }
         }
 
@@ -581,6 +658,18 @@ new int[] {2},"Boss", true);
         }
       }
       #endregion
+
+      #region Endgame
+      else if (currentGameState == 5)
+      {
+        endGame.Update();
+        if (endGame.LeaveEndGame())
+        {
+          currentGameState = 0;
+          RestartFromMainMenu();
+        }
+      }
+      #endregion
       //Eric's Code start
       else
       {
@@ -599,7 +688,6 @@ new int[] {2},"Boss", true);
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime)
     {
-      //GraphicsDevice.Clear(Color.Brown);
 
       // TODO: Add your drawing code here
       spriteBatch.Begin();
@@ -629,6 +717,12 @@ new int[] {2},"Boss", true);
       {
         if (pausedGame)
           ingameMenu.Draw(spriteBatch);
+      }
+
+      else if (currentGameState == 5)
+      {
+        GraphicsDevice.Clear(Color.Black);
+        endGame.Draw();
       }
 
       if (currentGameState != 2)//change back to 2

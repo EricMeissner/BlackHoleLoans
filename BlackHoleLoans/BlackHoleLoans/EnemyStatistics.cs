@@ -10,7 +10,7 @@ namespace BlackHoleLoans
   {
     //int attack, defence, concentration;
     //int health, level, experience;
-    private int attack, defence, concentration, health, level;
+    private int attack, defence, concentration, health;
     public int TotalHealth { get; set; }
     public int Attack
     {
@@ -54,7 +54,6 @@ namespace BlackHoleLoans
       concentration = con;
       health = h;
       TotalHealth = health;
-      level = 1;
     }
   }
 }

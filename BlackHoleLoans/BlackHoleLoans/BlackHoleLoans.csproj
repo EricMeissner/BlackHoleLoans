@@ -113,6 +113,7 @@
     <Compile Include="Combat.cs" />
     <Compile Include="ContentRepository.cs" />
     <Compile Include="Door.cs" />
+    <Compile Include="EndGame.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyStatistics.cs" />
     <Compile Include="Entity.cs" />
