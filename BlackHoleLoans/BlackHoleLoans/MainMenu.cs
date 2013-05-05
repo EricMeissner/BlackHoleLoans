@@ -14,7 +14,7 @@ namespace BlackHoleLoans
   {
     private SpriteBatch spriteBatch;
     private ContentManager _content;
-    private Texture2D spaceship, stars, BHLlogo, blackHole;
+    private Texture2D spaceship, stars, BHLlogo, blackHole, controls;
 
     KeyboardState prevKeyboardState, currentKeyboardState;
     SpriteFont smallFont, bigFont;//Fonts used to display text on the screen
@@ -53,6 +53,7 @@ namespace BlackHoleLoans
       smallFont = _content.Load<SpriteFont>("Fonts/MenuOptions");
       bigFont = _content.Load<SpriteFont>("Fonts/MenuTitles");
       blackHole = _content.Load<Texture2D>("MainMenu/MainMenuInfoSpace");
+      controls = _content.Load<Texture2D>("MainMenu/controlsexample");
     }
 
     public int Update()
@@ -173,7 +174,6 @@ namespace BlackHoleLoans
 
     }
 
-
     protected void drawMainMenu()
     {
       spriteBatch.DrawString(bigFont, "Main Menu", new Vector2(475, 150), Color.White);
@@ -189,23 +189,24 @@ namespace BlackHoleLoans
 
     protected void drawControls()
     {
-      spriteBatch.DrawString(bigFont, "Controls", new Vector2(200, 150), Color.White);
-
-      spriteBatch.DrawString(bigFont, "Please read the README.txt file", new Vector2(200,250), Color.White);
-      spriteBatch.DrawString(bigFont, "for information related to controls", new Vector2(200, 350), Color.White);
+      //spriteBatch.DrawString(bigFont, "Controls", new Vector2(200, 150), Color.White);
+      spriteBatch.Draw(controls, new Rectangle(0,0,800,600), Color.White);
+      
       //Add in all the keys we'll be using in the game
     }
 
     protected void drawCredits()
     {
       spriteBatch.DrawString(bigFont, "Credits!", new Vector2(200, 150), Color.White);
-      spriteBatch.DrawString(smallFont, "Created By:", new Vector2(200, 200), Color.White);
+      spriteBatch.DrawString(smallFont, "Created By:", new Vector2(0, 200), Color.White);
 
-      spriteBatch.DrawString(smallFont, "Andy Tonoyan   Tyler Hall", new Vector2(250, 250), Color.White);
-      spriteBatch.DrawString(smallFont, "Charles Baker    Eric Meissner", new Vector2(250, 300), Color.White);
-      spriteBatch.DrawString(smallFont, "Michael Briseno", new Vector2(250, 350), Color.White);
+      spriteBatch.DrawString(smallFont, "Andy Tonoyan   Tyler Hall   Michael Briseno", new Vector2(50, 250), Color.White);
+      spriteBatch.DrawString(smallFont, "Charles Baker    Eric Meissner", new Vector2(50, 300), Color.White);
 
-      spriteBatch.DrawString(smallFont, "Thanks to:", new Vector2(200, 400), Color.White);
+      spriteBatch.DrawString(smallFont, "Thanks to:", new Vector2(0, 350), Color.White);
+      spriteBatch.DrawString(smallFont, "XNA game studios", new Vector2(50, 400), Color.White);
+      spriteBatch.DrawString(smallFont, "RB Whitaker's XNA tutorials", new Vector2(50, 450), Color.White);
+      spriteBatch.DrawString(smallFont, "Opengameart.org's artists", new Vector2(50, 500), Color.White);
       //Enter people to thank..
     }
 

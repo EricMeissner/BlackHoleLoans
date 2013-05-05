@@ -351,22 +351,22 @@ new int[] {2},"Boss", true);
                 new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,1, enemyName, enemySprite, new Skill(Skills.Blast), new Skill(Skills.Blast))
             };//Change health back to normal
                * */
-                new Enemy(1000,1000,1000,100, enemyName, enemySprite),//Can also add skills
-                new Enemy(1000,1000,1000,100, enemyName, enemySprite, new Skill(Skills.Blast)),
-                new Enemy(1000,1000,1000,100, enemyName, enemySprite, new Skill(Skills.Blast), new Skill(Skills.Blast))
+                new Enemy(5,5,5,20, enemyName, enemySprite),//Can also add skills
+                new Enemy(5,5,5,15, enemyName, enemySprite, new Skill(Skills.Blast)),
+                new Enemy(5,5,5,10, enemyName, enemySprite, new Skill(Skills.Blast), new Skill(Skills.Blast))
             };//Change health back to normal
       }
       else
       {
         enemy = new Enemy[3]
             {
-                new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,1, "Boss Form 1", boss1,
+                new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,20, "Boss Form 1", boss1,
                   new Skill(Skills.LaserSword), new Skill(Skills.LaserSword)),//Can also add skills
 
-                new Enemy(pToE[0]-3,pToE[1]-3,pToE[2]-3,1, "Boss Form 2", boss2, 
+                new Enemy(pToE[0]-3,pToE[1]-3,pToE[2]-3,20, "Boss Form 2", boss2, 
                   new Skill(Skills.Blast), new Skill(Skills.Blast)),
 
-                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,1, "Boss form 3", boss3, 
+                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,20, "Boss form 3", boss3, 
                   new Skill(Skills.Leech), new Skill(Skills.Leech))
 
 

@@ -20,7 +20,7 @@ namespace BlackHoleLoans
     int whichEnding;
     SpriteBatch spriteBatch;
     ContentManager content;
-    Texture2D redX, endSharkLose, stars, mineral;
+    Texture2D redX, endSharkLose, stars, mineral, win, spaceship, sharkDesk;
     Texture2D[] playerSprites;
     SpriteFont font;
 
@@ -38,9 +38,12 @@ namespace BlackHoleLoans
     {
       redX = content.Load<Texture2D>("EndGame/REDX");
       font = content.Load<SpriteFont>("Fonts/MenuTitles");
-      endSharkLose = content.Load<Texture2D>("MainMenu/EndShark");
+      endSharkLose = content.Load<Texture2D>("EndGame/EndShark");
       stars = content.Load<Texture2D>("MainMenu/stars");
       mineral = content.Load<Texture2D>("Textures/minerals");
+      win = content.Load<Texture2D>("EndGame/win-bhl");
+      spaceship = content.Load<Texture2D>("MainMenu/spaceship");
+      sharkDesk = content.Load<Texture2D>("MainMenu/Shark-desk2");
     }
 
     public void Update()
@@ -60,35 +63,43 @@ namespace BlackHoleLoans
 
       if (whichEnding == 1)//Won the game
       {
-        spriteBatch.DrawString(font, "You Win!", new Vector2(200, 0), Color.White);
-        spriteBatch.Draw(mineral, new Vector2(200,200), Color.White);
-        spriteBatch.DrawString(font, "You can now pay back the loan woohooooo", new Vector2(300, 300), Color.White);
+        spriteBatch.Draw(stars, new Rectangle(0, 0, 800, 600), Color.White);
+        spriteBatch.Draw(win, new Rectangle(0, 0, 800, 600), Color.White);
+
+        spriteBatch.Draw(playerSprites[0], new Vector2(180, 130), Color.White);
+        spriteBatch.Draw(playerSprites[1], new Vector2(200, 150), Color.White);
+        spriteBatch.Draw(playerSprites[2], new Vector2(220, 170), Color.White);
+
+        spriteBatch.Draw(spaceship, new Vector2(50, 100), null, Color.White, 0f, Vector2.Zero, .5f, SpriteEffects.None, 0f);
+        spriteBatch.Draw(mineral, new Vector2(300, 150), null, Color.White, 0f, Vector2.Zero, .5f, SpriteEffects.None, 0f);
+        spriteBatch.Draw(sharkDesk, new Vector2(400, 150), Color.White);
       }
 
       else if (whichEnding == 2)//Lost to boss (get eaten)
       {
-
-      }
-
-      else if (whichEnding == 3)//Lost in combat (just dead)
-      {
-        /*
-        spriteBatch.Draw(redX, new Vector2(75,175), Color.White);
-        spriteBatch.Draw(redX, new Vector2(275, 175), Color.White);
-        spriteBatch.Draw(redX, new Vector2(475,175), Color.White);
-
-        spriteBatch.Draw(stars, new Rectangle(0,0,800,600), Color.White);
-        spriteBatch.Draw(endSharkLose, new Rectangle(0, 0, 800, 600), Color.White);
-         * */
-        /*
         spriteBatch.Draw(stars, new Rectangle(0, 0, 800, 600), Color.White);
         spriteBatch.Draw(endSharkLose, new Rectangle(0, 0, 800, 600), Color.White);
 
         spriteBatch.Draw(playerSprites[0], new Vector2(180, 130), Color.White);
         spriteBatch.Draw(playerSprites[1], new Vector2(200, 150), Color.White);
         spriteBatch.Draw(playerSprites[2], new Vector2(220, 170), Color.White);
-        */
+      }
 
+      else if (whichEnding == 3)//Lost in combat (just dead)
+      {
+
+        spriteBatch.Draw(stars, new Rectangle(0, 0, 800, 600), Color.White);
+
+        for (int i = 0; i < 3; i++)
+        {
+          spriteBatch.Draw(playerSprites[i], new Vector2(100+(i*200), 200), Color.White);
+        }
+        spriteBatch.Draw(redX, new Vector2(75, 175), Color.White);
+        spriteBatch.Draw(redX, new Vector2(275, 175), Color.White);
+        spriteBatch.Draw(redX, new Vector2(475, 175), Color.White);
+
+        spriteBatch.DrawString(font, "You Lose!", new Vector2(300, 0), Color.White);
+        spriteBatch.DrawString(font, "Press enter to go to the Main Menu", new Vector2(200, 50), Color.White);
       }
 
     }

@@ -602,7 +602,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainMenu\EndShark.png">
+    <Compile Include="EndGame\EndShark.png">
       <Name>EndShark</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -611,6 +611,30 @@
   <ItemGroup>
     <Compile Include="Textures\minerals.png">
       <Name>minerals</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainMenu\controlsexample.jpg">
+      <Name>controlsexample</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EndGame\win-bhl.png">
+      <Name>win-bhl</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainMenu\Shark-desk2.png">
+      <Name>Shark-desk2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
