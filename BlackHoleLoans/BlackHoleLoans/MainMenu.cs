@@ -191,7 +191,7 @@ namespace BlackHoleLoans
     {
       //spriteBatch.DrawString(bigFont, "Controls", new Vector2(200, 150), Color.White);
       spriteBatch.Draw(controls, new Rectangle(0,0,800,600), Color.White);
-      
+      spriteBatch.DrawString(smallFont, "<- Press B", new Vector2(0, 560), Color.Aqua);
       //Add in all the keys we'll be using in the game
     }
 

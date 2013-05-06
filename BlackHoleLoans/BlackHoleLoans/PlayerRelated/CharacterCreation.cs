@@ -274,9 +274,6 @@ namespace BlackHoleLoans
       backToMM = false;
       currentKeyboardState = Keyboard.GetState();
 
-      if (currentKeyboardState.IsKeyDown(Keys.D))
-        DefaultCharacter();
-
       if (currentScreen == SELECT_NAME)
         UpdatePlayerName();//call select name screen
 
@@ -538,8 +535,6 @@ namespace BlackHoleLoans
       }
       spriteBatch.Draw(arrow, new Vector2((210 + cursorLocation * 30) - arrow.Width, 150 - arrow.Height), Color.White);
       spriteBatch.Draw(flippedArrow, new Vector2((210 + cursorLocation * 30) - arrow.Width, 270 - arrow.Height), Color.White);
-
-      spriteBatch.DrawString(bigFont, "Press D for default character!", new Vector2(0, 300), Color.White);
     }
 
     private void DrawClasses()
@@ -547,7 +542,7 @@ namespace BlackHoleLoans
       spriteBatch.DrawString(bigFont, "Select your class (Press enter to continue)", new Vector2(0, 50), Color.White);
 
       spriteBatch.DrawString(className, "Warrior", new Vector2(150, 200), Color.White);
-      spriteBatch.DrawString(className, "Psychic", new Vector2(150, 350), Color.White);
+      spriteBatch.DrawString(className, "Psionic", new Vector2(150, 350), Color.White);
       spriteBatch.DrawString(className, "Shooter", new Vector2(150, 500), Color.White);
 
       for (int i = 0; i < 3; i++)
@@ -558,7 +553,7 @@ namespace BlackHoleLoans
 
     private void DrawRaces()
     {
-      spriteBatch.DrawString(bigFont, "Select your class (Press enter to continue)", new Vector2(0, 50), Color.White);
+      spriteBatch.DrawString(bigFont, "Select your race (Press enter to continue)", new Vector2(0, 50), Color.White);
 
       spriteBatch.DrawString(className, "Human", new Vector2(150, 200), Color.White);
       spriteBatch.DrawString(className, "Alien", new Vector2(150, 350), Color.White);
@@ -680,18 +675,5 @@ namespace BlackHoleLoans
       return startOverworld;
     }
 
-    private void DefaultCharacter()
-    {
-      RequestBackToMM();
-      startOverworld = true;
-      SelectPlayerName();
-      SelectClass();
-      SelectRace();
-      SavePartyMembers();
-      chosenStats[0] = 15;
-      chosenStats[1] = 15;
-      chosenStats[2] = 15;
-
-    }
   }
 }

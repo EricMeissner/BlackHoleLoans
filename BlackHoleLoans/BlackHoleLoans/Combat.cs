@@ -364,7 +364,7 @@ namespace BlackHoleLoans
         {
           
           Random random = new Random();
-          if ((random.Next(0, 100) + 1) <= 70)//change
+          if ((random.Next(0, 100) + 1) <= 100)//change
           {
             MediaPlayer.Stop();
             AddMessage("Player ran away!");
