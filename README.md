@@ -8,5 +8,6 @@ Requirements:
 -XNA game studio 4.0 installed
 -Using one of the following OS's: Windows XP, 7, or 8
 -If WIndows 8 is installed, must download Windows Phone SDK
+.
 
 
