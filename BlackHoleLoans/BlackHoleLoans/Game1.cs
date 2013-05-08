@@ -345,28 +345,23 @@ new int[] {2},"Boss", true);
       {
         enemy = new Enemy[3]
             {
-              /*
-                new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,1, enemyName, enemySprite),//Can also add skills
-                new Enemy(pToE[0]-3,pToE[1]-3,pToE[2]-3,1, enemyName, enemySprite, new Skill(Skills.Blast)),
-                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,1, enemyName, enemySprite, new Skill(Skills.Blast), new Skill(Skills.Blast))
-            };//Change health back to normal
-               * */
-                new Enemy(5,5,5,20, enemyName, enemySprite),//Can also add skills
-                new Enemy(5,5,5,15, enemyName, enemySprite, new Skill(Skills.Blast)),
-                new Enemy(5,5,5,10, enemyName, enemySprite, new Skill(Skills.Blast), new Skill(Skills.Blast))
-            };//Change health back to normal
+              
+                new Enemy(pToE[0]-3,pToE[1]-3,pToE[2]-3,party[0].GetPlayerStats().Health/4, enemyName, enemySprite),//Can also add skills
+                new Enemy(pToE[0]-2,pToE[1]-2,pToE[2]-2,party[0].GetPlayerStats().Health/3, enemyName, enemySprite, new Skill(Skills.Blast)),
+                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,party[0].GetPlayerStats().Health/2, enemyName, enemySprite, new Skill(Skills.Blast), new Skill(Skills.Blast))
+            };
       }
       else
       {
         enemy = new Enemy[3]
             {
-                new Enemy(pToE[0]-5,pToE[1]-5,pToE[2]-5,20, "Boss Form 1", boss1,
+                new Enemy(pToE[0]-3,pToE[1]-3,pToE[2]-3,party[0].GetPlayerStats().Health/3, "Boss Form 1", boss1,
                   new Skill(Skills.LaserSword), new Skill(Skills.LaserSword)),//Can also add skills
 
-                new Enemy(pToE[0]-3,pToE[1]-3,pToE[2]-3,20, "Boss Form 2", boss2, 
+                new Enemy(pToE[0]-2,pToE[1]-2,pToE[2]-2,party[0].GetPlayerStats().Health/2, "Boss Form 2", boss2, 
                   new Skill(Skills.Blast), new Skill(Skills.Blast)),
 
-                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,20, "Boss form 3", boss3, 
+                new Enemy(pToE[0]-1,pToE[1]-1,pToE[2]-1,party[0].GetPlayerStats().Health/1, "Boss form 3", boss3, 
                   new Skill(Skills.Leech), new Skill(Skills.Leech))
 
 
@@ -579,6 +574,7 @@ new int[] {2},"Boss", true);
 
             endGame = new EndGame(1, spriteBatch, Content, partySprites);//Pass in a vlue for winning
             endGame.LoadContent();
+            startedBossFight = false;
           }
 
           else
